@@ -52,9 +52,9 @@ app.post('/Trial',async (req, res) => {
             const output = extractData(result, columnNames);
             console.log(output);
             //console.log(extractData(result,columnsToExtract));
-            res.status(200).json({output});
+            // res.status(200).json({output});
             console.log(output);
-           // res.status(200).json({data: result || [], message: "welcome to our wedpage"});
+           res.status(200).json({data: result || [], message: "welcome to our webpage"});
         }catch(error)
         {
             console.error("Error while taking the data from employees : ", error);
