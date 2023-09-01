@@ -549,7 +549,7 @@ function Copyright() {
     );
 }
 
-const cards = [];  // This defines number of elements
+let cards = [];  // This defines number of elements
 const cards1 = ['a','b','c','d','e','f','g','h','i'];  // This defines number of elements
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -624,13 +624,14 @@ export default function Album() {
 
                     console.log(productData.data.rows[0]);
                     console.log(productData.data.rows.length);
-                    for(let i=0;i<productData.data.rows.length;i++)
-                    {
-                        cards.push(productData.data.rows[i]);
-                        console.log(productData.data.rows[i]);
-                        console.log('products in the cards is :',cards[i]);
-
-                    }
+                    cards = productData.data.rows;
+                    // for(let i=0;i<productData.data.rows.length;i++)
+                    // {
+                    //     cards.push(productData.data.rows[i]);
+                    //     console.log(productData.data.rows[i]);
+                    //     console.log('products in the cards is :',cards[i]);
+                    //
+                    // }
                     // //console.log(userData.S_ID);
                     //navigate('/ProfileOfSupplier',{ state : {userData}});
                 }
