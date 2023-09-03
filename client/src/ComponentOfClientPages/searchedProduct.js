@@ -21,7 +21,7 @@ export default function SearchedProductData() {
   const location = useLocation();
    // Check for undefined
     productCards = location.state && location.state.productData;
-  console.log(productCards);
+  // console.log(productCards);
 
   return (
       <ThemeProvider theme={defaultTheme}>

@@ -661,7 +661,7 @@ export default function Album() {
         // alert(`Searching for ${searchBoxInput}...`);
         console.log(`Searching for ${searchBoxInput}...`);
         const resFromServer = await axios.post('http://localhost:8000/search',{searchBoxInput});
-        console.log(resFromServer);
+        // console.log(resFromServer);
         const productData = resFromServer.data;
          navigate('/searchedProduct',{ state : {productData}});
     }

@@ -444,43 +444,6 @@ app.post('/search', async (req, res) => {
 });
 
 app.post('/AddProduct',async (req, res) => {
-  // const level = req.body.LEVEL;
-  // const name = req.body.NAME;
-  // const category = req.body.CATEGORY;
-
-  // // Process the data or perform desired operations here
-
-  // res.status(200).json({ message: 'Data received successfully' });
-
-  // formData.append('PICTURE', productImage);
-
-
-  // formData.append('P_NAME', productName);
-  // formData.append('P_SIZE(CC)', productSize);
-  // formData.append('P_WEIGHT(KG)', productWeight);
-  // formData.append('QUANTITY', productQuantity);
-  // formData.append('PRICE', productPrice);
-  // formData.append('DISCOUNT', productDiscount);
-  // formData.append('PREFERRED_TEMP', productTemp);
-
-  // formData.append('DESCRIPTION', productDescription);
-
-  // formData.append('TYPE', selectedRootCategory);
-
-
-  // formData.append('ELEVEL',educationalLevel );
-  // formData.append('MADE_OF', fashionMadeOf);
-  // formData.append('SIZE',fashionSize );
-  // formData.append('FCOLOR',fashionColor );
-  // formData.append('PRODUCTION_DATE',productionDate );
-  // formData.append('EXPIARY_DATE', ExpiaryDate);
-  // formData.append('RAM(GB)',IT_ram );
-  // formData.append('STORAGE(GB)',IT_storage );
-  // formData.append('PROCESSOR(GHZ)',IT_processor );
-  // formData.append('TCOLOR',Toy_color );
-  // formData.append('TLEVEL',Toy_level );
-
-
 
   const {
     productImage,
@@ -504,7 +467,8 @@ app.post('/AddProduct',async (req, res) => {
     IT_processor,
     Toy_color,
     Toy_level,
-    status} = req.body;
+    s_id
+  } = req.body;
     console.log(req.body.status);
     // for (const entry of req.body.entries()) {
     //   console.log(entry);
@@ -558,34 +522,34 @@ const invoiceNo = result4.rows.length+1;
   
   let pID =0;
   if (result2.rows.length > 0) {
-  pID = result2.rows[0][0];
-  const queryToInsertInSupplies = `INSERT INTO "INVENTORY"."SUPPLIES"("DATE","S_ID","P_ID","P_SIZE(CC)","P_WEIGHT(KG)","PREFERRED_TEMP(C)","QUANTITY","INVOICE_NO") VALUES(SYSDATE,:s_id,:pID,:psize,:pWeight,:prefTemp,:quantity,:invoiceNo)`;
+      pID = result2.rows[0][0];
+      const queryToInsertInSupplies = `INSERT INTO "INVENTORY"."SUPPLIES"("DATE","S_ID","P_ID","P_SIZE(CC)","P_WEIGHT(KG)","PREFERRED_TEMP(C)","QUANTITY","INVOICE_NO") VALUES(SYSDATE,:s_id,:pID,:psize,:pWeight,:prefTemp,:quantity,:invoiceNo)`;
 
-const bindParams2 = {
-  s_id: status,
-  pID: pID,
-  psize: productSize,
-  pWeight: productWeight,
-  prefTemp: productTemp,
-  quantity: productQuantity,
-  invoiceNo: invoiceNo
-}
-const result5 = await runQuery(queryToInsertInSupplies,bindParams2);
-
-    
-    const ifExistThenQuery = `UPDATE "INVENTORY"."PRODUCT" SET "REMAINING_ITEM" = "REMAINING_ITEM" + :productQuantity WHERE "P_ID" = :pID`;
-    // HERE NEEDS TO RUN A TRIGGER ON UPDATE THE DAILY CHARGE AND DUE WILL BE UPDATED
-    const bindParams4 = {
-      productQuantity: productQuantity,
-      pID: pID
+    const bindParams2 = {
+      s_id: status,
+      pID: pID,
+      psize: productSize,
+      pWeight: productWeight,
+      prefTemp: productTemp,
+      quantity: productQuantity,
+      invoiceNo: invoiceNo
     }
-    const result7 = await runQuery(ifExistThenQuery,bindParams4);
+    const result5 = await runQuery(queryToInsertInSupplies,bindParams2);
 
-    if (pID !== 0) {
-        console.log("hello");
-    } else {
-        console.log("No matching product found.");
-    }
+
+        const ifExistThenQuery = `UPDATE "INVENTORY"."PRODUCT" SET "REMAINING_ITEM" = "REMAINING_ITEM" + :productQuantity WHERE "P_ID" = :pID`;
+        // HERE NEEDS TO RUN A TRIGGER ON UPDATE THE DAILY CHARGE AND DUE WILL BE UPDATED
+        const bindParams4 = {
+          productQuantity: productQuantity,
+          pID: pID
+        }
+        const result7 = await runQuery(ifExistThenQuery,bindParams4);
+
+        if (pID !== 0) {
+            console.log("hello");
+        } else {
+            console.log("No matching product found.");
+        }
 } else {
   const queryToExtractpID = `SELECT P_ID FROM "INVENTORY"."PRODUCT" ORDER BY P_ID DESC`;
   const result3 =   await runQuery(queryToExtractpID, []);  // redundant query can use query2's result
@@ -602,7 +566,7 @@ const result5 = await runQuery(queryToInsertInSupplies,bindParams2);
 const queryToInsertInSupplies = `INSERT INTO "INVENTORY"."SUPPLIES"("DATE","S_ID","P_ID","P_SIZE(CC)","P_WEIGHT(KG)","PREFERRED_TEMP(C)","QUANTITY","INVOICE_NO") VALUES(SYSDATE,:s_id,:pID,:psize,:pWeight,:prefTemp,:quantity,:invoiceNo)`;
 
 const bindParams2 = {
-  s_id: status,
+  s_id: s_id,
   pID: pID,
   psize: productSize,
   pWeight: productWeight,
@@ -612,28 +576,28 @@ const bindParams2 = {
 }
 const result5 = await runQuery(queryToInsertInSupplies,bindParams2);
 
-// now we will decide what will be the storage it by using the supplies table and storage table...
-const queryToRetrieveStorageId = `SELECT ST_ID FROM "INVENTORY"."STORAGE" WHERE  "TYPE"= :selectedRootCategory AND :prefTemp >= "MIN_TEMP"  AND :prefTemp <= "MAX_TEMP"`;
-const bindParams6 = {
-  selectedRootCategory: selectedRootCategory,
-  prefTemp: productTemp
-}
-const result8 = await runQuery(queryToRetrieveStorageId,bindParams6);
-const storageId = result8.rows[0][0];
-const perUnitChargeQuery = `SELECT PER_VOL_COST*(:productSize) FROM "INVENTORY"."STORAGE" WHERE ST_ID = :storageId`;
-const bindParams7 = {
-  productSize: productSize,
-  storageId: storageId
-}
-const result9 = await runQuery(perUnitChargeQuery,bindParams7);
-const perUnitCharge = result9.rows[0][0];
-const totalCharge = perUnitCharge*productQuantity; // not necessary
-console.log("perUnitCharge :",perUnitCharge);
-console.log("storage id is : " , storageId);
+// now we will decide what will be the storage id by using the supplies table and storage table...
+// const queryToRetrieveStorageId = `SELECT ST_ID FROM "INVENTORY"."STORAGE" WHERE  "TYPE"= :selectedRootCategory AND :prefTemp >= "MIN_TEMP"  AND :prefTemp <= "MAX_TEMP"`;
+// const bindParams6 = {
+//   selectedRootCategory: selectedRootCategory,
+//   prefTemp: productTemp
+// }
+// const result8 = await runQuery(queryToRetrieveStorageId,bindParams6);
+// const storageId = result8.rows[0][0];
+// const perUnitChargeQuery = `SELECT PER_VOL_COST*(:productSize) FROM "INVENTORY"."STORAGE" WHERE ST_ID = :storageId`;
+// const bindParams7 = {
+//   productSize: productSize,
+//   storageId: storageId
+// }
+// const result9 = await runQuery(perUnitChargeQuery,bindParams7);
+// const perUnitCharge = result9.rows[0][0];
+// const totalCharge = perUnitCharge*productQuantity; // not necessary
+// console.log("perUnitCharge :",perUnitCharge);
+// console.log("storage id is : " , storageId);
 
 
 
-  const insertIntoProduct = `INSERT INTO "INVENTORY"."PRODUCT"("P_ID","P_NAME","PRICE","DISCOUNT","DESCRIPTION","TYPE","REMAINING_ITEM","STORAGE_ID","SOLD_QUANTITY","PER_UNIT_CHARGE") VALUES(:pID,:pName,:price,:discount,:description,:type,:quantity,:storageId,0,:perUnitCharge)`; // sold quantity will be updated by trigger
+  const insertIntoProduct = `INSERT INTO "INVENTORY"."PRODUCT"("P_ID","P_NAME","PRICE","DISCOUNT","DESCRIPTION","TYPE","REMAINING_ITEM","SOLD_QUANTITY") VALUES(:pID,:pName,:price,:discount,:description,:type,:quantity,0)`;
   const bindParams3 = {
     pID: pID,
     pName: productName,
@@ -641,9 +605,9 @@ console.log("storage id is : " , storageId);
     discount: productDiscount,
     description: productDescription,
     type: selectedRootCategory,
-    quantity: productQuantity,
-    storageId: storageId,
-    perUnitCharge: perUnitCharge
+    quantity: productQuantity
+    // storageId: storageId,
+    // perUnitCharge: perUnitCharge
  }
 const result6 = await runQuery(insertIntoProduct,bindParams3);
 

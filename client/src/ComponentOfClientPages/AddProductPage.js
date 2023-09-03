@@ -75,7 +75,7 @@ function AddProduct() {
 
   const handleSubmit = async () => {
     try {
-      changeId(43);
+      // changeId(43);
       console.log(status);
        
       const formData = new FormData();
@@ -134,7 +134,7 @@ function AddProduct() {
         IT_processor,
         Toy_color,
         Toy_level,
-        //s_id
+        s_id
         );
 
       //const response = await axios.post("http://localhost:8000/addProduct", formData);
@@ -160,8 +160,7 @@ function AddProduct() {
         IT_processor,
         Toy_color,
         Toy_level,
-        status
-        //s_id
+        s_id
       });
       
       if (response.status === 200) {
@@ -173,7 +172,7 @@ function AddProduct() {
   };
 
   return (
-    <div className="add-product-container">
+    <div className="add-product-container" style={{ height: 'calc(100vh - 64px)', overflowY: 'auto' }}>
       <h2>Add Product</h2>
       <input
       className="form-control"
@@ -358,13 +357,13 @@ function AddProduct() {
 
       <input type="file" onChange={(e) => setProductImage(e.target.files[0])} />
       <textarea placeholder="Enter product description..." onChange={(e) => setProductDescription(e.target.value)}></textarea>
-      {/* <input
+      <input
       className="form-control"
       type="text"
       placeholder="Your Supplier ID"
       value={s_id}
       onChange={(e) => setS_id(e.target.value)}
-    /> */}
+      />
       <button onClick={handleSubmit}>Add Product</button>
     </div>
   );
