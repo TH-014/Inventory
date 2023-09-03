@@ -66,7 +66,7 @@ app.post('/Trial',async (req, res) => {
 app.post('/RegisterAsSupplier', async (req,res) => {
 
   //console.log(req);
-  const {supplierName, email, phoneNo,password} = req.body;
+  const {supplierName, email, phoneNo,password, imageurl,supplierAddress} = req.body;
   //const passwordHash = crypto.createHash('sha1').update(password).digest('hex');
   const queryToExtractUserID = `SELECT S_ID FROM "INVENTORY"."SUPPLIER" ORDER BY S_ID DESC`;
   const result2 =   await runQuery(queryToExtractUserID, []);
@@ -77,7 +77,7 @@ app.post('/RegisterAsSupplier', async (req,res) => {
   const username = result2.rows.length+1;
   //const reg = '12-JAN-2023';
 
-  const insertQuery = `INSERT INTO "INVENTORY"."SUPPLIER"("S_ID","USER_NAME","S_NAME","EMAIL","PHONE_NO","PASSWORD") VALUES(:newuId,:username,:supplierName, :email,:phoneNo,:password)`;
+  const insertQuery = `INSERT INTO "INVENTORY"."SUPPLIER"("S_ID","USER_NAME","S_NAME","EMAIL","PHONE_NO","PASSWORD","PHOTO","ADDRESS") VALUES(:newuId,:username,:supplierName, :email,:phoneNo,:password, :imageurl, :supplierAddress )`;
   console.log("this is a ID : " ,newuId);
 
   const bindParams = {
@@ -87,7 +87,9 @@ app.post('/RegisterAsSupplier', async (req,res) => {
     supplierName: supplierName,
     email:email,
     phoneNo : phoneNo,
-    password: password
+    password: password,
+      imageurl: imageurl,
+      supplierAddress: supplierAddress
 };
 const result3 = await runQuery(insertQuery,bindParams);
 res.send(result3);
@@ -100,7 +102,7 @@ res.send(result3);
 app.post('/Register', async (req,res) => {
 
   //console.log(req);
-  const {customerName, email, phoneNo,password} = req.body;
+  const {customerName, email, phoneNo,password,imageurl,Address} = req.body;
   //const passwordHash = crypto.createHash('sha1').update(password).digest('hex');
   const queryToExtractUserID = `SELECT C_ID FROM "INVENTORY"."CUSTOMER" ORDER BY C_ID DESC`;
   const result2 =   await runQuery(queryToExtractUserID, []);
@@ -111,7 +113,7 @@ app.post('/Register', async (req,res) => {
   const username = result2.rows.length+1;
   const reg = '12-JAN-2023';
 
-  const insertQuery = `INSERT INTO "INVENTORY"."CUSTOMER"("C_ID","USER_NAME","C_NAME","EMAIL","PHONE_NO","REG_DATE","PASSWORD") VALUES(:newuId,:username,:customerName, :email,:phoneNo,:reg,:password)`;
+  const insertQuery = `INSERT INTO "INVENTORY"."CUSTOMER"("C_ID","USER_NAME","C_NAME","EMAIL","PHONE_NO","REG_DATE","PASSWORD","PHOTO","ADDRESS") VALUES(:newuId,:username,:customerName,:email,:phoneNo,:reg,:password,:imageurl,:Address)`;
   console.log("this is a ID : " ,newuId);
 
   const bindParams = {
@@ -121,7 +123,9 @@ app.post('/Register', async (req,res) => {
     customerName: customerName,
     email:email,
     phoneNo : phoneNo,
-    password: password
+    password: password,
+      imageurl : imageurl,
+      Address : Address
 };
 const result3 = await runQuery(insertQuery,bindParams);
 res.send(result3);
@@ -151,7 +155,7 @@ const bindParams = {
     console.log('Inside try and before query');
     const result = await runQuery(query, bindParams);
     console.log(result);
-    const columnsToExtract = ['C_ID','C_NAME', 'EMAIL','PASSWORD','PHONE_NO'];
+    const columnsToExtract = ['C_ID','C_NAME', 'EMAIL','PASSWORD','PHONE_NO','ADDRESS','PHOTO'];
     const output = extractData(result, columnsToExtract);
     //console.log(extractData(result,columnsToExtract));
 
@@ -181,7 +185,7 @@ app.post('/loginAsSupplier', async (req, res) => {
   //console.log(passwordHash)
 
  // const query = 'SELECT * FROM "INVENTORY"."SUPPLIER" WHERE "EMAIL" = :email AND "PASSWORD" = :password';
-const query = 'SELECT SUPPLIER.S_ID SID,NVL(SUM(DUE),0) TOTDUE,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD FROM SUPPLIER LEFT JOIN CHARGES  ON (SUPPLIER.S_ID = CHARGES.S_ID) GROUP BY SUPPLIER.S_ID,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD HAVING EMAIL = :email AND PASSWORD = :password';
+const query = 'SELECT SUPPLIER.S_ID SID,NVL(SUM(DUE),0) TOTDUE,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD, SUPPLIER.PHOTO FROM SUPPLIER LEFT JOIN CHARGES  ON (SUPPLIER.S_ID = CHARGES.S_ID) GROUP BY SUPPLIER.S_ID,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD, SUPPLIER.PHOTO HAVING EMAIL = :email AND PASSWORD = :password';
 const bindParams = {
     email: email,
     password: password
@@ -192,7 +196,7 @@ const bindParams = {
     console.log('Inside try abd before query');
     const result = await runQuery(query, bindParams);
     //console.log(result);
-    const columnsToExtract = ['SID','TOTDUE','S_NAME', 'EMAIL','PASSWORD','PHONE_NO'];
+    const columnsToExtract = ['SID','TOTDUE','S_NAME', 'EMAIL','PASSWORD','PHONE_NO','PHOTO'];
     const output = extractData(result, columnsToExtract);
     //console.log(extractData(result,columnsToExtract));
 
@@ -220,7 +224,7 @@ app.post('/loginAsEmployee', async (req, res) => {
   //const passwordHash = crypto.createHash('sha1').update(password).digest('hex');
   //console.log(passwordHash)
 
-  const query = `SELECT E_ID,E_NAME,EMAIL,PASSWORD,PHONE_NO,TO_CHAR(JOIN_DATE,'DD-MON-YYYY') JOINDATE,ADDRESS FROM "INVENTORY"."EMPLOYEE" WHERE "EMAIL" = :email AND "PASSWORD" = :password`;
+  const query = `SELECT E_ID,E_NAME,EMAIL,PASSWORD,PHONE_NO,TO_CHAR(JOIN_DATE,'DD-MON-YYYY') JOINDATE,ADDRESS, PHOTO FROM "INVENTORY"."EMPLOYEE" WHERE "EMAIL" = :email AND "PASSWORD" = :password`;
 //const query = 'SELECT SUPPLIER.S_ID SID,NVL(SUM(DUE),0) TOTDUE,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD FROM SUPPLIER LEFT JOIN CHARGES  ON (SUPPLIER.S_ID = CHARGES.S_ID) GROUP BY SUPPLIER.S_ID,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD HAVING EMAIL = :email AND PASSWORD = :password';
 const bindParams = {
     email: email,
@@ -232,7 +236,7 @@ const bindParams = {
     console.log('Inside try abd before query');
     const result = await runQuery(query, bindParams);
     //console.log(result);
-    const columnsToExtract = ['E_ID','E_NAME', 'EMAIL','PASSWORD','PHONE_NO','JOINDATE','ADDRESS'];
+    const columnsToExtract = ['E_ID','E_NAME', 'EMAIL','PASSWORD','PHONE_NO','JOINDATE','ADDRESS','PHOTO'];
     const output = extractData(result, columnsToExtract);
     //console.log(extractData(result,columnsToExtract));
 

@@ -10,8 +10,6 @@ import { v4 } from "uuid";
 
 let imageurl = "default";
 
-const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
 function AddProduct() {
   const [imageUpload, setImageUpload] = useState(null);
 

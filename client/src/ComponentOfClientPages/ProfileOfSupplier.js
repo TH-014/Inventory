@@ -8,10 +8,11 @@ export default function ProfileOfSupplierComponents() {
   const {status,changeId}=useContext(supplierIdContext)
 
   return (
-    <div className="dashboard">
+    <div align="center" className="dashboard">
       <h2>   Welcome to the Dashboard       </h2>
       {userData ? (
-        <div className="user-data">
+        <div className="user-data" style={{ height: 'calc(100vh - 64px)', overflowY: 'auto' }}>
+          <img src={userData.PHOTO} alt="Avatar" className="avatar" width="300" height="400"/>
           <p>{status}</p>
           <p>Supplier ID : {userData.SID}</p>
           <p>Supplier Name : {userData.S_NAME}</p>

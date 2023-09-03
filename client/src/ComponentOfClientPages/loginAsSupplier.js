@@ -58,12 +58,6 @@ import supplierIdContext from "../Context/supplierContext";
           {errorMessage && <div className="error-message">{errorMessage}</div>}
           <h2>Login</h2>
           <form onSubmit={handleLoginAsSupplier}>
-          {/* <input
-                    type="user"
-                    placeholder="Username"
-                    value={user}
-                    onChange={(e) => setUser(e.target.value)}
-                /> */}
           <input
                     type="email"
                     placeholder="Email"
