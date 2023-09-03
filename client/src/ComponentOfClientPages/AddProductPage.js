@@ -1,19 +1,24 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import supplierIdContext from "../Context/supplierContext";
-import { useContext } from "react";
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
+import { storage } from "../firebaseConfig";
+import { v4 } from "uuid";
+
+let imageurl = "default";
+
+const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 function AddProduct() {
+  const [imageUpload, setImageUpload] = useState(null);
 
-  const {status,changeId} = useContext(supplierIdContext);
-  
 
   // common for all types of products
   const [rootCategories, setRootCategories] = useState([]);
-  const [subCategories, setSubCategories] = useState([]);
-
   const [selectedRootCategory, setSelectedRootCategory] = useState(null);
-  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const [productName, setProductName] = useState("");
   const [productSize, setProductSize] = useState("");
   const [productWeight, setProductWeight] = useState("");
@@ -21,15 +26,15 @@ function AddProduct() {
   const [productQuantity, setProductQuantity] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productDiscount, setProductDiscount] = useState("");
-  const [productImage, setProductImage] = useState(null);
-  const [productDescription, setProductDescription] = useState("");
 
+  const [productImage, setProductImage] = useState("");
+
+  const [productDescription, setProductDescription] = useState("");
   // specialfeature
   const [educationalLevel, setEducationalLevel] = useState("");
   const [fashionMadeOf, setFashionMadeOf] = useState("");
   const [fashionColor, setFashionColor] = useState("");
   const [fashionSize, setFashionSize] = useState("");
-  //const [groceryProductionDate, setgroceryProductionDate] = useState("");
   const [productionDate, setProductionDate] = useState("");
   const [ExpiaryDate, setExpiaryDate] = useState("");
   const [IT_ram, setIT_ram] = useState("");
@@ -38,10 +43,6 @@ function AddProduct() {
   const [Toy_color, setToy_color] = useState("");
   const [Toy_level, setToy_level] = useState("");
   const [s_id, setS_id] = useState("");
-
-
-
-  
 
   useEffect(() => {
     async function fetchRootCategories() {
@@ -56,90 +57,35 @@ function AddProduct() {
     fetchRootCategories();
   }, []);
 
-  // useEffect(() => {
-  //   if (selectedRootCategory) {
-  //     async function fetchSubCategories() {
-  //       try {
-  //         const response = await axios.get(
-  //           `http://localhost:8000/subCategories?rootCategoryID=${selectedRootCategory}`
-  //         );
-  //         setSubCategories(response.data);
-  //       } catch (err) {
-  //         console.error("Error fetching subcategories:", err);
-  //       }
-  //     }
-
-  //     fetchSubCategories();
-  //   }
-  // }, [selectedRootCategory]);
+  ref(storage, "product/");
+  const uploadFile = () => {
+    // if (imageUpload == null) return;
+    return new Promise((resolve, reject) => {
+      const imageRef = ref(storage, `product/${imageUpload.name + v4()}`);
+      uploadBytes(imageRef, imageUpload).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          console.log(url); // this is the url of the uploaded image
+          // setProductImage(url);
+          imageurl = url;
+          console.log(typeof url);
+          console.log('this is the url string', imageurl);
+          resolve(url);
+        }).catch((err) => {
+          imageurl = "error";
+          reject("Error while getting download url:", err);
+        });
+      });
+    });
+  };
 
   const handleSubmit = async () => {
     try {
-      // changeId(43);
-      console.log(status);
-       
-      const formData = new FormData();
-
-
-      formData.append('PICTURE', productImage);
-
-
-      formData.append('P_NAME', productName);
-      formData.append('P_SIZE(CC)', productSize);
-      formData.append('P_WEIGHT(KG)', productWeight);
-      formData.append('QUANTITY', productQuantity);
-      formData.append('PRICE', productPrice);
-      formData.append('DISCOUNT', productDiscount);
-      formData.append('PREFERRED_TEMP', productTemp);
-
-      formData.append('DESCRIPTION', productDescription);
-
-      formData.append('TYPE', selectedRootCategory);
-
-
-      formData.append('LEVEL',educationalLevel );
-      formData.append('MADE_OF', fashionMadeOf);
-      formData.append('SIZE',fashionSize );
-      formData.append('COLOR',fashionColor );
-      formData.append('PRODUCTION_DATE',productionDate );
-      formData.append('EXPIARY_DATE', ExpiaryDate);
-      formData.append('RAM(GB)',IT_ram );
-      formData.append('STORAGE(GB)',IT_storage );
-      formData.append('PROCESSOR(GHZ)',IT_processor );
-      formData.append('COLOR',Toy_color );
-      formData.append('LEVEL',Toy_level );
-
-      //formData.append('subCategory', selectedSubCategory);
-      for (const entry of formData.entries()) {
-        console.log(entry);
-      }
-      console.log(productImage,
-        productName,
-        productSize,
-        productWeight,
-        productQuantity,
-        productPrice,
-        productDiscount,
-        productTemp,
-        productDescription,
-        selectedRootCategory,
-        educationalLevel,
-        fashionMadeOf,
-        fashionSize,
-        fashionColor,
-        productionDate,
-        ExpiaryDate,
-        IT_ram,
-        IT_storage,
-        IT_processor,
-        Toy_color,
-        Toy_level,
-        s_id
-        );
-
-      //const response = await axios.post("http://localhost:8000/addProduct", formData);
+      const req_url = await uploadFile();
+      // console.log(req_url);
+      console.log('Sending request to add product', imageurl);
       const response = await axios.post("http://localhost:8000/addProduct", {
-        productImage,
+        // productImage,
+        imageurl,
         productName,
         productSize,
         productWeight,
@@ -162,10 +108,14 @@ function AddProduct() {
         Toy_level,
         s_id
       });
-      
+
       if (response.status === 200) {
         console.log("Product Added Successfully!");
       }
+      else
+        {
+            console.log("Response status: ",response.status);
+        }
     } catch (error) {
       console.error("Error while adding product:", error);
     }
@@ -223,16 +173,6 @@ function AddProduct() {
       value={productTemp}
       onChange={(e) => setProductTemp(e.target.value)}
     />
-    {/* <input
-      className="form-control"
-      type="text"
-      placeholder="Level"
-      value={educationalLevel}
-      onChange={(e) => setEducationalLevel(e.target.value)}
-    /> */}
-    
-    
-
       <select onChange={(e) => setSelectedRootCategory(e.target.value)}>
         <option value="">Select a root category</option>
         {rootCategories.map((category) => (
@@ -342,20 +282,12 @@ function AddProduct() {
      </> 
       )
       :null}
-
-
-      {/* {selectedRootCategory && (
-        <select onChange={(e) => setSelectedSubCategory(e.target.value)}>
-          <option value="">Select a subcategory</option>
-          {subCategories.map((sub) => (
-            <option key={sub.subCategoryID} value={sub.subCategoryID}>
-              {sub.name}
-            </option>
-          ))}
-        </select>
-      )} */}
-
-      <input type="file" onChange={(e) => setProductImage(e.target.files[0])} />
+      <input
+          type="file"
+          onChange={(event) => {
+            setImageUpload(event.target.files[0]);
+          }}
+      />
       <textarea placeholder="Enter product description..." onChange={(e) => setProductDescription(e.target.value)}></textarea>
       <input
       className="form-control"

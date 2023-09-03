@@ -446,7 +446,8 @@ app.post('/search', async (req, res) => {
 app.post('/AddProduct',async (req, res) => {
 
   const {
-    productImage,
+    // productImage,
+      imageurl,
     productName,
     productSize,
     productWeight,
@@ -470,43 +471,15 @@ app.post('/AddProduct',async (req, res) => {
     s_id
   } = req.body;
     console.log(req.body.status);
-    // for (const entry of req.body.entries()) {
-    //   console.log(entry);
-    // }
-    console.log(req.body.productName + " " + req.body.productSize + " " + req.body.productWeight + " " + req.body.productQuantity + " " + req.body.productPrice + " " + req.body.productDiscount + " " + req.body.productTemp + " " + req.body.productDescription + " " + req.body.selectedRootCategory + " " + req.body.educationalLevel + " " + req.body.fashionMadeOf + " " + req.body.fashionSize + " " + req.body.fashionColor + " " + req.body.productionDate + " " + req.body.ExpiaryDate + " " + req.body.IT_ram + " " + req.body.IT_storage + " " + req.body.IT_processor + " " + req.body.Toy_color + " " + req.body.Toy_level);
-   // const name = req.body.productName;
-    //console.log(name);
-  //const passwordHash = crypto.createHash('sha1').update(password).digest('hex');
+    console.log(req.body);
+    console.log(req.body.productName + " " + req.body.productSize + " " + req.body.productWeight + " " + req.body.productQuantity + " " + req.body.productPrice + " " + req.body.productDiscount + " " + req.body.productTemp + " " + req.body.productDescription + " " + req.body.selectedRootCategory + " " + req.body.educationalLevel + " " + req.body.fashionMadeOf + " " + req.body.fashionSize + " " + req.body.fashionColor + " " + req.body.productionDate + " " + req.body.ExpiaryDate + " " + req.body.IT_ram + " " + req.body.IT_storage + " " + req.body.IT_processor + " " + req.body.Toy_color + " " + req.body.Toy_level+req.body.imageurl);
+    console.log(productName, imageurl);
 
   const queryToExtractProductID = `SELECT NVL(P_ID,0) FROM "INVENTORY"."PRODUCT" WHERE P_NAME = :pName`;
-  // const queryToExtractProductID = `BEGIN
-  //     GET_PRODUCT_ID(:pName);
-  // END;`;
 
  const bindParams = {
-    //picture: picture,
     pName: productName
-    // pSize:pSize,
-    // pWeight:pWeight,
-    // quantity:quantity,
-    // price:price,
-    // discount:discount,
-    // prefTemp:prefTemp,
-    // description:description,
-    // type:type,
-    // elevel:elevel,
-    // madeOf:madeOf,
-    // fcolor:fcolor,
-    // prodDate:prodDate,
-    // expDate:expDate,
-    // ram:ram,
-    // storage:storage,
-    // processor:processor,
-    // tcolor:tcolor,
-    // tlevel:tlevel,
-    // s_id:s_id
 };
-//console.log(bindParams['pName']);
 
 const queryToExtractInvoiceNo = `SELECT * FROM "INVENTORY"."SUPPLIES"`;
 const result4 =   await runQuery(queryToExtractInvoiceNo, []);
@@ -526,7 +499,7 @@ const invoiceNo = result4.rows.length+1;
       const queryToInsertInSupplies = `INSERT INTO "INVENTORY"."SUPPLIES"("DATE","S_ID","P_ID","P_SIZE(CC)","P_WEIGHT(KG)","PREFERRED_TEMP(C)","QUANTITY","INVOICE_NO") VALUES(SYSDATE,:s_id,:pID,:psize,:pWeight,:prefTemp,:quantity,:invoiceNo)`;
 
     const bindParams2 = {
-      s_id: status,
+      s_id: s_id,
       pID: pID,
       psize: productSize,
       pWeight: productWeight,
@@ -576,28 +549,7 @@ const bindParams2 = {
 }
 const result5 = await runQuery(queryToInsertInSupplies,bindParams2);
 
-// now we will decide what will be the storage id by using the supplies table and storage table...
-// const queryToRetrieveStorageId = `SELECT ST_ID FROM "INVENTORY"."STORAGE" WHERE  "TYPE"= :selectedRootCategory AND :prefTemp >= "MIN_TEMP"  AND :prefTemp <= "MAX_TEMP"`;
-// const bindParams6 = {
-//   selectedRootCategory: selectedRootCategory,
-//   prefTemp: productTemp
-// }
-// const result8 = await runQuery(queryToRetrieveStorageId,bindParams6);
-// const storageId = result8.rows[0][0];
-// const perUnitChargeQuery = `SELECT PER_VOL_COST*(:productSize) FROM "INVENTORY"."STORAGE" WHERE ST_ID = :storageId`;
-// const bindParams7 = {
-//   productSize: productSize,
-//   storageId: storageId
-// }
-// const result9 = await runQuery(perUnitChargeQuery,bindParams7);
-// const perUnitCharge = result9.rows[0][0];
-// const totalCharge = perUnitCharge*productQuantity; // not necessary
-// console.log("perUnitCharge :",perUnitCharge);
-// console.log("storage id is : " , storageId);
-
-
-
-  const insertIntoProduct = `INSERT INTO "INVENTORY"."PRODUCT"("P_ID","P_NAME","PRICE","DISCOUNT","DESCRIPTION","TYPE","REMAINING_ITEM","SOLD_QUANTITY") VALUES(:pID,:pName,:price,:discount,:description,:type,:quantity,0)`;
+  const insertIntoProduct = `INSERT INTO "INVENTORY"."PRODUCT"("P_ID","P_NAME","PRICE","DISCOUNT","DESCRIPTION","TYPE","REMAINING_ITEM","SOLD_QUANTITY","PICTURE") VALUES(:pID,:pName,:price,:discount,:description,:type,:quantity,0,:productImage)`;
   const bindParams3 = {
     pID: pID,
     pName: productName,
@@ -605,9 +557,8 @@ const result5 = await runQuery(queryToInsertInSupplies,bindParams2);
     discount: productDiscount,
     description: productDescription,
     type: selectedRootCategory,
-    quantity: productQuantity
-    // storageId: storageId,
-    // perUnitCharge: perUnitCharge
+    quantity: productQuantity,
+    productImage: imageurl
  }
 const result6 = await runQuery(insertIntoProduct,bindParams3);
 
@@ -661,62 +612,6 @@ else{
   console.log("No matching product found.");
 }
 }
-
-
-const size = req.body.productSize;
-
-
-// const queryToInsertInSupplies = `INSERT INTO "INVENTORY"."SUPPLIES"("DATE","S_ID","P_ID","P_SIZE(CC)","P_WEIGHT(KG)","PREFERRED_TEMP(C)","QUANTITY","INVOICE_NO") VALUES(SYSDATE,:s_id,:pID,:size,:pWeight,:prefTemp,:quantity,:invoiceNo)`;
-// const bindParams2 = {
-//   s_id: s_id,
-//   pID: pID,
-//   size:size,
-//   pWeight:productWeight,
-//   prefTemp:productTemp,
-//   quantity:productQuantity,
-//   invoiceNo:invoiceNo
-  
-// }
-// console.log(bindParams2)
-// console.log("this is a ID : " ,bindParams2.size);
-
-// const result5 = await runQuery(queryToInsertInSupplies,bindParams2);
-
-// const queryToInsertInSupplies = `INSERT INTO "INVENTORY"."SUPPLIES"("DATE","S_ID","P_ID","P_SIZE(CC)","P_WEIGHT(KG)","PREFERRED_TEMP(C)","QUANTITY","INVOICE_NO") VALUES(SYSDATE,:s_id,:pID,:psize,:pWeight,:prefTemp,:quantity,:invoiceNo)`;
-
-// const bindParams2 = {
-//   s_id: status,
-//   pID: pID,
-//   psize: productSize,
-//   pWeight: productWeight,
-//   prefTemp: productTemp,
-//   quantity: productQuantity,
-//   invoiceNo: invoiceNo
-// }
-// const result5 = await runQuery(queryToInsertInSupplies,bindParams2);
-
-
-
-  //if(result2.rows[0][0]==1)console.log("hello");
-
-//   const newuId = result2.rows.length+1;
-//   const username = result2.rows.length+1;
-//   const reg = '12-JAN-2023';
-
-//   const insertQuery = `INSERT INTO "INVENTORY"."CUSTOMER"("C_ID","USER_NAME","C_NAME","EMAIL","PHONE_NO","REG_DATE","PASSWORD") VALUES(:newuId,:username,:customerName, :email,:phoneNo,:reg,:password)`;
-//   console.log("this is a ID : " ,newuId);
-
-//   const bindParams = {
-//     username: username,
-//     reg:reg,
-//     newuId : newuId,
-//     customerName: customerName,
-//     email:email,
-//     phoneNo : phoneNo,
-//     password: password
-// };
-// const result3 = await runQuery(insertQuery,bindParams);
-// res.send(result3);
 });
 
 const port = 8000;
