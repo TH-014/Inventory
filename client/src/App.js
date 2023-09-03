@@ -40,6 +40,7 @@ import Album from './ComponentOfClientPages/Trial';
 import AddProduct from './ComponentOfClientPages/AddProductPage';
 import { useScrollTrigger } from '@mui/material';
 import supplierIdContext from './Context/supplierContext';
+import SearchedProductData from "./ComponentOfClientPages/searchedProduct";
 
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
           <Route path="/ProfileOfEmployee" element={<ProfileOfEmployeeComponents />} />
           <Route path="/AddProduct" element={<AddProduct />} />
           <Route path="/Trial" element={<Album />} />
+          <Route path="/searchedProduct" element={<SearchedProductData />} />
         </Routes>
       </supplierIdContext.Provider>
     </Router>

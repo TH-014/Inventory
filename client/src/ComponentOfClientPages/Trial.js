@@ -422,7 +422,7 @@
 //     </ThemeProvider>
 //   );
 // }
-
+import {useRoutes, useNavigate} from 'react-router-dom';
 import * as React from 'react';
 import axios from "axios";
 import  { useEffect,useState} from 'react';
@@ -462,8 +462,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-
-import { useRoutes, useNavigate } from 'react-router-dom';
+import * as search_home from "@emotion/react";
 
 const drawerWidth = 240;
 
@@ -557,7 +556,7 @@ const defaultTheme = createTheme();
 
 export default function Album() {
     const [errorMessage,setErrorMessage]=useState('');
-
+    const navigate = useNavigate();
 
 
 
@@ -656,6 +655,17 @@ export default function Album() {
     }, []);
 
     // const categories = ['Electronics', 'Clothing', 'Groceries'];
+    let searchBoxInput = '';
+    async function handleSearchButtonClick() {
+        searchBoxInput = document.getElementById('searchInput').value;
+        // alert(`Searching for ${searchBoxInput}...`);
+        console.log(`Searching for ${searchBoxInput}...`);
+        const resFromServer = await axios.post('http://localhost:8000/search',{searchBoxInput});
+        console.log(resFromServer);
+        const productData = resFromServer.data;
+         navigate('/searchedProduct',{ state : {productData}});
+    }
+
     // setRootCategories(categories);
     return(
 
@@ -669,6 +679,7 @@ export default function Album() {
           </Typography>
         </Toolbar>
       </AppBar> */}
+
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
                 <AppBar1 position="fixed" open={open}>
@@ -767,6 +778,11 @@ export default function Album() {
                         >
                             Album layout
                         </Typography>
+                        <link rel="stylesheet" href="search_home.css"/>
+                        <div className="search-box">
+                            <input type="text" id="searchInput" className="search-input" placeholder="Enter your search term..."/>
+                                <button className="search-button" onClick={handleSearchButtonClick}>Search</button>
+                        </div>
                         {/* <Typography variant="h5" align="center" color="text.secondary" paragraph>
               Something short and leading about the collection below—its contents,
               the creator, etc. Make it short and sweet, but not too short so folks

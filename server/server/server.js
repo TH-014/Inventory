@@ -148,7 +148,7 @@ const bindParams = {
 
 
   try {
-    console.log('Inside try abd before query');
+    console.log('Inside try and before query');
     const result = await runQuery(query, bindParams);
     console.log(result);
     const columnsToExtract = ['C_ID','C_NAME', 'EMAIL','PASSWORD','PHONE_NO'];
@@ -425,7 +425,23 @@ app.get('/rootCategories', async (req, res) => {
 // // res.send(result3);
 // });
 
-
+app.post('/search', async (req, res) => {
+    try {
+        // console.log(req.body);
+        let search = req.body.searchBoxInput;
+        search = search.toUpperCase();
+        console.log('In server searching for:', search);
+        const query = `SELECT * FROM "INVENTORY"."PRODUCT" WHERE UPPER("P_NAME") LIKE '%${search}%'`;
+        const result = await runQuery(query, []);
+        const columnsToExtract = ['P_ID', 'P_NAME', 'PRICE', 'DISCOUNT', 'DESCRIPTION', 'TYPE', 'REMAINING_ITEM', 'STORAGE_ID', 'SOLD_QUANTITY', 'PER_UNIT_CHARGE', 'PICTURE', 'RATING'];
+        const output = extractData(result, columnsToExtract);
+        console.log(output);
+        res.json(output);
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        res.status(500).json({ error: 'Error fetching categories' });
+    }
+});
 
 app.post('/AddProduct',async (req, res) => {
   // const level = req.body.LEVEL;
@@ -744,8 +760,6 @@ const port = 8000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
-
 
 
 
