@@ -1,12 +1,11 @@
 //const oracledb = require('oracledb');
 
 import bodyParser from "body-parser";
-import crypto from 'crypto';
-//import AddProduct from "../client/src/ComponentsOfClientPages/AddProductPage.js";
 import runQuery ,{extractData} from './Queries.js';
 import connectToDatabase from './connectToDataBase.js';
 import cors from "cors";
 import express from "express";
+import bcrypt from "bcrypt";
 //const cors = require('cors');
 //const express = require('express');  // or you can do this   in paccket json file under main /* "type": "module",*/
 const app = express();
@@ -67,6 +66,7 @@ app.post('/RegisterAsSupplier', async (req,res) => {
 
   //console.log(req);
   const {supplierName, email, phoneNo,password, imageurl,supplierAddress} = req.body;
+    const hashedpwd = await bcrypt.hash(password, 10);
   //const passwordHash = crypto.createHash('sha1').update(password).digest('hex');
   const queryToExtractUserID = `SELECT S_ID FROM "INVENTORY"."SUPPLIER" ORDER BY S_ID DESC`;
   const result2 =   await runQuery(queryToExtractUserID, []);
@@ -87,7 +87,7 @@ app.post('/RegisterAsSupplier', async (req,res) => {
     supplierName: supplierName,
     email:email,
     phoneNo : phoneNo,
-    password: password,
+    password: hashedpwd,
       imageurl: imageurl,
       supplierAddress: supplierAddress
 };
@@ -103,7 +103,7 @@ app.post('/Register', async (req,res) => {
 
   //console.log(req);
   const {customerName, email, phoneNo,password,imageurl,Address} = req.body;
-  //const passwordHash = crypto.createHash('sha1').update(password).digest('hex');
+  const hashedpwd = await bcrypt.hash(password, 10);
   const queryToExtractUserID = `SELECT C_ID FROM "INVENTORY"."CUSTOMER" ORDER BY C_ID DESC`;
   const result2 =   await runQuery(queryToExtractUserID, []);
 
@@ -123,7 +123,7 @@ app.post('/Register', async (req,res) => {
     customerName: customerName,
     email:email,
     phoneNo : phoneNo,
-    password: password,
+    password: hashedpwd,
       imageurl : imageurl,
       Address : Address
 };
@@ -143,23 +143,24 @@ app.post('/login', async (req, res) => {
   //const passwordHash = crypto.createHash('sha1').update(password).digest('hex');
   //console.log(passwordHash)
 
-  const query = 'SELECT * FROM "INVENTORY"."CUSTOMER" WHERE "EMAIL" = :email AND "PASSWORD" = :password';
+  const query = 'SELECT * FROM "INVENTORY"."CUSTOMER" WHERE "EMAIL" = :email';
 
 const bindParams = {
-    email: email,
-    password: password
+    email: email
 };
 
 
   try {
     console.log('Inside try and before query');
     const result = await runQuery(query, bindParams);
-    console.log(result);
+    console.log('Result : ', result);
     const columnsToExtract = ['C_ID','C_NAME', 'EMAIL','PASSWORD','PHONE_NO','ADDRESS','PHOTO'];
     const output = extractData(result, columnsToExtract);
+    console.log(output);
+    const match = await bcrypt.compare(password, output[0].PASSWORD);
     //console.log(extractData(result,columnsToExtract));
 
-      if (result &&result.rows.length > 0) {
+      if (match) {
           // Login successful
           res.send(output);
           console.log(output);
@@ -185,10 +186,9 @@ app.post('/loginAsSupplier', async (req, res) => {
   //console.log(passwordHash)
 
  // const query = 'SELECT * FROM "INVENTORY"."SUPPLIER" WHERE "EMAIL" = :email AND "PASSWORD" = :password';
-const query = 'SELECT SUPPLIER.S_ID SID,NVL(SUM(DUE),0) TOTDUE,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD, SUPPLIER.PHOTO FROM SUPPLIER LEFT JOIN CHARGES  ON (SUPPLIER.S_ID = CHARGES.S_ID) GROUP BY SUPPLIER.S_ID,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD, SUPPLIER.PHOTO HAVING EMAIL = :email AND PASSWORD = :password';
+const query = 'SELECT SUPPLIER.S_ID SID,NVL(SUM(DUE),0) TOTDUE,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD, SUPPLIER.PHOTO FROM SUPPLIER LEFT JOIN CHARGES  ON (SUPPLIER.S_ID = CHARGES.S_ID) GROUP BY SUPPLIER.S_ID,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD, SUPPLIER.PHOTO HAVING EMAIL = :email';
 const bindParams = {
-    email: email,
-    password: password
+    email: email
 };
 
 
@@ -198,9 +198,10 @@ const bindParams = {
     //console.log(result);
     const columnsToExtract = ['SID','TOTDUE','S_NAME', 'EMAIL','PASSWORD','PHONE_NO','PHOTO'];
     const output = extractData(result, columnsToExtract);
+      const match = await bcrypt.compare(password, output[0].PASSWORD);
     //console.log(extractData(result,columnsToExtract));
 
-      if (result &&result.rows.length > 0) {
+      if (match) {
           // Login successful
           res.send(output);
           console.log(output);
@@ -224,11 +225,10 @@ app.post('/loginAsEmployee', async (req, res) => {
   //const passwordHash = crypto.createHash('sha1').update(password).digest('hex');
   //console.log(passwordHash)
 
-  const query = `SELECT E_ID,E_NAME,EMAIL,PASSWORD,PHONE_NO,TO_CHAR(JOIN_DATE,'DD-MON-YYYY') JOINDATE,ADDRESS, PHOTO FROM "INVENTORY"."EMPLOYEE" WHERE "EMAIL" = :email AND "PASSWORD" = :password`;
+  const query = `SELECT E_ID,E_NAME,EMAIL,PASSWORD,PHONE_NO,TO_CHAR(JOIN_DATE,'DD-MON-YYYY') JOINDATE,ADDRESS, PHOTO FROM "INVENTORY"."EMPLOYEE" WHERE "EMAIL" = :email`;
 //const query = 'SELECT SUPPLIER.S_ID SID,NVL(SUM(DUE),0) TOTDUE,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD FROM SUPPLIER LEFT JOIN CHARGES  ON (SUPPLIER.S_ID = CHARGES.S_ID) GROUP BY SUPPLIER.S_ID,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD HAVING EMAIL = :email AND PASSWORD = :password';
 const bindParams = {
-    email: email,
-    password: password
+    email: email
 };
 
 
@@ -238,9 +238,10 @@ const bindParams = {
     //console.log(result);
     const columnsToExtract = ['E_ID','E_NAME', 'EMAIL','PASSWORD','PHONE_NO','JOINDATE','ADDRESS','PHOTO'];
     const output = extractData(result, columnsToExtract);
+    const match = await bcrypt.compare(password, output[0].PASSWORD);
     //console.log(extractData(result,columnsToExtract));
 
-      if (result &&result.rows.length > 0) {
+      if (match) {
           // Login successful
           res.send(output);
           console.log(output);
