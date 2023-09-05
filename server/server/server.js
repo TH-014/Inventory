@@ -109,7 +109,7 @@ app.post("/productDetails", async (req, res) => {
 }
   );
 
-
+//turad 
 
   app.get("/Educational", async (req, res) => {
     try {
