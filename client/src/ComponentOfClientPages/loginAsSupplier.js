@@ -30,12 +30,14 @@ import supplierIdContext from "../Context/supplierContext";
             email,
             password
           });
-          console.log('here am i \n\n\n\n\n\n\n\n\n\n\n\n\n');
-          console.log(resFromServer.data[0]);
-          changeId(resFromServer.data[0].SID);
-
+          console.log('here am i \n');
+          console.log(resFromServer.data.accessToken);
+          console.log(resFromServer.data.output[0]);
+          if(localStorage.getItem("token"))
+              localStorage.removeItem("token");
+          localStorage.setItem("token", resFromServer.data.accessToken);
           if(resFromServer.status === 200){
-            const userData = resFromServer.data[0];           ///////////////////////// upto here it is working fine .......
+            const userData = resFromServer.data.output[0];           ///////////////////////// upto here it is working fine .......
             //console.log(userData.S_ID);
             navigate('/ProfileOfSupplier',{ state : {userData}});
           }

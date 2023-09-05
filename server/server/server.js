@@ -1,13 +1,11 @@
-//const oracledb = require('oracledb');
-
 import bodyParser from "body-parser";
 import runQuery ,{extractData} from './Queries.js';
 import connectToDatabase from './connectToDataBase.js';
 import cors from "cors";
 import express from "express";
 import bcrypt from "bcrypt";
-//const cors = require('cors');
-//const express = require('express');  // or you can do this   in paccket json file under main /* "type": "module",*/
+import jwt from "jsonwebtoken";
+import { ACCESS_TOKEN_SECRET } from "./config.js";
 const app = express();
 
 (async ()=> {
@@ -43,17 +41,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
-app.post('/Trial',async (req, res) => {
+app.get('/Trial',async (req, res) => {
   try{
-            let result = await runQuery("select * from PRODUCT WHERE PRICE > 20000",[]);
-            console.log(result)
-            const columnNames = ['P_NAME','TYPE','DESCRIPTION','PRICE','DISCOUNT'];
-            const output = extractData(result, columnNames);
-            console.log(output);
-            //console.log(extractData(result,columnsToExtract));
-            // res.status(200).json({output});
-            console.log(output);
-           res.status(200).json({data: result || [], message: "welcome to our webpage"});
+        console.log(req.headers.authorization);
+        let result = await runQuery("select * from PRODUCT WHERE PRICE > 20000",[]);
+        // console.log(result)
+        const columnNames = ['P_NAME','TYPE','DESCRIPTION','PRICE','DISCOUNT'];
+        const output = extractData(result, columnNames);
+        // console.log(output);
+        //console.log(extractData(result,columnsToExtract));
+        // res.status(200).json({output});
+        // console.log(output);
+        res.status(200).json({data: result || [], message: "welcome to our webpage"});
         }catch(error)
         {
             console.error("Error while taking the data from employees : ", error);
@@ -203,7 +202,15 @@ const bindParams = {
 
       if (match) {
           // Login successful
-          res.send(output);
+          const userInfo = {
+              userId: output[0].SID,
+              userRole: 'supplier'
+          }
+          console.log(userInfo);
+          // console.log(ACCESS_TOKEN_SECRET);
+          const accessToken = jwt.sign(userInfo, ACCESS_TOKEN_SECRET, {expiresIn: '1800s'});
+          // console.log(accessToken);
+          res.send({output: output, accessToken: accessToken});
           console.log(output);
       } else {
           // Invalid credentials
@@ -258,7 +265,8 @@ const bindParams = {
 
 
 app.get('/categories', (req, res) => {
-  const categories = ['Electronics', 'Clothing', 'Groceries'];
+    console.log(req);
+    const categories = ['Electronics', 'Clothing', 'Groceries'];
   res.json(categories);
 });
 
@@ -266,6 +274,7 @@ app.get('/categories', (req, res) => {
 
 app.get('/rootCategories', async (req, res) => {
   try {
+      console.log(req);
       const query = 'SELECT DISTINCT("TYPE") FROM "INVENTORY"."PRODUCT"';  // Assuming RootCategories is the name of your table
       const queryData = await runQuery(query, []);
       const output = extractData(queryData, ['TYPE']);

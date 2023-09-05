@@ -125,4 +125,21 @@ body {
   .signup-link:hover {
     text-decoration: underline;
   }
-  
+
+.button {
+  width: 100px;
+  height: 40px;
+  background-color: #f44336; /* Red */
+  border: 5px;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.button:hover {
+  background-color: #da190b; /* Darker red */
+}
