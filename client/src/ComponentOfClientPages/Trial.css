@@ -1,0 +1,9 @@
+.addProduct-link {
+    display: inline-block;
+    margin-right: 100px; /* Optional: Add some spacing between the links */
+  }
+
+  .addProduct-link:nth-child(1) {
+    margin-left: 100px; /* Adjust the distance as per your requirement */
+    }
+  
