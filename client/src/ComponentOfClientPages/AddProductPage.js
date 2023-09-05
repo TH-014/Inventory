@@ -56,6 +56,7 @@ function AddProduct() {
     fetchRootCategories();
   }, []);
 
+  // try
   // useEffect(() => {
   //   if (selectedRootCategory) {
   //     async function fetchSubCategories() {
