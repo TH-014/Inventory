@@ -34,7 +34,7 @@ app.post("/productDetails", async (req, res) => {
             };
             const resultOfTypeCheck = await runQuery(queryToCheckTypeOfProduct,bindParamsToCheckProductType);
             const typeOfProduct = resultOfTypeCheck.rows[0][0];
-            console.log(typeOfProduct);
+            // console.log(typeOfProduct);
 
             let queryToProductDetails = `SELECT * FROM "INVENTORY"."PRODUCT" `;
             let columnsToExtract = [];
@@ -89,15 +89,13 @@ app.post("/productDetails", async (req, res) => {
     }
 );
 
-//turad
-
 app.get("/Educational", async (req, res) => {
     try {
         const queryToExtractEduProduct = 'SELECT * FROM "INVENTORY"."PRODUCT" NATURAL JOIN "INVENTORY"."EDUCATIONAL"';
         const resultOfEduProd = await runQuery(queryToExtractEduProduct, []);
         const columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','LEVEL','PICTURE','RATING'];
         const output = extractData(resultOfEduProd, columnsToExtract);
-        console.log(output);
+        // console.log(output);
         res.send(output);
     } catch (error) {
         console.error('Error fetching Edu products:', error);
@@ -151,30 +149,30 @@ app.get("/TopRatedProducts", async (req, res) => {
 });
 
 
-app.get('/Trial',async (req, res) => {
-  try{
-          console.log(req.headers.authorization);
-          const array = [];
-          let result = await runQuery("select * from PRODUCT WHERE PRICE > 20000",[]);
-          const jsonResult = JSON.stringify(result);
-          array.push(result);
-          //console.log(result);
-          const columnNames = ['P_NAME','TYPE','DESCRIPTION','PRICE','DISCOUNT'];
-          const output = extractData(result, columnNames);
-          // console.log(output);
-          //console.log(extractData(result,columnsToExtract));
-          //res.status(200).json({output});
-          //console.log(output);
-          //res.status(200).json({data: result, message: "welcome to our wedpage"});
-          console.log("this is a array : \n\n\n\n",array);
-          // console.log(array[0])
-          res.status(200).send({array});
-        }catch(error)
-        {
-            console.error("Error while taking the data from employees : ", error);
-            res.status(500).json({message: "Error while taking the data from employees"});
-        }
-});
+// app.get('/',async (req, res) => {
+//   try{
+//           console.log(req.headers.authorization);
+//           const array = [];
+//           let result = await runQuery("select * from PRODUCT WHERE PRICE > 20000",[]);
+//           const jsonResult = JSON.stringify(result);
+//           array.push(result);
+//           console.log(result);
+//           const columnNames = ['P_NAME','TYPE','DESCRIPTION','PRICE','DISCOUNT'];
+//           const output = extractData(result, columnNames);
+//           console.log(output);
+//           console.log(extractData(result,columnsToExtract));
+//           res.status(200).json({output});
+//           console.log(output);
+//           res.status(200).json({data: result, message: "welcome to our wedpage"});
+//           console.log("this is a array : \n\n\n\n",array);
+//           console.log(array[0])
+//           res.status(200).send();
+//         }catch(error)
+//         {
+//             console.error("Error while taking the data from employees : ", error);
+//             res.status(500).json({message: "Error while taking the data from employees"});
+//         }
+// });
 
 
 app.post('/RegisterAsSupplier', async (req,res) => {
@@ -182,7 +180,6 @@ app.post('/RegisterAsSupplier', async (req,res) => {
   //console.log(req);
   const {supplierName, email, phoneNo,password, imageurl,supplierAddress} = req.body;
     const hashedpwd = await bcrypt.hash(password, 10);
-  //const passwordHash = crypto.createHash('sha1').update(password).digest('hex');
   const queryToExtractUserID = `SELECT S_ID FROM "INVENTORY"."SUPPLIER" ORDER BY S_ID DESC`;
   const result2 =   await runQuery(queryToExtractUserID, []);
 
@@ -381,7 +378,7 @@ const bindParams = {
 
 
 app.get('/categories', (req, res) => {
-    console.log(req);
+    // console.log(req);
     const categories = ['Electronics', 'Clothing', 'Groceries'];
   res.json(categories);
 });
@@ -390,7 +387,7 @@ app.get('/categories', (req, res) => {
 
 app.get('/rootCategories', async (req, res) => {
   try {
-      console.log(req);
+      // console.log(req);
       const query = 'SELECT DISTINCT("TYPE") FROM "INVENTORY"."PRODUCT"';  // Assuming RootCategories is the name of your table
       const queryData = await runQuery(query, []);
       const output = extractData(queryData, ['TYPE']);
