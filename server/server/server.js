@@ -6,6 +6,7 @@ import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { ACCESS_TOKEN_SECRET } from "./config.js";
+import authRoute from "./authRoute.js";
 const app = express();
 
 (async ()=> {
@@ -740,6 +741,8 @@ else{
 }
 }
 });
+
+app.use('/auth', authRoute);
 
 const port = 8000;
 

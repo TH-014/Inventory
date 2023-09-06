@@ -3,8 +3,6 @@ import axios from "axios";
 import { useRoutes, useNavigate } from 'react-router-dom';
 import "./loginPage.css";
 
-
-
 export function  ReturnLoginComponents(){
     console.log('Inside the function');
     //const [user,setUser]=useState('');

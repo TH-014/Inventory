@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useRoutes, useNavigate } from 'react-router-dom';
 import "./loginAsSupplier.css";
@@ -14,7 +14,7 @@ import supplierIdContext from "../Context/supplierContext";
 
     const navigate = useNavigate();
     const [errorMessage,setErrorMessage]=useState('');
-    const {status,changeId}=useContext(supplierIdContext)
+    const {status,changeId}=useContext(supplierIdContext);
 
     //const [data, setData]=useState('');
 
@@ -31,14 +31,13 @@ import supplierIdContext from "../Context/supplierContext";
             password
           });
           console.log('here am i \n');
-          console.log(resFromServer.data.accessToken);
-          console.log(resFromServer.data.output[0]);
+          // console.log(resFromServer.data.accessToken);
+          // console.log(resFromServer.data.output[0]);
           if(localStorage.getItem("token"))
               localStorage.removeItem("token");
           localStorage.setItem("token", resFromServer.data.accessToken);
           if(resFromServer.status === 200){
             const userData = resFromServer.data.output[0];           ///////////////////////// upto here it is working fine .......
-            //console.log(userData.S_ID);
             navigate('/ProfileOfSupplier',{ state : {userData}});
           }
           else {
