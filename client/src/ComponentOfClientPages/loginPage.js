@@ -1,7 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useRoutes, useNavigate } from 'react-router-dom';
 import "./loginPage.css";
+
+let callAuth = false;
+let accessGranted = false;
 
 export function  ReturnLoginComponents(){
     console.log('Inside the function');
@@ -11,6 +14,31 @@ export function  ReturnLoginComponents(){
 
     const navigate = useNavigate();
     const [errorMessage,setErrorMessage]=useState('');
+
+    useEffect(() => {
+        if(callAuth)
+            return;
+        console.log('Inside useEffect of profile of customer.');
+        async function checkLoginStatus() {
+            try {
+                const authRes = await axios.get('http://localhost:8000/auth/customer', {headers: {Authorization: `${localStorage.getItem('token')}`}});
+                callAuth = true;
+                return authRes;
+            } catch (e) {
+                console.log(e);
+            }
+        }
+
+        checkLoginStatus().then(res => {
+            console.log('Checked login status.');
+            if(res.status === 200 && res.data.auth === true && res.data.id>0)
+            {
+                accessGranted = true;
+                console.log('Authorized.', res.data.id);
+                navigate('/Dashboard');
+            }
+        });
+    });
 
     //const [data, setData]=useState('');
 
@@ -25,11 +53,14 @@ export function  ReturnLoginComponents(){
             email,
             password
           });
-          console.log('here am i \n\n\n\n\n\n\n\n\n\n\n\n\n');
+          console.log('here am i \n');
           console.log(resFromServer.data[0]);
 
           if(resFromServer.status === 200){
-            const userData = resFromServer.data[0];           ///////////////////////// upto here it is working fine .......
+              if(localStorage.getItem("token"))
+                  localStorage.removeItem("token");
+              localStorage.setItem("token", resFromServer.data.accessToken);
+            const userData = resFromServer.data.output[0];           /// upto here it is working fine .......
             console.log(userData.C_ID);
             navigate('/Dashboard',{ state : {userData}});
           }

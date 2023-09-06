@@ -34,7 +34,7 @@ let accessGranted = false;
 
          checkLoginStatus().then(res => {
              console.log('Checked login status.');
-             if(res.status === 200 && res.data.auth === true)
+             if(res.status === 200 && res.data.auth === true && res.data.id>0)
              {
                  accessGranted = true;
                  console.log('Authorized.', res.data.id);

@@ -275,8 +275,13 @@ const bindParams = {
 
       if (match) {
           // Login successful
-          res.send(output);
-          console.log(output);
+          const userInfo = {
+              userId: output[0].C_ID,
+              userRole: 'customer'
+          }
+          console.log(userInfo);
+          const accessToken = jwt.sign(userInfo, ACCESS_TOKEN_SECRET, {expiresIn: '1800s'});
+          res.send({output: output, accessToken: accessToken});
       } else {
           // Invalid credentials
           res.status(401).send("Invalid username or password.");
@@ -286,6 +291,27 @@ const bindParams = {
       console.error("Error during login:", error);
       res.status(500).json({ message: "Internal server error." });
   }
+});
+
+app.post('/getCustomerData', async (req, res) => {
+    console.log("Inside post");
+    const { cid } = req.body;
+    const query = 'SELECT * FROM "INVENTORY"."CUSTOMER" WHERE "C_ID" = :cid';
+    const bindParams = {
+        cid: cid
+    };
+    try {
+        console.log('Inside try and before query');
+        const result = await runQuery(query, bindParams);
+        console.log('Result : ', result);
+        const columnsToExtract = ['C_ID','C_NAME', 'EMAIL','PHONE_NO','ADDRESS','PHOTO'];
+        const output = extractData(result, columnsToExtract);
+        console.log(output);
+        res.send(output);
+    } catch (error) {
+        console.error("Error during login:", error);
+        res.status(500).json({ message: "Internal server error." });
+    }
 });
 
 
@@ -350,7 +376,7 @@ app.post('/getSupplierData', async (req, res) => {
         const result = await runQuery(query, bindParams);
         console.log(result);
         //console.log(result);
-        const columnsToExtract = ['SID','TOTDUE','S_NAME', 'EMAIL','PASSWORD','PHONE_NO','PHOTO'];
+        const columnsToExtract = ['SID','TOTDUE','S_NAME', 'EMAIL','PHONE_NO','PHOTO'];
         const output = extractData(result, columnsToExtract);
         res.send(output);
         console.log(output);
@@ -400,6 +426,28 @@ const bindParams = {
   }
 });
 
+app.post('/getEmployeeData', async (req, res) => {
+    console.log("Inside getEmployeeData post");
+    const { eid } = req.body;
+
+    const query = `SELECT E_ID,E_NAME,EMAIL,PASSWORD,PHONE_NO,TO_CHAR(JOIN_DATE,'DD-MON-YYYY') JOINDATE,ADDRESS, PHOTO FROM "INVENTORY"."EMPLOYEE" WHERE "E_ID" = :eid`;
+    const bindParams = {
+        eid: eid
+    };
+    try {
+        console.log('Inside try and before query');
+        const result = await runQuery(query, bindParams);
+        //console.log(result);
+        const columnsToExtract = ['E_ID','E_NAME', 'EMAIL','PHONE_NO','JOINDATE','ADDRESS','PHOTO'];
+        const output = extractData(result, columnsToExtract);
+        res.send(output);
+        console.log(output);
+    } catch (error) {
+        console.error("Error during login:", error);
+        res.status(500).json({ message: "Internal server error." });
+    }
+});
+
 
 app.get('/categories', (req, res) => {
     // console.log(req);
@@ -421,160 +469,6 @@ app.get('/rootCategories', async (req, res) => {
       res.status(500).json({ error: 'Error fetching categories' });
   }
 });
-
-
-
-
-// app.post('/AddProduct',async (req, res) => {
-//   // const level = req.body.LEVEL;
-//   // const name = req.body.NAME;
-//   // const category = req.body.CATEGORY;
-
-//   // // Process the data or perform desired operations here
-
-//   // res.status(200).json({ message: 'Data received successfully' });
-
-//   // formData.append('PICTURE', productImage);
-
-
-//   // formData.append('P_NAME', productName);
-//   // formData.append('P_SIZE(CC)', productSize);
-//   // formData.append('P_WEIGHT(KG)', productWeight);
-//   // formData.append('QUANTITY', productQuantity);
-//   // formData.append('PRICE', productPrice);
-//   // formData.append('DISCOUNT', productDiscount);
-//   // formData.append('PREFERRED_TEMP', productTemp);
-
-//   // formData.append('DESCRIPTION', productDescription);
-
-//   // formData.append('TYPE', selectedRootCategory);
-
-
-//   // formData.append('ELEVEL',educationalLevel );
-//   // formData.append('MADE_OF', fashionMadeOf);
-//   // formData.append('SIZE',fashionSize );
-//   // formData.append('FCOLOR',fashionColor );
-//   // formData.append('PRODUCTION_DATE',productionDate );
-//   // formData.append('EXPIARY_DATE', ExpiaryDate);
-//   // formData.append('RAM(GB)',IT_ram );
-//   // formData.append('STORAGE(GB)',IT_storage );
-//   // formData.append('PROCESSOR(GHZ)',IT_processor );
-//   // formData.append('TCOLOR',Toy_color );
-//   // formData.append('TLEVEL',Toy_level );
-
-
-
-//   const {picture, pName, pSize,pWeight,quantity,price,discount,
-//     prefTemp,description,type,elevel,madeOf,fcolor,prodDate,expDate,ram,storage,processor,tcolor,tlevel,s_id} = req.body;
-//     // for (const entry of req.body.entries()) {
-//     //   console.log(entry);
-//     // }
-//     console.log(req.body.productName + " " + req.body.productSize + " " + req.body.productWeight + " " + req.body.productQuantity + " " + req.body.productPrice + " " + req.body.productDiscount + " " + req.body.productTemp + " " + req.body.productDescription + " " + req.body.selectedRootCategory + " " + req.body.educationalLevel + " " + req.body.fashionMadeOf + " " + req.body.fashionSize + " " + req.body.fashionColor + " " + req.body.productionDate + " " + req.body.ExpiaryDate + " " + req.body.IT_ram + " " + req.body.IT_storage + " " + req.body.IT_processor + " " + req.body.Toy_color + " " + req.body.Toy_level);
-//    // const name = req.body.productName;
-//     //console.log(name);
-//   //const passwordHash = crypto.createHash('sha1').update(password).digest('hex');
-
-//   const queryToExtractProductID = `SELECT NVL(P_ID,0) FROM "INVENTORY"."PRODUCT" WHERE P_NAME = :pName`;
-//   // const queryToExtractProductID = `BEGIN
-//   //     GET_PRODUCT_ID(:pName);
-//   // END;`;
-
-//  const bindParams = {
-//     //picture: picture,
-//     pName: pName
-//     // pSize:pSize,
-//     // pWeight:pWeight,
-//     // quantity:quantity,
-//     // price:price,
-//     // discount:discount,
-//     // prefTemp:prefTemp,
-//     // description:description,
-//     // type:type,
-//     // elevel:elevel,
-//     // madeOf:madeOf,
-//     // fcolor:fcolor,
-//     // prodDate:prodDate,
-//     // expDate:expDate,
-//     // ram:ram,
-//     // storage:storage,
-//     // processor:processor,
-//     // tcolor:tcolor,
-//     // tlevel:tlevel,
-//     // s_id:s_id
-// };
-// //console.log(bindParams['pName']);
-
-  
-
-//   const result2 =   await runQuery(queryToExtractProductID,bindParams);
-//   let pID =0;
-//   if (result2.rows.length > 0) {
-//   pID = result2.rows[0][0];
-
-    
-//     const ifExistThenQuery = ``
-//     if (extractedID !== 0) {
-//         console.log("hello");
-//     } else {
-//         console.log("No matching product found.");
-//     }
-// } else {
-//   const queryToExtractpID = `SELECT P_ID FROM "INVENTORY"."PRODUCT" ORDER BY P_ID DESC`;
-//   const result3 =   await runQuery(queryToExtractpID, []);
-
-//   //console.log(result2);
-
-//   pID = result3.rows.length+1;
-//     console.log("No rows returned from the query.");
-// }
-
-// const queryToExtractInvoiceNo = `SELECT * FROM "INVENTORY"."SUPPLIES"`;
-// const result4 =   await runQuery(queryToExtractInvoiceNo, []);
-
-// console.log('ok');
-
-// const invoiceNo = result4.rows.length+1;
-// // check s_id validation......here##################################
-// const size = req.body.productSize;
-
-
-// const queryToInsertInSupplies = `INSERT INTO "INVENTORY"."SUPPLIES"("DATE","S_ID","P_ID","P_SIZE(CC)","P_WEIGHT(KG)","PREFERRED_TEMP(C)","QUANTITY","INVOICE_NO") VALUES(SYSDATE,:s_id,:pID,:size,:pWeight,:prefTemp,:quantity,:invoiceNo)`;
-// const bindParams2 = {
-//   s_id: s_id,
-//   pID: pID,
-//   //pSize:pSize,
-//   size:size,
-//   pWeight:pWeight,
-//   prefTemp:prefTemp,
-//   quantity: quantity,
-//   invoiceNo:invoiceNo
-  
-// }
-// console.log("this is a ID : " ,bindParams2.size);
-
-// //const result5 = await runQuery(queryToInsertInSupplies,bindParams2);
-
-//   //if(result2.rows[0][0]==1)console.log("hello");
-
-// //   const newuId = result2.rows.length+1;
-// //   const username = result2.rows.length+1;
-// //   const reg = '12-JAN-2023';
-
-// //   const insertQuery = `INSERT INTO "INVENTORY"."CUSTOMER"("C_ID","USER_NAME","C_NAME","EMAIL","PHONE_NO","REG_DATE","PASSWORD") VALUES(:newuId,:username,:customerName, :email,:phoneNo,:reg,:password)`;
-// //   console.log("this is a ID : " ,newuId);
-
-// //   const bindParams = {
-// //     username: username,
-// //     reg:reg,
-// //     newuId : newuId,
-// //     customerName: customerName,
-// //     email:email,
-// //     phoneNo : phoneNo,
-// //     password: password
-// // };
-// // const result3 = await runQuery(insertQuery,bindParams);
-// // res.send(result3);
-// });
 
 app.post('/search', async (req, res) => {
     try {
