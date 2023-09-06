@@ -4,6 +4,7 @@ import supplierIdContext from "../Context/supplierContext";
 import axios from "axios";
 
 let callAuth = false;
+let accessGranted = false;
 
 export default function ProfileOfSupplierComponents() {
     // console.log(localStorage.getItem("token"));
@@ -43,6 +44,7 @@ export default function ProfileOfSupplierComponents() {
                 console.log('Checked login status.');
                 if(res.status === 200 && res.data.auth === true)
                 {
+                    accessGranted = true;
                     console.log('Authorized.', res.data.id);
                     getSupplierData(res.data.id).then(r => {
                         setUserData(r[0]);
@@ -56,7 +58,7 @@ export default function ProfileOfSupplierComponents() {
 
     // const userData = location.state && location.state.userData; // Check for undefined
     const {status, changeId} = useContext(supplierIdContext)
-    if (!accessToken) {
+    if (!accessGranted) {
         return (
             <div align="center" className="error">
                 <h2>Access Denied!</h2><hr/>
@@ -68,6 +70,7 @@ export default function ProfileOfSupplierComponents() {
 
     function handleLogOut() {
         callAuth = false;
+        accessGranted = false;
         localStorage.removeItem("token");
         navigate('/');
     }
