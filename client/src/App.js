@@ -1,30 +1,3 @@
-// import React from 'react';
-// import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-// import logo from './logo.svg';
-// import './App.css';
-// import ReturnLoginComponents from './ComponentsOfClientPages/loginPage'; // equivalent to -> import Login from './pages/loginPage';
-// //import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-// import ReturnDashBoardComponents from './ComponentsOfClientPages/DashBoardPage';
-// import ReturnRegistrationComponents from './ComponentsOfClientPages/RegistrationPage';
-
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <ReturnLoginComponents/>
-//       {/* <ReturnRegistrationComponents/> */}
-//     </div>
-//   );
-// }
-
-// export default App;
-
-
-////////////////////////////////////////// 
-
-// import React from 'react';
-
-
 import React, { useContext, useState } from 'react';
 
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
@@ -41,6 +14,8 @@ import AddProduct from './ComponentOfClientPages/AddProductPage';
 import { useScrollTrigger } from '@mui/material';
 import supplierIdContext from './Context/supplierContext';
 import SearchedProductData from "./ComponentOfClientPages/searchedProduct";
+import ProductDetails from './ComponentOfClientPages/productDetails';
+import EducationalProducts from './ComponentOfClientPages/Educational';
 
 
 function App() {
@@ -63,6 +38,8 @@ function App() {
           <Route path="/AddProduct" element={<AddProduct />} />
           <Route path="/Trial" element={<Album />} />
           <Route path="/searchedProduct" element={<SearchedProductData />} />
+          <Route path="/productDetails" element={<ProductDetails />} />
+          <Route path="/Educational" element={<EducationalProducts/>} />
         </Routes>
       </supplierIdContext.Provider>
     </Router>
@@ -70,46 +47,6 @@ function App() {
 }
 
 export default App;
-
-
-// export default App;
-
-// import React from 'react';
-// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import ReturnDashBoardComponents from './ComponentsOfClientPages/DashBoardPage';
-// import ReturnRegistrationComponents from './ComponentsOfClientPages/RegistrationPage';
-// import ReturnLoginComponents from './ComponentsOfClientPages/loginPage';
-
-// function App() {
-//   return (
-//     <Router>
-//       <Routes>
-//         <Route path="/login" element={<ReturnLoginComponents />} />
-//         <Route path="/Register" element={<ReturnRegistrationComponents />} />
-//       </Routes>
-//     </Router>
-//   );
-// }
-
-// export default App;
-
-
-////////////////////////////////////////////////////////// MOYEN /////////////////////////////////
-// import React from 'react';
-// import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
-// import Login from './ComponentOfClientPages/loginPage';
-
-// function App() {
-//   return (
-//     <Router>
-//       <Routes>
-//         <Route path="/login" element={<Login />} />
-//       </Routes>
-//     </Router>
-//   );
-// }
-
-//export default App;
 
 
 

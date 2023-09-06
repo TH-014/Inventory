@@ -22,37 +22,153 @@ app.use(express.json()); // ??????
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.post("/productDetails", async (req, res) => {
+        const {P_ID} = req.body; // May be P_ID as in Frontend
+        console.log(P_ID);
+        try{
 
-// app.get("/", async (req, res)=> {
-//     try{
-//         let result = await runQuery("select * from Employee",[]);
-//         const columnNames = ['E_NAME','EMAIL'];
-//         const output = extractData(result, columnNames);
-//         //console.log(extractData(result,columnsToExtract));
+            const queryToCheckTypeOfProduct = `SELECT TYPE FROM "INVENTORY"."PRODUCT" WHERE P_ID = :P_ID`;
 
-//         res.status(200).json({data: result || [], message: "welcome to our wedpage"});
-//     }catch(error)
-//     {
-//         console.error("Error while taking the data from employees : ", error);
-//         res.status(500).json({message: "Error while taking the data from employees"});
-//     }
+            const bindParamsToCheckProductType = {
+                ":P_ID" :P_ID
+            };
+            const resultOfTypeCheck = await runQuery(queryToCheckTypeOfProduct,bindParamsToCheckProductType);
+            const typeOfProduct = resultOfTypeCheck.rows[0][0];
+            console.log(typeOfProduct);
 
-// });
+            let queryToProductDetails = `SELECT * FROM "INVENTORY"."PRODUCT" `;
+            let columnsToExtract = [];
 
+            if(typeOfProduct === 'EDUCATIONAL')
+            {
+                queryToProductDetails += 'NATURAL JOIN "INVENTORY"."EDUCATIONAL" WHERE P_ID = :P_ID';
+                columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','LEVEL','PICTURE','RATING'];
+            }
+            else if(typeOfProduct === 'FASHION')
+            {
+                queryToProductDetails += 'NATURAL JOIN "INVENTORY"."FASHION" WHERE P_ID = :P_ID';
+                columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','MADE_OF','SIZE','COLOR','PICTURE','RATING'];
+            }
+            else if(typeOfProduct === 'GROCERY')
+            {
+                queryToProductDetails += 'NATURAL JOIN "INVENTORY"."GROCERY" WHERE P_ID = :P_ID';
+                columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','PRODUCTION_DATE','EXPIARY_DATE','PICTURE','RATING'];
+            }
+            else if(typeOfProduct === 'IT_PRODUCTS')
+            {
+                queryToProductDetails += 'NATURAL JOIN "INVENTORY"."IT_PRODUCTS" WHERE P_ID = :P_ID';
+                columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','RAM(GB)','STORAGE(GB)','PROCESSOR(GHZ)','PICTURE','RATING'];
+            }
+            else if(typeOfProduct === 'TOY')
+            {
+                queryToProductDetails += 'NATURAL JOIN "INVENTORY"."TOY" WHERE P_ID = :P_ID';
+                columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','COLOR','LEVEL','PICTURE','RATING'];
+            }
+            else
+            {
+                console.log("No matching product found.");
+            }
+            const bindParamsToProductDetails = {
+                ":P_ID" :P_ID
+            };
+            const resultOfProductDetails = await runQuery(queryToProductDetails,bindParamsToProductDetails);
+
+            const output = extractData(resultOfProductDetails, columnsToExtract);
+            console.log(output);
+
+            res.send(output);
+
+
+
+        }catch(error)
+        {
+            console.error("Error while taking the data from employees : ", error);
+            res.status(500).json({message: "Error while taking the data from products"});
+        }
+
+    }
+);
+
+//turad
+
+app.get("/Educational", async (req, res) => {
+    try {
+        const queryToExtractEduProduct = 'SELECT * FROM "INVENTORY"."PRODUCT" NATURAL JOIN "INVENTORY"."EDUCATIONAL"';
+        const resultOfEduProd = await runQuery(queryToExtractEduProduct, []);
+        const columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','LEVEL','PICTURE','RATING'];
+        const output = extractData(resultOfEduProd, columnsToExtract);
+        console.log(output);
+        res.send(output);
+    } catch (error) {
+        console.error('Error fetching Edu products:', error);
+        res.status(500).json({ error: 'Error fetching Edu products' });
+    }
+});
+
+
+
+app.get("/TopSoldProducts", async (req, res) => {
+    try {
+        const query = 'SELECT * FROM (SELECT * FROM PRODUCT ORDER BY SOLD_QUANTITY DESC) WHERE ROWNUM <= 5';
+        const queryData = await runQuery(query, []);
+        //console.log(queryData)
+        const output = extractData(queryData, [
+            "P_ID", // "P_ID" is added to the query to get the product id of the top sold products
+            "P_NAME",
+            "TYPE",
+            "DESCRIPTION",
+            "PRICE",
+            "DISCOUNT",
+            "PICTURE"
+        ]);
+        res.json(output);
+    } catch (error) {
+        console.error("Error fetching TOP SOLD products:", error);
+        res.status(500).json({ error: "Error fetching TOP SOLD products" });
+    }
+});
+
+
+app.get("/TopRatedProducts", async (req, res) => {
+    try {
+        const query = 'SELECT * FROM (SELECT * FROM PRODUCT ORDER BY RATING DESC) WHERE ROWNUM <= 5';
+        const queryData = await runQuery(query, []);
+        //console.log(queryData)
+        const output = extractData(queryData, [
+            "P_ID", // "P_ID" is added to the query to get the product id of the top rated products
+            "P_NAME",
+            "TYPE",
+            "DESCRIPTION",
+            "PRICE",
+            "DISCOUNT",
+            "PICTURE"
+        ]);
+        res.json(output);
+    } catch (error) {
+        console.error("Error fetching RATED products:", error);
+        res.status(500).json({ error: "Error fetching TOP RATED products" });
+    }
+});
 
 
 app.get('/Trial',async (req, res) => {
   try{
-        console.log(req.headers.authorization);
-        let result = await runQuery("select * from PRODUCT WHERE PRICE > 20000",[]);
-        // console.log(result)
-        const columnNames = ['P_NAME','TYPE','DESCRIPTION','PRICE','DISCOUNT'];
-        const output = extractData(result, columnNames);
-        // console.log(output);
-        //console.log(extractData(result,columnsToExtract));
-        // res.status(200).json({output});
-        // console.log(output);
-        res.status(200).json({data: result || [], message: "welcome to our webpage"});
+          console.log(req.headers.authorization);
+          const array = [];
+          let result = await runQuery("select * from PRODUCT WHERE PRICE > 20000",[]);
+          const jsonResult = JSON.stringify(result);
+          array.push(result);
+          //console.log(result);
+          const columnNames = ['P_NAME','TYPE','DESCRIPTION','PRICE','DISCOUNT'];
+          const output = extractData(result, columnNames);
+          // console.log(output);
+          //console.log(extractData(result,columnsToExtract));
+          //res.status(200).json({output});
+          //console.log(output);
+          //res.status(200).json({data: result, message: "welcome to our wedpage"});
+          console.log("this is a array : \n\n\n\n",array);
+          // console.log(array[0])
+          res.status(200).send({array});
         }catch(error)
         {
             console.error("Error while taking the data from employees : ", error);
