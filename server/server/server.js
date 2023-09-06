@@ -306,7 +306,7 @@ const bindParams = {
 
 
   try {
-    console.log('Inside try abd before query');
+    console.log('Inside try and before query');
     const result = await runQuery(query, bindParams);
     //console.log(result);
     const columnsToExtract = ['SID','TOTDUE','S_NAME', 'EMAIL','PASSWORD','PHONE_NO','PHOTO'];
@@ -335,6 +335,29 @@ const bindParams = {
       console.error("Error during login:", error);
       res.status(500).json({ message: "Internal server error." });
   }
+});
+
+app.post('/getSupplierData', async (req, res) => {
+    console.log("Inside getSupplierData post");
+    const { sid } = req.body;
+    console.log(req.body);
+    const query = 'SELECT SUPPLIER.S_ID SID,NVL(SUM(DUE),0) TOTDUE,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD, SUPPLIER.PHOTO FROM SUPPLIER LEFT JOIN CHARGES  ON (SUPPLIER.S_ID = CHARGES.S_ID) GROUP BY SUPPLIER.S_ID,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD, SUPPLIER.PHOTO HAVING SUPPLIER.S_ID = :sid';
+    const bindParams = {
+        sid: sid
+    };
+
+    try {
+        const result = await runQuery(query, bindParams);
+        console.log(result);
+        //console.log(result);
+        const columnsToExtract = ['SID','TOTDUE','S_NAME', 'EMAIL','PASSWORD','PHONE_NO','PHOTO'];
+        const output = extractData(result, columnsToExtract);
+        res.send(output);
+        console.log(output);
+    } catch (error) {
+        console.error("Error during login:", error);
+        res.status(500).json({ message: "Internal server error." });
+    }
 });
 
 

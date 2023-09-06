@@ -1,36 +1,65 @@
 import React, {useContext, useEffect} from "react";
-import { useLocation } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import supplierIdContext from "../Context/supplierContext";
-import { useRoutes, useNavigate } from 'react-router-dom';
 import axios from "axios";
+
+let callAuth = false;
 
 export default function ProfileOfSupplierComponents() {
     // console.log(localStorage.getItem("token"));
+    const [userData, setUserData] = React.useState(null); // [state, function to update state]
     const location = useLocation();
     const navigate = useNavigate();
     const accessToken = localStorage.getItem("token");
 
     useEffect(() => {
+        if(callAuth)
+            return;
+        console.log('Inside useEffect of profile of supplier.');
         async function checkLoginStatus() {
             try {
-                const authRes = await axios.get('http://localhost:8000/auth', {headers: {Authorization: `${localStorage.getItem('token')}`}});
+                const authRes = await axios.get('http://localhost:8000/auth/supplier', {headers: {Authorization: `${localStorage.getItem('token')}`}});
+                callAuth = true;
+                return authRes;
             } catch (e) {
                 console.log(e);
             }
         }
-        checkLoginStatus().then(res => {
-            console.log('Checked login status.');
-        }).catch(e => {
-            console.log(e);
-        });
+        async function getSupplierData(sid) {
+            try {
+                console.log('sid = ',sid);
+                const resFromServer = await axios.post('http://localhost:8000/getSupplierData', {sid});
+                console.log(resFromServer);
+                if (resFromServer.status === 200) {
+                    return resFromServer.data;
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        // if(!callAuth)
+        // {
+            checkLoginStatus().then(res => {
+                console.log('Checked login status.');
+                if(res.status === 200 && res.data.auth === true)
+                {
+                    console.log('Authorized.', res.data.id);
+                    getSupplierData(res.data.id).then(r => {
+                        setUserData(r[0]);
+                        console.log('Got supplier data.');
+                        console.log(r);
+                    });
+                }
+            });
+        // }
     });
 
-    const userData = location.state && location.state.userData; // Check for undefined
+    // const userData = location.state && location.state.userData; // Check for undefined
     const {status, changeId} = useContext(supplierIdContext)
     if (!accessToken) {
         return (
             <div align="center" className="error">
-                <h2>Access Denied!</h2>
+                <h2>Access Denied!</h2><hr/>
                 <p>Go back to
                     <a href="/loginAsSupplier"> Login page.</a></p>
             </div>
@@ -38,8 +67,9 @@ export default function ProfileOfSupplierComponents() {
     }
 
     function handleLogOut() {
+        callAuth = false;
         localStorage.removeItem("token");
-        navigate('/loginAsSupplier');
+        navigate('/');
     }
 
     return (
