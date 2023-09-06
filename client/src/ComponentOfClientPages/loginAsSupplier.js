@@ -4,6 +4,8 @@ import { useRoutes, useNavigate } from 'react-router-dom';
 import "./loginAsSupplier.css";
 import supplierIdContext from "../Context/supplierContext";
 
+let callAuth = false;
+let accessGranted = false;
 
  function  LoginAsSupplierComponents(){
   //const {status,changeId} = useContext(supplierIdContext)
@@ -16,6 +18,30 @@ import supplierIdContext from "../Context/supplierContext";
     const [errorMessage,setErrorMessage]=useState('');
     const {status,changeId}=useContext(supplierIdContext);
 
+     useEffect(() => {
+         if(callAuth)
+             return;
+         console.log('Inside useEffect of profile of supplier.');
+         async function checkLoginStatus() {
+             try {
+                 const authRes = await axios.get('http://localhost:8000/auth/supplier', {headers: {Authorization: `${localStorage.getItem('token')}`}});
+                 callAuth = true;
+                 return authRes;
+             } catch (e) {
+                 console.log(e);
+             }
+         }
+
+         checkLoginStatus().then(res => {
+             console.log('Checked login status.');
+             if(res.status === 200 && res.data.auth === true)
+             {
+                 accessGranted = true;
+                 console.log('Authorized.', res.data.id);
+                 navigate('/ProfileOfSupplier');
+             }
+         });
+     });
     //const [data, setData]=useState('');
 
     const handleLoginAsSupplier = async (e) =>{
