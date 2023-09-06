@@ -1,37 +1,57 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useRoutes, useNavigate } from 'react-router-dom';
 import "./loginAsEmployee.css";
 
+let callAuth = false;
+let accessGranted = false;
 
  function  LoginAsEmployeeComponents(){
     console.log('Inside the function');
-    //const [user,setUser]=useState('');
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('');
 
     const navigate = useNavigate();
     const [errorMessage,setErrorMessage]=useState('');
 
-    //const [data, setData]=useState('');
+     useEffect(() => {
+         if(callAuth)
+             return;
+         console.log('Inside useEffect of login of employee.');
+         async function checkLoginStatus() {
+             try {
+                 const authRes = await axios.get('http://localhost:8000/auth/employee', {headers: {Authorization: `${localStorage.getItem('token')}`}});
+                 callAuth = true;
+                 return authRes;
+             } catch (e) {
+                 console.log(e);
+             }
+         }
+         checkLoginStatus().then(res => {
+             console.log('Checked login status.');
+             if(res.status === 200 && res.data.auth === true && res.data.id>0)
+             {
+                 accessGranted = true;
+                 console.log('Authorized.', res.data.id);
+                 navigate('/ProfileOfEmployee');
+             }
+         });
+     });
 
     const handleLoginAsEmployee = async (e) =>{
         e.preventDefault();
-        
 
-       // setUser('JBL Flip 5');
-       // console.log(user);
        try{
           const resFromServer = await axios.post('http://localhost:8000/loginAsEmployee', {
             email,
             password
           });
-          console.log('here am i \n\n\n\n\n\n\n\n\n\n\n\n\n');
-          console.log(resFromServer.data[0]);
-
+          console.log('here am i \n');
+           if(localStorage.getItem("token"))
+               localStorage.removeItem("token");
+           localStorage.setItem("token", resFromServer.data.accessToken);
           if(resFromServer.status === 200){
-            const userData = resFromServer.data[0];           ///////////////////////// upto here it is working fine .......
-            //console.log(userData.S_ID);
+            const userData = resFromServer.data.output[0];
             navigate('/ProfileOfEmployee',{ state : {userData}});
           }
           else {

@@ -61,7 +61,7 @@ router.get('/customer', async (req, res) => {
 });
 
 router.get('/employee', async (req, res) => {
-    console.log('Inside supplier auth function');
+    console.log('Inside employee auth function');
     const token = req.headers.authorization;
     console.log(token);
     if (token==null || !token) {

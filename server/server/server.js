@@ -390,30 +390,31 @@ app.post('/getSupplierData', async (req, res) => {
 app.post('/loginAsEmployee', async (req, res) => {
   console.log("Inside post");
   const { email, password } = req.body;
-  //console.log(req.body.email);
-   
-  //const passwordHash = crypto.createHash('sha1').update(password).digest('hex');
-  //console.log(passwordHash)
-
   const query = `SELECT E_ID,E_NAME,EMAIL,PASSWORD,PHONE_NO,TO_CHAR(JOIN_DATE,'DD-MON-YYYY') JOINDATE,ADDRESS, PHOTO FROM "INVENTORY"."EMPLOYEE" WHERE "EMAIL" = :email`;
-//const query = 'SELECT SUPPLIER.S_ID SID,NVL(SUM(DUE),0) TOTDUE,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD FROM SUPPLIER LEFT JOIN CHARGES  ON (SUPPLIER.S_ID = CHARGES.S_ID) GROUP BY SUPPLIER.S_ID,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD HAVING EMAIL = :email AND PASSWORD = :password';
 const bindParams = {
     email: email
 };
 
 
   try {
-    console.log('Inside try abd before query');
+    console.log('Inside try and before query');
     const result = await runQuery(query, bindParams);
     //console.log(result);
     const columnsToExtract = ['E_ID','E_NAME', 'EMAIL','PASSWORD','PHONE_NO','JOINDATE','ADDRESS','PHOTO'];
     const output = extractData(result, columnsToExtract);
+    console.log(output);
     const match = await bcrypt.compare(password, output[0].PASSWORD);
     //console.log(extractData(result,columnsToExtract));
-
+    console.log(match);
       if (match) {
           // Login successful
-          res.send(output);
+          const userInfo = {
+              userId: output[0].E_ID,
+              userRole: 'employee'
+          }
+          console.log(userInfo);
+          const accessToken = jwt.sign(userInfo, ACCESS_TOKEN_SECRET, {expiresIn: '36000s'});
+          res.send({output: output, accessToken: accessToken});
           console.log(output);
       } else {
           // Invalid credentials

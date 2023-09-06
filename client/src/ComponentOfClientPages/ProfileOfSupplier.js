@@ -38,22 +38,19 @@ export default function ProfileOfSupplierComponents() {
                 console.log(e);
             }
         }
-        // if(!callAuth)
-        // {
-            checkLoginStatus().then(res => {
-                console.log('Checked login status.');
-                if(res.status === 200 && res.data.auth === true && res.data.id>0)
-                {
-                    accessGranted = true;
-                    console.log('Authorized.', res.data.id);
-                    getSupplierData(res.data.id).then(r => {
-                        setUserData(r[0]);
-                        console.log('Got supplier data.');
-                        console.log(r);
-                    });
-                }
-            });
-        // }
+        checkLoginStatus().then(res => {
+            console.log('Checked login status.');
+            if(res.status === 200 && res.data.auth === true && res.data.id>0)
+            {
+                accessGranted = true;
+                console.log('Authorized.', res.data.id);
+                getSupplierData(res.data.id).then(r => {
+                    setUserData(r[0]);
+                    console.log('Got supplier data.');
+                    console.log(r);
+                });
+            }
+        });
     });
 
     // const userData = location.state && location.state.userData; // Check for undefined
