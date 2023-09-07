@@ -1,14 +1,13 @@
-//const oracledb = require('oracledb');
-
 import bodyParser from "body-parser";
 import crypto from 'crypto';
-//import AddProduct from "../client/src/ComponentsOfClientPages/AddProductPage.js";
 import runQuery ,{extractData} from './Queries.js';
 import connectToDatabase from './connectToDataBase.js';
 import cors from "cors";
 import express from "express";
-//const cors = require('cors');
-//const express = require('express');  // or you can do this   in paccket json file under main /* "type": "module",*/
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { ACCESS_TOKEN_SECRET } from "./Authentication/Config.js";
+
 const app = express();
 
 (async ()=> {
@@ -21,7 +20,7 @@ const app = express();
 })();
 
 app.use(cors());
-app.use(express.json()); // ??????
+app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -32,92 +31,88 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //         const columnNames = ['E_NAME','EMAIL'];
 //         const output = extractData(result, columnNames);
 //         //console.log(extractData(result,columnsToExtract));
-
 //         res.status(200).json({data: result || [], message: "welcome to our wedpage"});
 //     }catch(error)
 //     {
 //         console.error("Error while taking the data from employees : ", error);
 //         res.status(500).json({message: "Error while taking the data from employees"});
 //     }
-
 // });
 
+
 app.post("/productDetails", async (req, res) => {
-  const {P_ID} = req.body; // May be P_ID as in Frontend
+  const {P_ID} = req.body;
   console.log(P_ID);
   try{
+      const queryToCheckTypeOfProduct = `SELECT TYPE FROM "INVENTORY"."PRODUCT" WHERE P_ID = :P_ID`;
 
-  const queryToCheckTypeOfProduct = `SELECT TYPE FROM "INVENTORY"."PRODUCT" WHERE P_ID = :P_ID`;
+      const bindParamsToCheckProductType = {
+        ":P_ID" :P_ID
+      };
+      const resultOfTypeCheck = await runQuery(queryToCheckTypeOfProduct,bindParamsToCheckProductType);
+      const typeOfProduct = resultOfTypeCheck.rows[0][0];
+      //console.log(typeOfProduct);
 
-  const bindParamsToCheckProductType = {
-    ":P_ID" :P_ID
-  };
-  const resultOfTypeCheck = await runQuery(queryToCheckTypeOfProduct,bindParamsToCheckProductType);
-  const typeOfProduct = resultOfTypeCheck.rows[0][0];
-  console.log(typeOfProduct);
+      let queryToProductDetails = `SELECT * FROM "INVENTORY"."PRODUCT" `;
+      let columnsToExtract = [];
+    
+      if(typeOfProduct === 'EDUCATIONAL')
+      {
+            queryToProductDetails += 'NATURAL JOIN "INVENTORY"."EDUCATIONAL" WHERE P_ID = :P_ID';
+            columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','LEVEL','PICTURE','RATING'];
+      }
+      else if(typeOfProduct === 'FASHION')
+      {
+              queryToProductDetails += 'NATURAL JOIN "INVENTORY"."FASHION" WHERE P_ID = :P_ID';
+              columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','MADE_OF','SIZE','COLOR','PICTURE','RATING'];
+      }
+      else if(typeOfProduct === 'GROCERY')
+      {
+              queryToProductDetails += 'NATURAL JOIN "INVENTORY"."GROCERY" WHERE P_ID = :P_ID'; 
+              columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','PRODUCTION_DATE','EXPIARY_DATE','PICTURE','RATING']; 
+      }
+      else if(typeOfProduct === 'IT_PRODUCTS')
+      {
+              queryToProductDetails += 'NATURAL JOIN "INVENTORY"."IT_PRODUCTS" WHERE P_ID = :P_ID';
+              columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','RAM(GB)','STORAGE(GB)','PROCESSOR(GHZ)','PICTURE','RATING'];
+      }
+      else if(typeOfProduct === 'TOY')
+      {   
+              queryToProductDetails += 'NATURAL JOIN "INVENTORY"."TOY" WHERE P_ID = :P_ID';
+              columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','COLOR','LEVEL','PICTURE','RATING'];
+      }
+      else
+      {
+              console.log("No matching product found.");
+      }   
+      const bindParamsToProductDetails = {
+        ":P_ID" :P_ID
+      };
+      const resultOfProductDetails = await runQuery(queryToProductDetails,bindParamsToProductDetails);
 
-  let queryToProductDetails = `SELECT * FROM "INVENTORY"."PRODUCT" `;
-  let columnsToExtract = [];
- 
-  if(typeOfProduct === 'EDUCATIONAL')
+      const output = extractData(resultOfProductDetails, columnsToExtract);
+      console.log(output);
+
+      res.send(output);
+
+  }catch(error)
   {
-         queryToProductDetails += 'NATURAL JOIN "INVENTORY"."EDUCATIONAL" WHERE P_ID = :P_ID';
-         columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','LEVEL','PICTURE','RATING'];
+    console.error("Error while taking the data from employees : ", error);
+    res.status(500).json({message: "Error while taking the data from products"});
   }
-  else if(typeOfProduct === 'FASHION')
-  {
-          queryToProductDetails += 'NATURAL JOIN "INVENTORY"."FASHION" WHERE P_ID = :P_ID';
-          columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','MADE_OF','SIZE','COLOR','PICTURE','RATING'];
-  }
-  else if(typeOfProduct === 'GROCERY')
-  {
-          queryToProductDetails += 'NATURAL JOIN "INVENTORY"."GROCERY" WHERE P_ID = :P_ID'; 
-          columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','PRODUCTION_DATE','EXPIARY_DATE','PICTURE','RATING']; 
-  }
-  else if(typeOfProduct === 'IT_PRODUCTS')
-  {
-          queryToProductDetails += 'NATURAL JOIN "INVENTORY"."IT_PRODUCTS" WHERE P_ID = :P_ID';
-          columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','RAM(GB)','STORAGE(GB)','PROCESSOR(GHZ)','PICTURE','RATING'];
-  }
-  else if(typeOfProduct === 'TOY')
-  {   
-          queryToProductDetails += 'NATURAL JOIN "INVENTORY"."TOY" WHERE P_ID = :P_ID';
-          columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','COLOR','LEVEL','PICTURE','RATING'];
-  }
-  else
-  {
-          console.log("No matching product found.");
-  }   
-  const bindParamsToProductDetails = {
-    ":P_ID" :P_ID
-  };
-  const resultOfProductDetails = await runQuery(queryToProductDetails,bindParamsToProductDetails);
-
-  const output = extractData(resultOfProductDetails, columnsToExtract);
-  console.log(output);
-
-  res.send(output);
-
-
-
-}catch(error)
-{
-  console.error("Error while taking the data from employees : ", error);
-  res.status(500).json({message: "Error while taking the data from products"});
-}
 
 }
-  );
+);
 
 //turad 
 
-  app.get("/Educational", async (req, res) => {
+app.get("/Educational", async (req, res) => {
     try {
         const queryToExtractEduProduct = 'SELECT * FROM "INVENTORY"."PRODUCT" NATURAL JOIN "INVENTORY"."EDUCATIONAL"';
         const resultOfEduProd = await runQuery(queryToExtractEduProduct, []);
         const columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','LEVEL','PICTURE','RATING'];
         const output = extractData(resultOfEduProd, columnsToExtract);
-        console.log(output);
+        //console.log(output);
         res.send(output);
     } catch (error) {
         console.error('Error fetching Edu products:', error);
@@ -222,7 +217,9 @@ app.post('/Trial',async (req, res) => {
 app.post('/RegisterAsSupplier', async (req,res) => {
 
   //console.log(req);
-  const {supplierName, email, phoneNo,password} = req.body;
+  //const {supplierName, email, phoneNo,password} = req.body;
+  const {supplierName, email, phoneNo,password, imageurl,supplierAddress} = req.body;
+    const hashedpwd = await bcrypt.hash(password, 10);
   //const passwordHash = crypto.createHash('sha1').update(password).digest('hex');
   const queryToExtractUserID = `SELECT S_ID FROM "INVENTORY"."SUPPLIER" ORDER BY S_ID DESC`;
   const result2 =   await runQuery(queryToExtractUserID, []);
@@ -233,7 +230,7 @@ app.post('/RegisterAsSupplier', async (req,res) => {
   const username = result2.rows.length+1;
   //const reg = '12-JAN-2023';
 
-  const insertQuery = `INSERT INTO "INVENTORY"."SUPPLIER"("S_ID","USER_NAME","S_NAME","EMAIL","PHONE_NO","PASSWORD") VALUES(:newuId,:username,:supplierName, :email,:phoneNo,:password)`;
+  const insertQuery = `INSERT INTO "INVENTORY"."SUPPLIER"("S_ID","USER_NAME","S_NAME","EMAIL","PHONE_NO","PASSWORD","PHOTO",,"ADDRESS") VALUES(:newuId,:username,:supplierName, :email,:phoneNo,:password, :imageurl, :supplierAddress)`;
   console.log("this is a ID : " ,newuId);
 
   const bindParams = {
@@ -243,7 +240,10 @@ app.post('/RegisterAsSupplier', async (req,res) => {
     supplierName: supplierName,
     email:email,
     phoneNo : phoneNo,
-    password: password
+    //password: password
+    password: hashedpwd,
+    imageurl: imageurl,
+    supplierAddress: supplierAddress
 };
 const result3 = await runQuery(insertQuery,bindParams);
 res.send(result3);
@@ -337,10 +337,10 @@ app.post('/loginAsSupplier', async (req, res) => {
   //console.log(passwordHash)
 
  // const query = 'SELECT * FROM "INVENTORY"."SUPPLIER" WHERE "EMAIL" = :email AND "PASSWORD" = :password';
-const query = 'SELECT SUPPLIER.S_ID SID,NVL(SUM(DUE),0) TOTDUE,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD FROM SUPPLIER LEFT JOIN CHARGES  ON (SUPPLIER.S_ID = CHARGES.S_ID) GROUP BY SUPPLIER.S_ID,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD HAVING EMAIL = :email AND PASSWORD = :password';
+const query = 'SELECT SUPPLIER.S_ID SID,NVL(SUM(DUE),0) TOTDUE,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD,SUPPLIER.PHOTO FROM SUPPLIER LEFT JOIN CHARGES  ON (SUPPLIER.S_ID = CHARGES.S_ID) GROUP BY SUPPLIER.S_ID,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD,SUPPLIER.PHOTO HAVING EMAIL = :email'; // WE NEED TO MAKE THE EMAIL UNIQUE KEY
 const bindParams = {
-    email: email,
-    password: password
+    email: email
+    //password: password
 };
 
 
@@ -348,18 +348,37 @@ const bindParams = {
     console.log('Inside try abd before query');
     const result = await runQuery(query, bindParams);
     //console.log(result);
-    const columnsToExtract = ['SID','TOTDUE','S_NAME', 'EMAIL','PASSWORD','PHONE_NO'];
+    const columnsToExtract = ['SID','TOTDUE','S_NAME', 'EMAIL','PASSWORD','PHONE_NO','PHOTO'];
     const output = extractData(result, columnsToExtract);
+    const match = await bcrypt.compare(password, output[0].PASSWORD);
     //console.log(extractData(result,columnsToExtract));
 
-      if (result &&result.rows.length > 0) {
-          // Login successful
-          res.send(output);
-          console.log(output);
-      } else {
-          // Invalid credentials
-          res.status(401).send("Invalid username or password.");
-      }
+
+    if (match) {
+      // Login successful
+      const userInfo = {
+        userId: output[0].SID,
+        userRole: 'supplier'
+      };
+      console.log(userInfo);
+      const accessToken = jwt.sign(userInfo, ACCESS_TOKEN_SECRET, {expiresIn: '1800s'});
+      res.send({output: output, accessToken: accessToken});
+      console.log(output);
+    } else {
+        // Invalid credentials
+        res.status(401).send("Invalid username or password.");
+    }
+
+
+
+      // if (result &&result.rows.length > 0) {
+      //     // Login successful
+      //     res.send(output);
+      //     console.log(output);
+      // } else {
+      //     // Invalid credentials
+      //     res.status(401).send("Invalid username or password.");
+      // }
 
   } catch (error) {
       console.error("Error during login:", error);

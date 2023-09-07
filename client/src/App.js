@@ -43,6 +43,8 @@ import supplierIdContext from './Context/supplierContext';
 import SearchedProductData from "./ComponentOfClientPages/searchedProduct";
 import ProductDetails from './ComponentOfClientPages/productDetails';
 import EducationalProducts from './ComponentOfClientPages/Educational';
+import AddressForm from './ComponentOfClientPages/AddressForm';
+import Checkout from './ComponentOfClientPages/Checkout';
 
 
 function App() {
@@ -67,6 +69,8 @@ function App() {
           <Route path="/searchedProduct" element={<SearchedProductData />} />
           <Route path="/productDetails" element={<ProductDetails />} />
           <Route path="/Educational" element={<EducationalProducts/>} />
+          <Route path="/AddressForm" element={<AddressForm/>} />
+          <Route path="/Checkout" element={<Checkout/>} />
         </Routes>
       </supplierIdContext.Provider>
     </Router>

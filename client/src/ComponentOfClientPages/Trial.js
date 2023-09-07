@@ -598,6 +598,7 @@ const cards1 = ['a','b','c','d','e','f','g','h','i'];  // This defines number of
  
 let cardsForTopSoldProducts = [];
 let cardsForTopRatedProducts = [];
+export let ProductsInCart = JSON.parse(localStorage.getItem('ProductsInCart'));
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
@@ -686,8 +687,31 @@ const handleDetailsButtonClick = async (P_ID) => {
 };
 
 
-const handleOrderButtonClick = async () => {
-  alert('You clicked the Order Now Button.');
+const handleAddToCartButtonClick = async (P_ID) => {
+  //localStorage.removeItem('ProductsInCart');
+  if(localStorage.getItem('ProductsInCart') !== null) {  ///check whether it is null
+    console.log('inside if');
+    ProductsInCart = JSON.parse(localStorage.getItem('ProductsInCart')); /// checking whether it is assigned before...... 
+  }
+  console.log(P_ID);
+  console.log(ProductsInCart);
+  const resFromServer = await axios.post('http://localhost:8000/productDetails',{ P_ID});
+  if(ProductsInCart === null) {
+    ProductsInCart = [];
+    console.log('inside if1');
+  }
+  ProductsInCart.push(resFromServer.data[0]);
+  //ProductsInCart[ProductsInCart.length] = P_ID;
+  console.log(ProductsInCart);
+  //localStorage.removeItem('ProductsInCart');
+
+
+ 
+  localStorage.setItem('ProductsInCart',JSON.stringify(ProductsInCart)); /// basicallllly we are overriding the array again and again .................
+ // console.log('inside get',localStorage.getItem('ProductsInCart')[0]);
+  //localStorage.removeItem('ProductsInCart');
+  //console.log(localStorage.getItem('ProductsInCart')[0]);
+  //alert('You clicked the Order Now Button.');
 };
 const donothing = async () => {
   alert('You clicked the Order Now Button.');
@@ -726,6 +750,10 @@ const handleRegisterAsEmployeeClick = async () => {
   navigate('/RegistrationPageOfEmployee');
  // alert('You clicked the third ListButton.');
 };
+const handleCheckoutButtonClick = async () => {
+  navigate('/checkout');
+  // alert('You clicked the third ListButton.');
+  };
     
 
 
@@ -852,7 +880,9 @@ const handleRegisterAsEmployeeClick = async () => {
             pb: 6,
           }}
         >
+          
           <Container maxWidth="sm">
+          
             <Typography
               component="h4"
               variant="h3"
@@ -864,9 +894,13 @@ const handleRegisterAsEmployeeClick = async () => {
               <p> <br/></p>
               Yours Favourites are here.....
             </Typography>
+            <div align="right" className="Checkout">
+                        <button className="button" onClick={handleCheckoutButtonClick}>Check Out</button>
+            </div>
             {/* <Typography variant="h5" align="center" color="text.secondary" paragraph>
               Lets start with our products.....
             </Typography> */}
+            
             <link rel="stylesheet" href="search_home.css"/>
             <div className="search-box">
                 <input type="text" id="searchInput" className="search-input" placeholder="Enter your search term..."/>
@@ -930,7 +964,7 @@ const handleRegisterAsEmployeeClick = async () => {
                   </CardContent>
                   <CardActions>
                     <Button size="small" onClick={()=>handleDetailsButtonClick(card.P_ID)}>Details</Button>
-                    <Button size="small" onClick={handleOrderButtonClick}>Order Now</Button>
+                    <Button size="small" onClick={()=>handleAddToCartButtonClick(card.P_ID)}>Add to Cart</Button>
                   </CardActions>
                 </Card>
               </Grid>
@@ -974,7 +1008,7 @@ const handleRegisterAsEmployeeClick = async () => {
                   </CardContent>
                   <CardActions>
                     <Button size="small" onClick={()=>handleDetailsButtonClick(card.P_ID)}>Details</Button>
-                    <Button size="small" onClick={handleOrderButtonClick}>Order Now</Button>
+                    <Button size="small" onClick={()=>handleAddToCartButtonClick(card.P_ID)}>Add to Cart</Button>
                   </CardActions>
                 </Card>
               </Grid>

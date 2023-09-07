@@ -6,4 +6,23 @@
   .addProduct-link:nth-child(1) {
     margin-left: 100px; /* Adjust the distance as per your requirement */
     }
+  .button-link {
+    display: inline-block;
+    margin-right: 100px; /* Optional: Add some spacing between the links */
+    width: 100px;
+    height: 40px;
+    background-color: #f44336;
+    border: 5px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+  }
   

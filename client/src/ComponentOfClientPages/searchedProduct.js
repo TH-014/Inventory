@@ -19,6 +19,7 @@ import {Copyright} from "@mui/icons-material";
 
 let productCards = [];
 const defaultTheme = createTheme();
+let ProductsInCart = [];
 export default function SearchedProductData() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -37,8 +38,18 @@ export default function SearchedProductData() {
   };
 
 
-  const handleOrderButtonClick = async () => {
-    alert('You clicked the Order Now Button.');
+  const handleAddToCartButtonClick = async (P_ID) => {
+    if(localStorage.getItem('ProductsInCart') !== null) {  ///check whether it is null
+  
+      ProductsInCart = localStorage.getItem('ProductsInCart'); /// checking whether it is assigned before...... 
+    }
+  
+    ProductsInCart.push(P_ID);
+    localStorage.setItem('ProductsInCart',ProductsInCart); /// basicallllly we are overriding the array again and again .................
+   // console.log('inside get',localStorage.getItem('ProductsInCart')[0]);
+    //localStorage.removeItem('ProductsInCart');
+    //console.log(localStorage.getItem('ProductsInCart')[0]);
+    //alert('You clicked the Order Now Button.');
   };
   const donothing = async () => {
     alert('You clicked the Order Now Button.');
@@ -117,7 +128,7 @@ export default function SearchedProductData() {
                       </CardContent>
                       <CardActions>
                       <Button size="small" onClick={()=>handleDetailsButtonClick(card.P_ID)}>Details</Button>
-                    <Button size="small" onClick={handleOrderButtonClick}>Order Now</Button>
+                    <Button size="small" onClick={()=>handleAddToCartButtonClick(card.P_ID)}>Order Now</Button>
                       </CardActions>
                     </Card>
                   </Grid>
