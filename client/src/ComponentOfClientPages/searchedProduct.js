@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import supplierIdContext from "../Context/supplierContext";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,14 +14,28 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import {Copyright} from "@mui/icons-material";
+import axios from "axios";
 
 let productCards = [];
 const defaultTheme = createTheme();
 export default function SearchedProductData() {
+    const navigate = useNavigate();
   const location = useLocation();
    // Check for undefined
     productCards = location.state && location.state.productData;
   // console.log(productCards);
+    const handleDetailsButtonClick = async (P_ID) => {
+        console.log(P_ID);
+        const resFromServer = await axios.post('http://localhost:8000/productDetails',{P_ID}); /// write the code in server
+        console.log(resFromServer);
+        const productData = resFromServer.data[0];
+        navigate('/productDetails',{ state : {productData}});
+        // alert('You clicked the Detais Button.');
+    };
+
+    const handleOrderButtonClick = async () => {
+        alert('You clicked the Order Now Button.');
+    };
 
   return (
       <ThemeProvider theme={defaultTheme}>
@@ -85,19 +99,19 @@ export default function SearchedProductData() {
                           image = {card.PICTURE}
                       />
                       <CardContent sx={{ flexGrow: 1 }}>
-                        <Typography gutterBottom variant="h5" component="h2">
-                            {card.P_NAME}<br/>
-                            {card.PRICE}<br/>
-                            {card.RATING}
-                        </Typography>
+                          <Typography gutterBottom variant="h5" component="h1">
+                              {card.P_NAME}<br/>
+                              Price: $ {card.PRICE} <br/>
+                              {card.DISCOUNT? <p>Discount: {card.DISCOUNT}%</p>:null}
+                          </Typography>
                         <Typography>
                         </Typography>
 
                       </CardContent>
-                      <CardActions>
-                        <Button size="small">View</Button>
-                        <Button size="small">Edit</Button>
-                      </CardActions>
+                        <CardActions>
+                            <Button size="small" onClick={()=>handleDetailsButtonClick(card.P_ID)}>Details</Button>
+                            <Button size="small" onClick={handleOrderButtonClick}>Order Now</Button>
+                        </CardActions>
                     </Card>
                   </Grid>
               ))}
