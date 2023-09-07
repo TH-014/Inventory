@@ -4,10 +4,9 @@ import { useRoutes, useNavigate } from 'react-router-dom';
 import "./loginAsSupplier.css";
 import supplierIdContext from "../Context/supplierContext";
 
-let callAuth = false;
-let accessGranted = false;
 
  function  LoginAsSupplierComponents(){
+     let callAuth = false;
   //const {status,changeId} = useContext(supplierIdContext)
     console.log('Inside the function');
     //const [user,setUser]=useState('');
@@ -36,7 +35,7 @@ let accessGranted = false;
              console.log('Checked login status.');
              if(res.status === 200 && res.data.auth === true && res.data.id>0)
              {
-                 accessGranted = true;
+                 callAuth = false;
                  console.log('Authorized.', res.data.id);
                  navigate('/ProfileOfSupplier');
              }

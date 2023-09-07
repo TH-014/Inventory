@@ -3,10 +3,9 @@ import axios from "axios";
 import { useRoutes, useNavigate } from 'react-router-dom';
 import "./loginAsEmployee.css";
 
-let callAuth = false;
-let accessGranted = false;
 
  function  LoginAsEmployeeComponents(){
+     let callAuth = false;
     console.log('Inside the function');
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('');
@@ -31,7 +30,7 @@ let accessGranted = false;
              console.log('Checked login status.');
              if(res.status === 200 && res.data.auth === true && res.data.id>0)
              {
-                 accessGranted = true;
+                 callAuth = false;
                  console.log('Authorized.', res.data.id);
                  navigate('/ProfileOfEmployee');
              }

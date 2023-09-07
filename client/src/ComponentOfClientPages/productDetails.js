@@ -17,7 +17,7 @@ export default function ProductDetails() {
                     <p>Category : {productDetailsData.TYPE}</p>
                     <p>Remaining item : {productDetailsData.REMAINING_ITEM}</p>
                     <p>Sold Quantity : {productDetailsData.SOLD_QUANTITY}</p>
-                    <p>Rating : {productDetailsData.RATING}</p>
+                    <p>Rating : {productDetailsData.RATING}</p><hr/>
                 </div>
             ) : (
                 <p>Loading product data...</p>
@@ -25,3 +25,22 @@ export default function ProductDetails() {
         </div>
     );
 };
+
+/*
+* return (
+    <div className="product-reviews">
+      <div className="product-reviews">
+        <h3>Reviews</h3>
+        <ul>
+          {productReviews.map((review, index) => (
+            <li key={index}>
+              <p>{review.comment}</p>
+              <p>Rating: {review.rating} out of 5</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+*
+* */

@@ -2,6 +2,7 @@ import React, {useContext, useEffect} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import supplierIdContext from "../Context/supplierContext";
 import axios from "axios";
+import styled from "styled-components";
 
 let callAuth = false;
 let accessGranted = false;
@@ -12,6 +13,43 @@ export default function ProfileOfSupplierComponents() {
     const location = useLocation();
     const navigate = useNavigate();
     const accessToken = localStorage.getItem("token");
+
+    const ButtonWrapper = styled.div`
+  display: flex;
+    justify-content: space-between;
+`;
+
+    const HomeButton = styled.button`
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+    width: 140px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 10px;
+    float: left;
+  &:hover {
+    background-color: #2980b9;
+  }
+`;
+
+    const LogoutButton = styled.button`
+  background-color: #ff0000;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+    width: 140px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 10px;
+  float : right;
+  &:hover {
+    background-color: #8B0000;
+  }
+`;
 
     useEffect(() => {
         if(callAuth)
@@ -72,14 +110,21 @@ export default function ProfileOfSupplierComponents() {
         navigate('/');
     }
 
+    function handleHome() {
+        callAuth = false;
+        accessGranted = false;
+        navigate('/');
+    }
+
     return (
         <div className="dashboard" style={{height: 'calc(100vh - 64px)', overflowY: 'auto'}}>
             <h2 align="center"> Welcome to the Dashboard </h2>
             {userData ? (
                 <div>
-                    <div align="right" className="Logout">
-                        <button className="button" onClick={handleLogOut}>Log Out</button>
-                    </div>
+                    <ButtonWrapper>
+                        <HomeButton onClick={handleHome}>Back to Home</HomeButton>
+                        <LogoutButton onClick={handleLogOut}>Log Out</LogoutButton>
+                    </ButtonWrapper>
                     <div align="center" className="user-data">
                         <img src={userData.PHOTO} alt="Avatar" className="avatar" width="300" height="400"/>
                         <p>Supplier ID : {userData.SID}</p>

@@ -1,0 +1,15 @@
+/* Style for the button inside the .homeButton div */
+.homeButton {
+    background-color: #3498db; /* Button background color */
+    color: #fff; /* Text color */
+    padding: 10px 20px; /* Padding around the button text */
+    border: none; /* Remove button border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Cursor style on hover */
+    font-size: 16px; /* Font size */
+}
+
+/* Hover effect for the button */
+.homeButton :hover {
+    background-color: #2980b9; /* Button background color on hover */
+}

@@ -3,11 +3,10 @@ import axios from "axios";
 import { useRoutes, useNavigate } from 'react-router-dom';
 import "./loginPage.css";
 
-let callAuth = false;
-let accessGranted = false;
-
 export function  ReturnLoginComponents(){
     console.log('Inside the function');
+    let callAuth = false;
+
     //const [user,setUser]=useState('');
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('');
@@ -16,6 +15,7 @@ export function  ReturnLoginComponents(){
     const [errorMessage,setErrorMessage]=useState('');
 
     useEffect(() => {
+        console.log('Inside useEffect of login of customer.');
         if(callAuth)
             return;
         console.log('Inside useEffect of profile of customer.');
@@ -33,8 +33,8 @@ export function  ReturnLoginComponents(){
             console.log('Checked login status.');
             if(res.status === 200 && res.data.auth === true && res.data.id>0)
             {
-                accessGranted = true;
                 console.log('Authorized.', res.data.id);
+                callAuth = false;
                 navigate('/Dashboard');
             }
         });
