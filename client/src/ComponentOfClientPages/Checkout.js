@@ -17,6 +17,7 @@ import PaymentForm from './PaymentForm';
 import Review, { total } from './Review';
 import addressForm from './AddressForm';
 import { ProductsInCart } from './Trial';
+import { productQuantity } from './Review';
 
 function Copyright() {
   return (
@@ -31,16 +32,16 @@ function Copyright() {
   );
 }
 
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
+const steps = ['Shipping address', 'Review your order','Payment details'];
 
 function getStepContent(step) {
   switch (step) {
     case 0:
       return <AddressForm />;
     case 1:
-      return <PaymentForm />;
-    case 2:
       return <Review />;
+    case 2:
+      return <PaymentForm />;
     default:
       throw new Error('Unknown step');
   }
@@ -70,21 +71,8 @@ export default function Checkout() {
 
          addresses = [localStorage.getItem('address1'), localStorage.getItem('city'), localStorage.getItem('state'), localStorage.getItem('zip'), localStorage.getItem('country')];
         setActiveStep( 1);
-    }
-    else if(activeStep === 1){
 
-        console.log('from local storage : ' , localStorage.getItem('cardName'));
-        console.log('from local storage : ' , localStorage.getItem('cardNumber'));
-        console.log('from local storage : ' , localStorage.getItem('expDate'));
-        console.log('from local storage : ' , localStorage.getItem('cvv'));
-
-         payments = [
-            { name: 'Card type', detail: 'Visa' },
-            { name: 'Card holder', detail: `${localStorage.getItem('cardName')}` },
-            { name: 'Card number', detail: localStorage.getItem('cardNumber') },
-            { name: 'Expiry date', detail: localStorage.getItem('expDate') },
-          ];
-          if(localStorage.getItem('ProductsInCart') !== null){
+        if(localStorage.getItem('ProductsInCart') !== null){
             // const products = JSON.parse(localStorage.getItem('ProductsInCart'));
             // console.log('products : ' , products[0]);
             // for(let i = 0; i < products.length; i++){
@@ -96,7 +84,24 @@ export default function Checkout() {
             // //   }       
             // console.log('resFromServer.data : ' , resFromServer.data);
                productsDetails = JSON.parse(localStorage.getItem('ProductsInCart'));
-            }
+        }
+    }
+    else if(activeStep === 1){
+
+        
+        //   if(localStorage.getItem('ProductsInCart') !== null){
+        //     // const products = JSON.parse(localStorage.getItem('ProductsInCart'));
+        //     // console.log('products : ' , products[0]);
+        //     // for(let i = 0; i < products.length; i++){
+        //     //     const P_ID = products[i];
+        //     //    if( P_ID!== null) {const resFromServer = await axios.post('http://localhost:8000/productDetails',{ P_ID}); /// write the code in server
+        //     // //    if(localStorage.getItem('ProductsInCart') !== null) {  ///check whether it is null
+        //     // //     console.log('inside if');
+        //     // //     productsDetails = JSON.parse(localStorage.getItem('ProductsInCart')); /// checking whether it is assigned before...... 
+        //     // //   }       
+        //     // console.log('resFromServer.data : ' , resFromServer.data);
+        //        productsDetails = JSON.parse(localStorage.getItem('ProductsInCart'));
+        //     }
 
         //   }
         // }
@@ -108,16 +113,34 @@ export default function Checkout() {
     else if(activeStep === 2){
         /// Here to write the code to send the data to the server ....................................
 
-        // const resFromServer = await axios.post('http://localhost:8000/productDetails',{ productsDetails}); /// write the code in server
-        // try{
-        //     const resFromServer = await axios.post('http://localhost:8000/login', {
-        //       email,
-        //       password
-        //     });
-        // }catch(error)
-        // {
-        //    setErrorMessage(error.message || "Something went wrong ! ");
-        // }
+        //const resFromServer = await axios.post('http://localhost:8000/insertOrder',{ productsDetails}); /// write the code in server
+        try{
+            const Address = localStorage.getItem('firstName')+ ' '+ localStorage.getItem('lastName')+', ' + localStorage.getItem('address1') + ', ' + localStorage.getItem('address2') + ', ' + localStorage.getItem('city') + ', ' + localStorage.getItem('state') + ', ' + localStorage.getItem('zip') + ', ' + localStorage.getItem('country');
+            const phoneNo = localStorage.getItem('phoneNo');
+            const transactionNumber = localStorage.getItem('transactionNumber');
+            const resFromServer = await axios.post('http://localhost:8000/insertOrder',{Address,phoneNo,transactionNumber,total,productQuantity, productsDetails});
+           console.log('resFromServer.data : ' , resFromServer.data);
+
+        }catch(error)
+        {
+           console.log(error.message || "Something went wrong ! ");
+        }
+        console.log('from local storage : ' , localStorage.getItem('phoneNo'));
+        console.log('from local storage : ' , localStorage.getItem('transactionNumber'));
+
+
+        //  payments = [
+        //     { name: 'Card type', detail: 'Visa' },
+        //     { name: 'Card holder', detail: `${localStorage.getItem('cardName')}` },
+        //     { name: 'Card number', detail: localStorage.getItem('cardNumber') },
+        //     { name: 'Expiry date', detail: localStorage.getItem('expDate') },
+        //   ];
+
+        
+
+
+
+
             
             localStorage.removeItem('firstName');
             localStorage.removeItem('lastName');
@@ -127,14 +150,20 @@ export default function Checkout() {
             localStorage.removeItem('state');
             localStorage.removeItem('zip');
             localStorage.removeItem('country');
-            localStorage.removeItem('cardName');
-            localStorage.removeItem('cardNumber');
-            localStorage.removeItem('expDate');
-            localStorage.removeItem('cvv');
+            localStorage.removeItem('phoneNo');
+            localStorage.removeItem('transactionNumber');
+            // localStorage.removeItem('expDate');
+            // localStorage.removeItem('cvv');
             localStorage.removeItem('ProductsInCart');
+            if(ProductsInCart!== null)
             while(ProductsInCart.length) {
                 console.log('inside while');
                 ProductsInCart.pop(); // Removing the last element in each iteration clears the array
+              }
+              if(productQuantity !== null)
+            while(productQuantity.length) {
+                console.log('inside while');
+                productQuantity.pop(); // Removing the last element in each iteration clears the array
               }
             //ProductsInCart = null;
 
@@ -148,10 +177,10 @@ export default function Checkout() {
             console.log('from local storage : ' , localStorage.getItem('state'));
             console.log('from local storage : ' , localStorage.getItem('zip'));
             console.log('from local storage : ' , localStorage.getItem('country'));
-            console.log('from local storage : ' , localStorage.getItem('cardName'));
-            console.log('from local storage : ' , localStorage.getItem('cardNumber'));
-            console.log('from local storage : ' , localStorage.getItem('expDate'));
-            console.log('from local storage : ' , localStorage.getItem('cvv'));
+            console.log('from local storage : ' , localStorage.getItem('phoneNo'));
+            console.log('from local storage : ' , localStorage.getItem('transactionNumber'));
+            // console.log('from local storage : ' , localStorage.getItem('expDate'));
+            // console.log('from local storage : ' , localStorage.getItem('cvv'));
             console.log('from local storage : ' , localStorage.getItem('ProductsInCart'));
 
 
@@ -181,10 +210,19 @@ export default function Checkout() {
         localStorage.removeItem('country');
     }
     else if(activeStep === 2){
-        localStorage.removeItem('cardName');
-        localStorage.removeItem('cardNumber');
-        localStorage.removeItem('expDate');
-        localStorage.removeItem('cvv');
+        if(productQuantity !== null)
+            while(productQuantity.length) {
+                console.log('inside while');
+                productQuantity.pop(); // Removing the last element in each iteration clears the array
+            }
+
+
+    }
+    else if(activeStep === 3){
+        localStorage.removeItem('phoneNo');
+        localStorage.removeItem('transactionNumber');
+        // localStorage.removeItem('expDate');
+        // localStorage.removeItem('cvv');
     }
 
 
@@ -235,6 +273,13 @@ export default function Checkout() {
                 confirmation, and will send you an update when your order has
                 shipped.
               </Typography>
+              {/* <Button
+                  variant="contained"
+                  onClick= {handleNext}
+                  sx={{ mt: 3, ml: 1 }}
+                >
+                  {activeStep === steps.length - 1 ? 'Go for payment' : 'Next'}
+                </Button> */}
             </React.Fragment>
           ) : (
             <React.Fragment>
@@ -251,7 +296,7 @@ export default function Checkout() {
                   onClick= {handleNext}
                   sx={{ mt: 3, ml: 1 }}
                 >
-                  {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                  {activeStep === steps.length - 2 ? 'Go for payment' : 'Next'}
                 </Button>
               </Box>
             </React.Fragment>

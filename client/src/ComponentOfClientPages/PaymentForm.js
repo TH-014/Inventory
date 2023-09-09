@@ -4,38 +4,42 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import { total } from './Review';   /// this is the total cost of the products
 
 export default function PaymentForm() {
-    
+
   return (
     <React.Fragment>
+        <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+            Your Total Cost is : $ {total.toFixed(2)}
+        </Typography>
       <Typography variant="h6" gutterBottom>
-        Payment method
+        Bkash Payment
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <TextField
             required
-            id="cardName"
-            label="Name on card"
+            id="BKash-Phoneno"
+            label="BKash Phone no"
             fullWidth
-            autoComplete="cc-name"
+            autoComplete="phone-number"
             variant="standard"
-            onChange = {(e) => localStorage.setItem('cardName', e.target.value)}
+            onChange = {(e) => localStorage.setItem('phoneNo', e.target.value)}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
             required
-            id="cardNumber"
-            label="Card number"
+            id="transaction-Number"
+            label="Transaction Number"
             fullWidth
-            autoComplete="cc-number"
+            autoComplete="transaction-number"
             variant="standard"
-            onChange = {(e) => localStorage.setItem('cardNumber', e.target.value)}
+            onChange = {(e) => localStorage.setItem('transactionNumber', e.target.value)}
           />
         </Grid>
-        <Grid item xs={12} md={6}>
+        {/* <Grid item xs={12} md={6}>
           <TextField
             required
             id="expDate"
@@ -57,11 +61,11 @@ export default function PaymentForm() {
             variant="standard"
             onChange = {(e) => localStorage.setItem('cvv', e.target.value)}
           />
-        </Grid>
+        </Grid> */}
         <Grid item xs={12}>
           <FormControlLabel
-            control={<Checkbox color="secondary" name="saveCard" value="yes" />}
-            label="Remember credit card details for next time"
+            control={<Checkbox color="secondary" name="savePhoneNo" value="yes" />}
+            label="Remember my phone no for next time"
           />
         </Grid>
       </Grid>

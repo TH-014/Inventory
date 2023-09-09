@@ -39,6 +39,57 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //     }
 // });
 
+app.post("/insertOrder", async (req, res) => {
+  const {Address,phoneNo,transactionNumber,total,productQuantity, productsDetails} = req.body;
+  console.log(req.body);
+  try{
+    const queryToExtractOrderID = `SELECT COUNT(*)+1 FROM "INVENTORY"."TEMP_ORDER"`;
+    const resultOfOrderID = await runQuery(queryToExtractOrderID, []);
+    const newOrderID = resultOfOrderID.rows[0][0];
+    console.log(newOrderID);
+    const queryToExtractE_ID = `SELECT EID FROM (SELECT EMPLOYEE.E_ID EID FROM EMPLOYEE LEFT JOIN TEMP_ORDER ON( EMPLOYEE.E_ID = TEMP_ORDER.E_ID) GROUP BY EMPLOYEE.E_ID ORDER BY COUNT(TEMP_ORDER.TEMP_O_ID) ASC, EMPLOYEE.E_ID ASC) WHERE ROWNUM = 1`;
+    const resultOfE_ID = await runQuery(queryToExtractE_ID, []);
+    const newE_ID = resultOfE_ID.rows[0][0];
+    const  C_ID = 1; // We need to change this to the customer id of the logged in user by using the token
+    const queryToInsertOrder = `INSERT INTO "INVENTORY"."TEMP_ORDER"("TEMP_O_ID","PLACE_DATE","SHIPPING_ADDRESS","BKASH_MOB_NO","BKASH_TRANS_ID","TOTAL_EXPENSE","C_ID","E_ID") VALUES(:newOrderID,SYSDATE,:Address,:phoneNo,:transactionNumber,:total,:C_ID,:newE_ID)`;
+    const bindParamsToInsertOrder = {
+      newOrderID : newOrderID,
+      Address : Address,
+      phoneNo : phoneNo,
+      transactionNumber : transactionNumber,
+      total : total,
+      C_ID : C_ID,
+      newE_ID : newE_ID
+    };
+    const resultOfInsertOrder = await runQuery(queryToInsertOrder,bindParamsToInsertOrder);
+    console.log(resultOfInsertOrder);
+    for(let i=0;i<productsDetails.length;i++)
+    {
+      // const queryToExtractP_ID = `SELECT P_ID FROM "INVENTORY"."PRODUCT" WHERE P_NAME = :P_NAME`;
+      // const bindParamsToExtractP_ID = {
+      //   P_NAME : productsDetails[i].P_NAME
+      // };
+      // const resultOfP_ID = await runQuery(queryToExtractP_ID,bindParamsToExtractP_ID);
+      // const newP_ID = resultOfP_ID.rows[0][0];
+      const queryToInsertOrderDetails = `INSERT INTO "INVENTORY"."ORDERED_PRODUCTS"("TEMP_O_ID","P_ID","QUANTITY") VALUES(:newOrderID,:newP_ID,:Quantity)`;
+      const bindParamsToInsertOrderDetails = {
+        newOrderID : newOrderID,
+        newP_ID : productsDetails[i].P_ID,
+        Quantity : productQuantity[i]
+      };
+      const resultOfInsertOrderDetails = await runQuery(queryToInsertOrderDetails,bindParamsToInsertOrderDetails);
+      console.log(resultOfInsertOrderDetails);
+      //
+    }
+    res.send({newOrderID,newE_ID});
+}
+catch(error)
+{
+  console.error("Error while INSERTING DATA : ", error);
+  res.status(500).json({message: "Error while INSERTING DATA"});
+}
+});
+
 
 app.post("/productDetails", async (req, res) => {
   const {P_ID} = req.body;
