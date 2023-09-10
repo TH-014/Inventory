@@ -10,7 +10,7 @@ export default function ProfileOfEmployeeComponents() {
   const [userData, setUserData] = React.useState(null); // [state, function to update state]
   const location = useLocation();
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem("token");
+  const accessToken = localStorage.getItem("etoken");
   // const userData = location.state && location.state.userData; // Check for undefined
 
   const ButtonWrapper = styled.div`
@@ -56,7 +56,7 @@ export default function ProfileOfEmployeeComponents() {
     console.log('Inside useEffect of profile of employee.');
     async function checkLoginStatus() {
       try {
-        const authRes = await axios.get('http://localhost:8000/auth/employee', {headers: {Authorization: `${localStorage.getItem('token')}`}});
+        const authRes = await axios.get('http://localhost:8000/auth/employee', {headers: {Authorization: `${localStorage.getItem('etoken')}`}});
         callAuth = true;
         return authRes;
       } catch (e) {
@@ -103,7 +103,7 @@ export default function ProfileOfEmployeeComponents() {
   function handleLogOut() {
     callAuth = false;
     accessGranted = false;
-    localStorage.removeItem("token");
+    localStorage.removeItem("etoken");
     navigate('/');
   }
 

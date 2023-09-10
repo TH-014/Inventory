@@ -5,8 +5,11 @@ import cors from "cors";
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
 import { ACCESS_TOKEN_SECRET } from "./config.js";
 import authRoute from "./authRoute.js";
+import otpGenerator from "otp-generator";
+import {mailOptions, transporter} from "./mail.js";
 const app = express();
 
 (async ()=> {
@@ -75,7 +78,7 @@ app.post("/productDetails", async (req, res) => {
             const resultOfProductDetails = await runQuery(queryToProductDetails,bindParamsToProductDetails);
 
             const output = extractData(resultOfProductDetails, columnsToExtract);
-            console.log(output);
+            // console.log(output);
 
             res.send(output);
 
@@ -190,12 +193,10 @@ app.post('/RegisterAsSupplier', async (req,res) => {
   const username = result2.rows.length+1;
   //const reg = '12-JAN-2023';
 
-  const insertQuery = `INSERT INTO "INVENTORY"."SUPPLIER"("S_ID","USER_NAME","S_NAME","EMAIL","PHONE_NO","PASSWORD","PHOTO","ADDRESS") VALUES(:newuId,:username,:supplierName, :email,:phoneNo,:password, :imageurl, :supplierAddress )`;
+  const insertQuery = `INSERT INTO "INVENTORY"."SUPPLIER"("S_ID","S_NAME","EMAIL","PHONE_NO","PASSWORD","PHOTO","ADDRESS") VALUES(:newuId,:supplierName, :email,:phoneNo,:password, :imageurl, :supplierAddress )`;
   console.log("this is a ID : " ,newuId);
 
   const bindParams = {
-    username: username,
-    //reg:reg,
     newuId : newuId,
     supplierName: supplierName,
     email:email,
@@ -206,6 +207,37 @@ app.post('/RegisterAsSupplier', async (req,res) => {
 };
 const result3 = await runQuery(insertQuery,bindParams);
 res.send(result3);
+
+});
+
+app.post('/RegisterAsEmployee', async (req,res) => {
+
+    //console.log(req);
+    const {employeeName, email, phoneNo,password, imageurl,employeeAddress} = req.body;
+    const hashedpwd = await bcrypt.hash(password, 10);
+    const queryToExtractUserID = `SELECT S_ID FROM "INVENTORY"."EMPLOYEE" ORDER BY E_ID DESC`;
+    const result2 =   await runQuery(queryToExtractUserID, []);
+
+    //console.log(result2);
+
+    const newuId = result2.rows.length+1;
+    const username = result2.rows.length+1;
+    //const reg = '12-JAN-2023';
+
+    const insertQuery = `INSERT INTO "INVENTORY"."EMPLOYEE"("E_ID","E_NAME","EMAIL","PHONE_NO","PASSWORD","PHOTO","ADDRESS") VALUES(:newuId,:employeeName, :email,:phoneNo,:password, :imageurl, :employeeAddress )`;
+    console.log("this is a ID : " ,newuId);
+
+    const bindParams = {
+        newuId : newuId,
+        employeeName: employeeName,
+        email:email,
+        phoneNo : phoneNo,
+        password: hashedpwd,
+        imageurl: imageurl,
+        employeeAddress: employeeAddress
+    };
+    const result3 = await runQuery(insertQuery,bindParams);
+    res.send(result3);
 
 });
 
@@ -224,14 +256,12 @@ app.post('/Register', async (req,res) => {
 
   const newuId = result2.rows.length+1;
   const username = result2.rows.length+1;
-  const reg = '12-JAN-2023';
+  // const reg = '12-JAN-2023';
 
-  const insertQuery = `INSERT INTO "INVENTORY"."CUSTOMER"("C_ID","USER_NAME","C_NAME","EMAIL","PHONE_NO","REG_DATE","PASSWORD","PHOTO","ADDRESS") VALUES(:newuId,:username,:customerName,:email,:phoneNo,:reg,:password,:imageurl,:Address)`;
+  const insertQuery = `INSERT INTO "INVENTORY"."CUSTOMER"("C_ID","C_NAME","EMAIL","PHONE_NO","REG_DATE","PASSWORD","PHOTO","ADDRESS") VALUES(:newuId,:customerName,:email,:phoneNo,SYSDATE,:password,:imageurl,:Address)`;
   console.log("this is a ID : " ,newuId);
 
   const bindParams = {
-    username: username,
-    reg:reg,
     newuId : newuId,
     customerName: customerName,
     email:email,
@@ -251,6 +281,7 @@ res.send(result3);
 app.post('/login', async (req, res) => {
   console.log("Inside post");
   const { email, password } = req.body;
+  const otp = otpGenerator.generate(8, { upperCase: true, specialChars: false, alphabets: true });
   //console.log(req.body.email);
    
   //const passwordHash = crypto.createHash('sha1').update(password).digest('hex');
@@ -266,10 +297,10 @@ const bindParams = {
   try {
     console.log('Inside try and before query');
     const result = await runQuery(query, bindParams);
-    console.log('Result : ', result);
+    // console.log('Result : ', result);
     const columnsToExtract = ['C_ID','C_NAME', 'EMAIL','PASSWORD','PHONE_NO','ADDRESS','PHOTO'];
     const output = extractData(result, columnsToExtract);
-    console.log(output);
+    // console.log(output);
     const match = await bcrypt.compare(password, output[0].PASSWORD);
     //console.log(extractData(result,columnsToExtract));
 
@@ -281,6 +312,7 @@ const bindParams = {
           }
           console.log(userInfo);
           const accessToken = jwt.sign(userInfo, ACCESS_TOKEN_SECRET, {expiresIn: '1800s'});
+          console.log('OTP: ', otp);
           res.send({output: output, accessToken: accessToken});
       } else {
           // Invalid credentials
@@ -303,10 +335,10 @@ app.post('/getCustomerData', async (req, res) => {
     try {
         console.log('Inside try and before query');
         const result = await runQuery(query, bindParams);
-        console.log('Result : ', result);
+        // console.log('Result : ', result);
         const columnsToExtract = ['C_ID','C_NAME', 'EMAIL','PHONE_NO','ADDRESS','PHOTO'];
         const output = extractData(result, columnsToExtract);
-        console.log(output);
+        // console.log(output);
         res.send(output);
     } catch (error) {
         console.error("Error during login:", error);
@@ -351,7 +383,7 @@ const bindParams = {
           const accessToken = jwt.sign(userInfo, ACCESS_TOKEN_SECRET, {expiresIn: '1800s'});
           // console.log(accessToken);
           res.send({output: output, accessToken: accessToken});
-          console.log(output);
+          // console.log(output);
       } else {
           // Invalid credentials
           res.status(401).send("Invalid username or password.");
@@ -366,7 +398,7 @@ const bindParams = {
 app.post('/getSupplierData', async (req, res) => {
     console.log("Inside getSupplierData post");
     const { sid } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     const query = 'SELECT SUPPLIER.S_ID SID,NVL(SUM(DUE),0) TOTDUE,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD, SUPPLIER.PHOTO FROM SUPPLIER LEFT JOIN CHARGES  ON (SUPPLIER.S_ID = CHARGES.S_ID) GROUP BY SUPPLIER.S_ID,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD, SUPPLIER.PHOTO HAVING SUPPLIER.S_ID = :sid';
     const bindParams = {
         sid: sid
@@ -374,12 +406,12 @@ app.post('/getSupplierData', async (req, res) => {
 
     try {
         const result = await runQuery(query, bindParams);
-        console.log(result);
+        // console.log(result);
         //console.log(result);
         const columnsToExtract = ['SID','TOTDUE','S_NAME', 'EMAIL','PHONE_NO','PHOTO'];
         const output = extractData(result, columnsToExtract);
         res.send(output);
-        console.log(output);
+        // console.log(output);
     } catch (error) {
         console.error("Error during login:", error);
         res.status(500).json({ message: "Internal server error." });
@@ -388,7 +420,7 @@ app.post('/getSupplierData', async (req, res) => {
 
 
 app.post('/loginAsEmployee', async (req, res) => {
-  console.log("Inside post");
+    console.log("Inside post");
   const { email, password } = req.body;
   const query = `SELECT E_ID,E_NAME,EMAIL,PASSWORD,PHONE_NO,TO_CHAR(JOIN_DATE,'DD-MON-YYYY') JOINDATE,ADDRESS, PHOTO FROM "INVENTORY"."EMPLOYEE" WHERE "EMAIL" = :email`;
 const bindParams = {
@@ -402,7 +434,7 @@ const bindParams = {
     //console.log(result);
     const columnsToExtract = ['E_ID','E_NAME', 'EMAIL','PASSWORD','PHONE_NO','JOINDATE','ADDRESS','PHOTO'];
     const output = extractData(result, columnsToExtract);
-    console.log(output);
+    // console.log(output);
     const match = await bcrypt.compare(password, output[0].PASSWORD);
     //console.log(extractData(result,columnsToExtract));
     console.log(match);
@@ -410,12 +442,13 @@ const bindParams = {
           // Login successful
           const userInfo = {
               userId: output[0].E_ID,
-              userRole: 'employee'
+              userRole: 'employee',
+              f2auth: 'pending'
           }
           console.log(userInfo);
           const accessToken = jwt.sign(userInfo, ACCESS_TOKEN_SECRET, {expiresIn: '36000s'});
           res.send({output: output, accessToken: accessToken});
-          console.log(output);
+          // console.log(output);
       } else {
           // Invalid credentials
           res.status(401).send("Invalid username or password.");
@@ -425,6 +458,39 @@ const bindParams = {
       console.error("Error during login:", error);
       res.status(500).json({ message: "Internal server error." });
   }
+});
+
+app.post('/sendOTP', async (req, res) => {
+    console.log("Inside sendOTP post");
+    let emailId;
+    const otp = otpGenerator.generate(8, { upperCase: true, specialChars: false, alphabets: true });
+    const query = `SELECT EMAIL FROM "INVENTORY"."EMPLOYEE" WHERE "E_ID" = :id`;
+    const bindParams = {
+        id: req.body.id
+    };
+    console.log(req.body.id);
+    try{
+        const result = await runQuery(query, bindParams);
+        console.log(result);
+        const columnsToExtract = ['E_ID'];
+        const output = extractData(result, columnsToExtract);
+        console.log(output);
+        emailId = result.rows[0][0];
+        console.log(emailId);
+        const emailBosy = `Dear User,\nAs per your request to log in to INVENTORY MANAGEMENT SYSTEM, we're sending you an OTP.\n Your OTP is ${otp}.\n`+`This OTP is valid for 5 minutes. Please don't share this OTP with anyone.\n\nRegards,\nInventory Management System`;
+        const mail = mailOptions(emailId, 'OTP for Login as Employee', emailBosy);
+        console.log('email created', mail);
+        await transporter.sendMail(mail, (error, info) => {
+            if (error) {
+                console.error('Error sending email: ', error);
+            } else {
+                console.log('Email sent: to ',emailId, info.response);
+            }
+        });
+    } catch (error) {
+        console.error("Error during login:", error);
+        res.status(500).json({ message: "Internal server error." });
+    }
 });
 
 app.post('/getEmployeeData', async (req, res) => {
@@ -442,7 +508,7 @@ app.post('/getEmployeeData', async (req, res) => {
         const columnsToExtract = ['E_ID','E_NAME', 'EMAIL','PHONE_NO','JOINDATE','ADDRESS','PHOTO'];
         const output = extractData(result, columnsToExtract);
         res.send(output);
-        console.log(output);
+        // console.log(output);
     } catch (error) {
         console.error("Error during login:", error);
         res.status(500).json({ message: "Internal server error." });
@@ -481,7 +547,7 @@ app.post('/search', async (req, res) => {
         const result = await runQuery(query, []);
         const columnsToExtract = ['P_ID', 'P_NAME', 'PRICE', 'DISCOUNT', 'DESCRIPTION', 'TYPE', 'REMAINING_ITEM', 'STORAGE_ID', 'SOLD_QUANTITY', 'PER_UNIT_CHARGE', 'PICTURE', 'RATING'];
         const output = extractData(result, columnsToExtract);
-        console.log(output);
+        // console.log(output);
         res.json(output);
     } catch (error) {
         console.error('Error fetching categories:', error);
@@ -517,7 +583,7 @@ app.post('/AddProduct',async (req, res) => {
     s_id
   } = req.body;
     console.log(req.body.status);
-    console.log(req.body);
+    // console.log(req.body);
     console.log(req.body.productName + " " + req.body.productSize + " " + req.body.productWeight + " " + req.body.productQuantity + " " + req.body.productPrice + " " + req.body.productDiscount + " " + req.body.productTemp + " " + req.body.productDescription + " " + req.body.selectedRootCategory + " " + req.body.educationalLevel + " " + req.body.fashionMadeOf + " " + req.body.fashionSize + " " + req.body.fashionColor + " " + req.body.productionDate + " " + req.body.ExpiaryDate + " " + req.body.IT_ram + " " + req.body.IT_storage + " " + req.body.IT_processor + " " + req.body.Toy_color + " " + req.body.Toy_level+req.body.imageurl);
     console.log(productName, imageurl);
 

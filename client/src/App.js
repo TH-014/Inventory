@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import ReturnLoginComponents from './ComponentOfClientPages/loginPage';
 import ReturnDashBoardComponents from './ComponentOfClientPages/DashBoardPage';
 import ReturnRegistrationComponents from './ComponentOfClientPages/RegistrationPage';
-import ReturnLoginComponents from './ComponentOfClientPages/loginPage';
 import LoginAsSupplierComponents from './ComponentOfClientPages/loginAsSupplier';
 import RegistrationAsSupplierComponents from './ComponentOfClientPages/RegistrationPageOfSupplier';
 import ProfileOfSupplierComponents from './ComponentOfClientPages/ProfileOfSupplier';
@@ -16,6 +16,8 @@ import supplierIdContext from './Context/supplierContext';
 import SearchedProductData from "./ComponentOfClientPages/searchedProduct";
 import ProductDetails from './ComponentOfClientPages/productDetails';
 import EducationalProducts from './ComponentOfClientPages/Educational';
+import EmployeeRegistrationComponents from "./ComponentOfClientPages/RegistrationPageOfEmployee";
+import OTP_Validate from "./ComponentOfClientPages/OTP_Validate";
 
 
 function App() {
@@ -40,6 +42,8 @@ function App() {
           <Route path="/searchedProduct" element={<SearchedProductData />} />
           <Route path="/productDetails" element={<ProductDetails />} />
           <Route path="/Educational" element={<EducationalProducts/>} />
+          <Route path="/RegisterAsEmployee" element={<EmployeeRegistrationComponents/>} />
+          <Route path="/otp_validate" element={<OTP_Validate/>} />
         </Routes>
       </supplierIdContext.Provider>
     </Router>

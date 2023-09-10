@@ -30,11 +30,11 @@ export default function RegistrationPageOfSupplierComponents() {
   const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
 
-  ref(storage, "product/");
+  ref(storage, "supplier/");
   const uploadFile = () => {
     // if (imageUpload == null) return;
     return new Promise((resolve, reject) => {
-      const imageRef = ref(storage, `product/${imageUpload.name + v4()}`);
+      const imageRef = ref(storage, `supplier/${imageUpload.name + v4()}`);
       uploadBytes(imageRef, imageUpload).then((snapshot) => {
         getDownloadURL(snapshot.ref).then((url) => {
           console.log(url); // this is the url of the uploaded image

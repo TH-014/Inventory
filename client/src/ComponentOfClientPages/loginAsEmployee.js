@@ -19,7 +19,7 @@ import "./loginAsEmployee.css";
          console.log('Inside useEffect of login of employee.');
          async function checkLoginStatus() {
              try {
-                 const authRes = await axios.get('http://localhost:8000/auth/employee', {headers: {Authorization: `${localStorage.getItem('token')}`}});
+                 const authRes = await axios.get('http://localhost:8000/auth/employee', {headers: {Authorization: `${localStorage.getItem('etoken')}`}});
                  callAuth = true;
                  return authRes;
              } catch (e) {
@@ -32,7 +32,7 @@ import "./loginAsEmployee.css";
              {
                  callAuth = false;
                  console.log('Authorized.', res.data.id);
-                 navigate('/ProfileOfEmployee');
+                 navigate('/otp_validate');
              }
          });
      });
@@ -46,12 +46,12 @@ import "./loginAsEmployee.css";
             password
           });
           console.log('here am i \n');
-           if(localStorage.getItem("token"))
-               localStorage.removeItem("token");
-           localStorage.setItem("token", resFromServer.data.accessToken);
+           if(localStorage.getItem("etoken"))
+               localStorage.removeItem("etoken");
+           localStorage.setItem("etoken", resFromServer.data.accessToken);
           if(resFromServer.status === 200){
             const userData = resFromServer.data.output[0];
-            navigate('/ProfileOfEmployee',{ state : {userData}});
+            navigate('/otp_validate',{ state : {userData}});
           }
           else {
             setErrorMessage(resFromServer.data.message || "Login failed!");

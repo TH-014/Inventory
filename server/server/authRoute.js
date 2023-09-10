@@ -2,6 +2,7 @@ import bodyParser from "body-parser";
 import express from "express";
 import jwt from "jsonwebtoken";
 import { ACCESS_TOKEN_SECRET } from "./config.js";
+import {mailOptions, transporter} from "./mail.js";
 
 const router = express.Router();
 
@@ -74,8 +75,14 @@ router.get('/employee', async (req, res) => {
             return res.json({ auth: false, id: 0, message: 'Failed to authenticate token.' });
         }
         console.log(decoded);
-        if (decoded.userRole === 'employee') {
+        if (decoded.userRole === 'employee' && decoded.f2auth==='verified') {
             const resobj = {auth: true, id: decoded.userId, message: 'Authorized.'};
+            console.log(resobj);
+            return res.json(resobj);
+        }
+        else if(decoded.userRole === 'employee')
+        {
+            const resobj = {auth: false, id: decoded.userId, message: 'F2Authorization required.'};
             console.log(resobj);
             return res.json(resobj);
         }
@@ -83,6 +90,19 @@ router.get('/employee', async (req, res) => {
             return res.send({ auth: false, id:0, message: 'Unauthorized user.' });
         }
     });
+});
+
+router.get('/login/admin', async (req, res) => {
+    console.log('Inside admin login function');
+//     const mail = mailOptions(req.body.email, 'Login', 'You have logged in to the system');
+//     console.log('email created', mail);
+//     await transporter.sendMail(mail, (error, info) => {
+//         if (error) {
+//             console.error('Error sending email: ', error);
+//         } else {
+//             console.log('Email sent: ', info.response);
+//         }
+//     });
 });
 
 export default router;

@@ -1,0 +1,20 @@
+[
+  {
+    "ID": 1.0,
+    "NAME": "Tanvir Hossain",
+    "PHONE_NO": "01672303000",
+    "EMAIL": "tanvir.75011@gmail.com",
+    "ADDRESS": "Room-5001, Titumir Hall",
+    "PHOTO": "https://firebasestorage.googleapis.com/v0/b/inventory-b0b4e.appspot.com/o/admin%2F132905454.jpg?alt=media&token=14a6cbcb-eb06-495f-ba20-5c3775e107be",
+    "PASSWORD": "admin@tanvir_14"
+  },
+  {
+    "ID": 2.0,
+    "NAME": "Md Tanvirul Islam Turad",
+    "PHONE_NO": "01303516480",
+    "EMAIL": "turad8383@gmail.com",
+    "ADDRESS": "Room-5001, Titumir Hall",
+    "PHOTO": "https://firebasestorage.googleapis.com/v0/b/inventory-b0b4e.appspot.com/o/admin%2F142145507.jpg?alt=media&token=ee19c710-a43d-4356-bcef-dafb3dc8a19d",
+    "PASSWORD": "admin@tanvir_11"
+  }
+]
