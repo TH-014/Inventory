@@ -6,9 +6,12 @@ import cors from "cors";
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { ACCESS_TOKEN_SECRET } from "./Authentication/Config.js";
-
+import { ACCESS_TOKEN_SECRET } from "./config.js";
+import authRoute from "./authRoute.js";
 const app = express();
+app.use('/auth', authRoute);
+
+
 
 (async ()=> {
     try{
@@ -39,21 +42,111 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //     }
 // });
 
+app.post("/PlacedOrder", async (req, res) => {
+  const {E_ID} = req.body;
+  console.log(E_ID);
+  try{
+    const queryToExtractDataFromTempOrderTable = `SELECT * FROM "INVENTORY"."TEMP_ORDER" WHERE E_ID = :E_ID`;
+    const bindParamsToExtractDataFromTempOrderTable = {
+      E_ID : E_ID
+    };
+    const resultOfDataFromTempOrderTable = await runQuery(queryToExtractDataFromTempOrderTable,bindParamsToExtractDataFromTempOrderTable);
+    console.log(resultOfDataFromTempOrderTable.rows[0]);
+    res.send(resultOfDataFromTempOrderTable);
+  }
+  catch(error)
+  {
+    console.error("Error while taking the data from temp order : ", error);
+    res.status(500).json({message: "Error while taking the data from temp order"});
+  }
+}
+);
+
+
+
+app.post("/deleteOrder", async (req, res) => {
+  let selectedArray = req.body.selectedArray;
+  console.log(selectedArray);
+  try{
+    for(let i=0;i<selectedArray.length;i++)
+    {
+        const queryToDeleteDataFromTempOrderTable = `DELETE FROM "INVENTORY"."TEMP_ORDER" WHERE TEMP_O_ID = :TEMP_O_ID`;
+        const bindParamsToDeleteDataFromTempOrderTable = {
+          TEMP_O_ID : selectedArray[i]
+        };
+        const resultOfDeleteDataFromTempOrderTable = await runQuery(queryToDeleteDataFromTempOrderTable,bindParamsToDeleteDataFromTempOrderTable);
+        console.log(resultOfDeleteDataFromTempOrderTable);
+
+        res.send('data deleted'); 
+    }
+  }
+  catch(error)
+  {
+    console.error("Error while taking the data from temp order : ", error);
+    res.status(500).json({message: "Error while taking the data from temp order"});
+  }
+}
+);
+
+
+
+
+app.post("/acceptOrder", async (req, res) => {
+  let selectedArray = req.body.selectedArray;
+  console.log(selectedArray);
+  try{
+    for(let i=0;i<selectedArray.length;i++)
+    {
+      const queryToExtractDataFromTempOrderTable = `SELECT * FROM "INVENTORY"."TEMP_ORDER" WHERE TEMP_O_ID = :TEMP_O_ID`;
+      const bindParamsToExtractDataFromTempOrderTable = {
+        TEMP_O_ID : selectedArray[i]
+      };
+      const resultOfDataFromTempOrderTable = await runQuery(queryToExtractDataFromTempOrderTable,bindParamsToExtractDataFromTempOrderTable);
+      console.log(resultOfDataFromTempOrderTable.rows[0]);
+
+        const queryToInsertDataIntoOrderTable = `INSERT INTO "INVENTORY"."ORDER"("C_ID","O_ID","ORDER_DATE","E_ID","SHIPPING_ADDRESS","BKASH_MOB_NO","BKASH_TRANS_ID")
+         VALUES(:customerID,:newOrderID,:orderDate,:employeeID,:shippingAddress,:bkash_mob_no,:bkash_trans_id)`;
+        const bindParamsToInsertDataIntoOrderTable = {
+          customerID : resultOfDataFromTempOrderTable.rows[0][1],
+           newOrderID : selectedArray[i],
+          orderDate : resultOfDataFromTempOrderTable.rows[0][2],
+          employeeID : resultOfDataFromTempOrderTable.rows[0][7],
+          shippingAddress : resultOfDataFromTempOrderTable.rows[0][3],
+          bkash_mob_no : resultOfDataFromTempOrderTable.rows[0][4],
+          bkash_trans_id : resultOfDataFromTempOrderTable.rows[0][5]
+        };
+        const resultOfInsertDataIntoOrderTable = await runQuery(queryToInsertDataIntoOrderTable,bindParamsToInsertDataIntoOrderTable);
+        console.log(resultOfInsertDataIntoOrderTable);
+        const queryToDeleteDataFromTempOrderTable = `DELETE FROM "INVENTORY"."TEMP_ORDER" WHERE TEMP_O_ID = :TEMP_O_ID`;
+        const bindParamsToDeleteDataFromTempOrderTable = {
+          TEMP_O_ID : selectedArray[i]
+        };
+        const resultOfDeleteDataFromTempOrderTable = await runQuery(queryToDeleteDataFromTempOrderTable,bindParamsToDeleteDataFromTempOrderTable);
+        console.log(resultOfDeleteDataFromTempOrderTable);
+
+        res.send(resultOfInsertDataIntoOrderTable); 
+    }
+  }
+  catch(error)
+  {
+    console.error("Error while taking the data from temp order : ", error);
+    res.status(500).json({message: "Error while taking the data from temp order"});
+  }
+}
+);
+
+
+
 app.post("/insertOrder", async (req, res) => {
   const {Address,phoneNo,transactionNumber,total,productQuantity, productsDetails} = req.body;
   console.log(req.body);
   try{
-    const queryToExtractOrderID = `SELECT COUNT(*)+1 FROM "INVENTORY"."TEMP_ORDER"`;
-    const resultOfOrderID = await runQuery(queryToExtractOrderID, []);
-    const newOrderID = resultOfOrderID.rows[0][0];
-    console.log(newOrderID);
     const queryToExtractE_ID = `SELECT EID FROM (SELECT EMPLOYEE.E_ID EID FROM EMPLOYEE LEFT JOIN TEMP_ORDER ON( EMPLOYEE.E_ID = TEMP_ORDER.E_ID) GROUP BY EMPLOYEE.E_ID ORDER BY COUNT(TEMP_ORDER.TEMP_O_ID) ASC, EMPLOYEE.E_ID ASC) WHERE ROWNUM = 1`;
     const resultOfE_ID = await runQuery(queryToExtractE_ID, []);
     const newE_ID = resultOfE_ID.rows[0][0];
     const  C_ID = 1; // We need to change this to the customer id of the logged in user by using the token
-    const queryToInsertOrder = `INSERT INTO "INVENTORY"."TEMP_ORDER"("TEMP_O_ID","PLACE_DATE","SHIPPING_ADDRESS","BKASH_MOB_NO","BKASH_TRANS_ID","TOTAL_EXPENSE","C_ID","E_ID") VALUES(:newOrderID,SYSDATE,:Address,:phoneNo,:transactionNumber,:total,:C_ID,:newE_ID)`;
+    const queryToInsertOrder = `INSERT INTO "INVENTORY"."TEMP_ORDER"("TEMP_O_ID","PLACE_DATE","SHIPPING_ADDRESS","BKASH_MOB_NO","BKASH_TRANS_ID","TOTAL_EXPENSE","C_ID","E_ID") VALUES(SEQ_O_ID.NEXTVAL,SYSDATE,:Address,:phoneNo,:transactionNumber,:total,:C_ID,:newE_ID)`;
     const bindParamsToInsertOrder = {
-      newOrderID : newOrderID,
       Address : Address,
       phoneNo : phoneNo,
       transactionNumber : transactionNumber,
@@ -63,14 +156,20 @@ app.post("/insertOrder", async (req, res) => {
     };
     const resultOfInsertOrder = await runQuery(queryToInsertOrder,bindParamsToInsertOrder);
     console.log(resultOfInsertOrder);
+    const queryToExtractOrderID = `SELECT TEMP_O_ID FROM "INVENTORY"."TEMP_ORDER" WHERE BKASH_TRANS_ID = :transactionNumber AND C_ID = :C_ID AND E_ID = :newE_ID AND TOTAL_EXPENSE = :total`;
+    const bindParamsToExtractOrderID = {
+      transactionNumber : transactionNumber,
+      C_ID : C_ID,
+      newE_ID : newE_ID,
+      total : total
+    };
+
+
+    const resultOfOrderID = await runQuery(queryToExtractOrderID, bindParamsToExtractOrderID);
+    const newOrderID = resultOfOrderID.rows[0][0];
+    console.log(newOrderID);
     for(let i=0;i<productsDetails.length;i++)
     {
-      // const queryToExtractP_ID = `SELECT P_ID FROM "INVENTORY"."PRODUCT" WHERE P_NAME = :P_NAME`;
-      // const bindParamsToExtractP_ID = {
-      //   P_NAME : productsDetails[i].P_NAME
-      // };
-      // const resultOfP_ID = await runQuery(queryToExtractP_ID,bindParamsToExtractP_ID);
-      // const newP_ID = resultOfP_ID.rows[0][0];
       const queryToInsertOrderDetails = `INSERT INTO "INVENTORY"."ORDERED_PRODUCTS"("TEMP_O_ID","P_ID","QUANTITY") VALUES(:newOrderID,:newP_ID,:Quantity)`;
       const bindParamsToInsertOrderDetails = {
         newOrderID : newOrderID,
@@ -79,7 +178,6 @@ app.post("/insertOrder", async (req, res) => {
       };
       const resultOfInsertOrderDetails = await runQuery(queryToInsertOrderDetails,bindParamsToInsertOrderDetails);
       console.log(resultOfInsertOrderDetails);
-      //
     }
     res.send({newOrderID,newE_ID});
 }
@@ -89,6 +187,30 @@ catch(error)
   res.status(500).json({message: "Error while INSERTING DATA"});
 }
 });
+
+app.post("/showReviews", async (req, res) => {
+  const {P_ID} = req.body;
+  console.log(P_ID);
+  try{
+      const queryToExtractDataFromReviewTable = `SELECT * FROM "INVENTORY"."REVIEWS" LEFT JOIN "INVENTORY"."CUSTOMER" ON(REVIEWS.C_ID = CUSTOMER.C_ID) JOIN "INVENTORY"."PRODUCT" ON(REVIEWS.P_ID= PRODUCT.P_ID) WHERE REVIEWS.P_ID = :P_ID`;
+      const bindParamsToExtractDataFromReviewTable = {
+        P_ID : P_ID
+      };
+      const resultOfDataFromReviewTable = await runQuery(queryToExtractDataFromReviewTable,bindParamsToExtractDataFromReviewTable);
+      console.log(resultOfDataFromReviewTable);
+      res.send(resultOfDataFromReviewTable);
+  }
+  catch(error)
+  {
+    console.error("Error while taking the data from review : ", error);
+    res.status(500).json({message: "Error while taking the data from review"});
+  }
+}
+);
+
+
+
+
 
 
 app.post("/productDetails", async (req, res) => {
@@ -104,13 +226,16 @@ app.post("/productDetails", async (req, res) => {
       const typeOfProduct = resultOfTypeCheck.rows[0][0];
       //console.log(typeOfProduct);
 
+
+
       let queryToProductDetails = `SELECT * FROM "INVENTORY"."PRODUCT" `;
       let columnsToExtract = [];
     
       if(typeOfProduct === 'EDUCATIONAL')
       {
             queryToProductDetails += 'NATURAL JOIN "INVENTORY"."EDUCATIONAL" WHERE P_ID = :P_ID';
-            columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','LEVEL','PICTURE','RATING'];
+          //  columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','LEVEL','PICTURE','RATING'];
+          columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','LEVEL','PICTURE','RATING'];
       }
       else if(typeOfProduct === 'FASHION')
       {
@@ -173,9 +298,25 @@ app.get("/Educational", async (req, res) => {
 
 
 
+app.get("/itproducts", async (req, res) => {
+  try {
+      const queryToExtractEduProduct = 'SELECT * FROM "INVENTORY"."PRODUCT" NATURAL JOIN "INVENTORY"."IT_PRODUCTS"';
+      const resultOfEduProd = await runQuery(queryToExtractEduProduct, []);
+      const columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','RAM(GB)','PICTURE','RATING'];
+      const output = extractData(resultOfEduProd, columnsToExtract);
+      //console.log(output);
+      res.send(output);
+  } catch (error) {
+      console.error('Error fetching Edu products:', error);
+      res.status(500).json({ error: 'Error fetching Edu products' });
+  }
+});
+
+
+
 app.get("/TopSoldProducts", async (req, res) => {
   try {
-    const query = 'SELECT * FROM (SELECT * FROM PRODUCT ORDER BY SOLD_QUANTITY DESC) WHERE ROWNUM <= 5';
+    const query = 'SELECT * FROM (SELECT * FROM PRODUCT ORDER BY SOLD_QUANTITY DESC) WHERE ROWNUM <= 10';
     const queryData = await runQuery(query, []);
     //console.log(queryData)
     const output = extractData(queryData, [
@@ -197,7 +338,7 @@ app.get("/TopSoldProducts", async (req, res) => {
 
 app.get("/TopRatedProducts", async (req, res) => {
   try {
-    const query = 'SELECT * FROM (SELECT * FROM PRODUCT ORDER BY RATING DESC) WHERE ROWNUM <= 5';
+    const query = 'SELECT * FROM (SELECT * FROM PRODUCT ORDER BY RATING DESC) WHERE ROWNUM <= 10';
     const queryData = await runQuery(query, []);
     //console.log(queryData)
     const output = extractData(queryData, [
@@ -215,6 +356,74 @@ app.get("/TopRatedProducts", async (req, res) => {
     res.status(500).json({ error: "Error fetching TOP RATED products" });
   }
 });
+
+
+
+
+app.post("/myWishList1", async (req, res) => {
+  const wishData = req.body.wishData;
+  console.log(wishData);
+  try{
+      const queryToExtractDataFromWishList = `SELECT * FROM "INVENTORY"."WISHLIST" NATURAL JOIN "INVENTORY"."PRODUCT" WHERE "WISHLIST".C_ID = :C_ID`;
+      const bindParamsToExtractDataFromWishList = {
+        C_ID : wishData.C_ID1
+      };
+      const resultOfDataFromWishList = await runQuery(queryToExtractDataFromWishList,bindParamsToExtractDataFromWishList);
+      //console.log(resultOfDataFromWishList.data);
+      res.send(resultOfDataFromWishList);
+  }
+  catch(error)
+  {
+    console.error("Error while taking the data from WISHLIST JOIN PRODUCT  : ", error);
+    res.status(500).json({message: "Error while taking the data from products"});
+  }
+}
+);
+
+app.post("/myWishList", async (req, res) => {
+  const {C_ID1} = req.body;
+  console.log(C_ID1);
+  try{
+      const queryToExtractDataFromWishList = `SELECT * FROM "INVENTORY"."WISHLIST" NATURAL JOIN "INVENTORY"."PRODUCT" WHERE "WISHLIST".C_ID = :C_ID1`;
+      const bindParamsToExtractDataFromWishList = {
+        C_ID1 : C_ID1
+      };
+      const resultOfDataFromWishList = await runQuery(queryToExtractDataFromWishList,bindParamsToExtractDataFromWishList);
+      //console.log(resultOfDataFromWishList);
+      res.send(resultOfDataFromWishList);
+  }
+  catch(error)
+  {
+    console.error("Error while taking the data from WISHLIST JOIN PRODUCT  : ", error);
+    res.status(500).json({message: "Error while taking the data from products"});
+  }
+}
+);
+
+
+
+app.post("/wishList", async (req, res) => {
+   const {P_ID} = req.body;
+    console.log(P_ID);
+    try{
+        let C_ID = 1; // We need to change this to the customer id of the logged in user by using the token
+        const queryToInsertIntoWishList = `INSERT INTO "INVENTORY"."WISHLIST"("C_ID","P_ID") VALUES(:C_ID,:P_ID)`;
+        const bindParamsToInsertIntoWishList = {
+          C_ID : C_ID,
+          P_ID : P_ID
+        };
+        const resultOfInsertIntoWishList = await runQuery(queryToInsertIntoWishList,bindParamsToInsertIntoWishList);
+        console.log(resultOfInsertIntoWishList);
+        res.send(resultOfInsertIntoWishList);
+    }catch(error)
+    {
+      console.error("Error while taking the data from employees : ", error);
+      res.status(500).json({message: "Error while taking the data from products"});
+    }
+}
+);
+  
+
 
 
 
@@ -239,7 +448,7 @@ app.post('/search', async (req, res) => {
 
 
 
-app.post('/Trial',async (req, res) => {
+app.post('/',async (req, res) => {
   try{
             const array = [];
             let result = await runQuery("select * from PRODUCT WHERE PRICE > 20000",[]);
@@ -382,12 +591,6 @@ const bindParams = {
 app.post('/loginAsSupplier', async (req, res) => {
   console.log("Inside post");
   const { email, password } = req.body;
-  //console.log(req.body.email);
-   
-  //const passwordHash = crypto.createHash('sha1').update(password).digest('hex');
-  //console.log(passwordHash)
-
- // const query = 'SELECT * FROM "INVENTORY"."SUPPLIER" WHERE "EMAIL" = :email AND "PASSWORD" = :password';
 const query = 'SELECT SUPPLIER.S_ID SID,NVL(SUM(DUE),0) TOTDUE,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD,SUPPLIER.PHOTO FROM SUPPLIER LEFT JOIN CHARGES  ON (SUPPLIER.S_ID = CHARGES.S_ID) GROUP BY SUPPLIER.S_ID,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD,SUPPLIER.PHOTO HAVING EMAIL = :email'; // WE NEED TO MAKE THE EMAIL UNIQUE KEY
 const bindParams = {
     email: email
@@ -438,33 +641,35 @@ const bindParams = {
 });
 
 
+
 app.post('/loginAsEmployee', async (req, res) => {
   console.log("Inside post");
   const { email, password } = req.body;
-  //console.log(req.body.email);
-   
-  //const passwordHash = crypto.createHash('sha1').update(password).digest('hex');
-  //console.log(passwordHash)
-
-  const query = `SELECT E_ID,E_NAME,EMAIL,PASSWORD,PHONE_NO,TO_CHAR(JOIN_DATE,'DD-MON-YYYY') JOINDATE,ADDRESS FROM "INVENTORY"."EMPLOYEE" WHERE "EMAIL" = :email AND "PASSWORD" = :password`;
-//const query = 'SELECT SUPPLIER.S_ID SID,NVL(SUM(DUE),0) TOTDUE,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD FROM SUPPLIER LEFT JOIN CHARGES  ON (SUPPLIER.S_ID = CHARGES.S_ID) GROUP BY SUPPLIER.S_ID,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD HAVING EMAIL = :email AND PASSWORD = :password';
+  const query = `SELECT E_ID,E_NAME,EMAIL,PASSWORD,PHONE_NO,TO_CHAR(JOIN_DATE,'DD-MON-YYYY') JOINDATE,ADDRESS, PHOTO FROM "INVENTORY"."EMPLOYEE" WHERE "EMAIL" = :email`;
 const bindParams = {
-    email: email,
-    password: password
+    email: email
 };
 
 
   try {
-    console.log('Inside try abd before query');
+    console.log('Inside try and before query');
     const result = await runQuery(query, bindParams);
     //console.log(result);
-    const columnsToExtract = ['E_ID','E_NAME', 'EMAIL','PASSWORD','PHONE_NO','JOINDATE','ADDRESS'];
+    const columnsToExtract = ['E_ID','E_NAME', 'EMAIL','PASSWORD','PHONE_NO','JOINDATE','ADDRESS','PHOTO'];
     const output = extractData(result, columnsToExtract);
+    console.log(output);
+    const match = await bcrypt.compare(password, output[0].PASSWORD);
     //console.log(extractData(result,columnsToExtract));
-
-      if (result &&result.rows.length > 0) {
+    console.log(match);
+      if (match) {
           // Login successful
-          res.send(output);
+          const userInfo = {
+              userId: output[0].E_ID,
+              userRole: 'employee'
+          }
+          console.log(userInfo);
+          const accessToken = jwt.sign(userInfo, ACCESS_TOKEN_SECRET, {expiresIn: '36000s'});
+          res.send({output: output, accessToken: accessToken});
           console.log(output);
       } else {
           // Invalid credentials
@@ -476,6 +681,68 @@ const bindParams = {
       res.status(500).json({ message: "Internal server error." });
   }
 });
+
+app.post('/getEmployeeData', async (req, res) => {
+    console.log("Inside getEmployeeData post");
+    const { eid } = req.body;
+
+    const query = `SELECT E_ID,E_NAME,EMAIL,PASSWORD,PHONE_NO,TO_CHAR(JOIN_DATE,'DD-MON-YYYY') JOINDATE,ADDRESS, PHOTO FROM "INVENTORY"."EMPLOYEE" WHERE "E_ID" = :eid`;
+    const bindParams = {
+        eid: eid
+    };
+    try {
+        console.log('Inside try and before query');
+        const result = await runQuery(query, bindParams);
+        //console.log(result);
+        const columnsToExtract = ['E_ID','E_NAME', 'EMAIL','PHONE_NO','JOINDATE','ADDRESS','PHOTO'];
+        const output = extractData(result, columnsToExtract);
+        res.send(output);
+        console.log(output);
+    } catch (error) {
+        console.error("Error during login:", error);
+        res.status(500).json({ message: "Internal server error." });
+    }
+});
+
+
+// app.post('/loginAsEmployee', async (req, res) => {
+//   console.log("Inside post");
+//   const { email, password } = req.body;
+//   //console.log(req.body.email);
+   
+//   //const passwordHash = crypto.createHash('sha1').update(password).digest('hex');
+//   //console.log(passwordHash)
+
+//   const query = `SELECT E_ID,E_NAME,EMAIL,PASSWORD,PHONE_NO,TO_CHAR(JOIN_DATE,'DD-MON-YYYY') JOINDATE,ADDRESS FROM "INVENTORY"."EMPLOYEE" WHERE "EMAIL" = :email AND "PASSWORD" = :password`;
+// //const query = 'SELECT SUPPLIER.S_ID SID,NVL(SUM(DUE),0) TOTDUE,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD FROM SUPPLIER LEFT JOIN CHARGES  ON (SUPPLIER.S_ID = CHARGES.S_ID) GROUP BY SUPPLIER.S_ID,SUPPLIER.S_NAME, SUPPLIER.EMAIL,SUPPLIER.PHONE_NO,SUPPLIER.PASSWORD HAVING EMAIL = :email AND PASSWORD = :password';
+// const bindParams = {
+//     email: email,
+//     password: password
+// };
+
+
+//   try {
+//     console.log('Inside try abd before query');
+//     const result = await runQuery(query, bindParams);
+//     //console.log(result);
+//     const columnsToExtract = ['E_ID','E_NAME', 'EMAIL','PASSWORD','PHONE_NO','JOINDATE','ADDRESS'];
+//     const output = extractData(result, columnsToExtract);
+//     //console.log(extractData(result,columnsToExtract));
+
+//       if (result &&result.rows.length > 0) {
+//           // Login successful
+//           res.send(output);
+//           console.log(output);
+//       } else {
+//           // Invalid credentials
+//           res.status(401).send("Invalid username or password.");
+//       }
+
+//   } catch (error) {
+//       console.error("Error during login:", error);
+//       res.status(500).json({ message: "Internal server error." });
+//   }
+// });
 
 
 app.get('/categories', (req, res) => {
@@ -525,43 +792,16 @@ app.post('/AddProduct',async (req, res) => {
     s_id
   } = req.body;
     console.log(req.body.status);
-    // for (const entry of req.body.entries()) {
-    //   console.log(entry);
-    // }
+
     console.log(req.body.productName + " " + req.body.productSize + " " + req.body.productWeight + " " + req.body.productQuantity + " " + req.body.productPrice + " " + req.body.productDiscount + " " + req.body.productTemp + " " + req.body.productDescription + " " + req.body.selectedRootCategory + " " + req.body.educationalLevel + " " + req.body.fashionMadeOf + " " + req.body.fashionSize + " " + req.body.fashionColor + " " + req.body.productionDate + " " + req.body.ExpiaryDate + " " + req.body.IT_ram + " " + req.body.IT_storage + " " + req.body.IT_processor + " " + req.body.Toy_color + " " + req.body.Toy_level);
-   // const name = req.body.productName;
-    //console.log(name);
-  //const passwordHash = crypto.createHash('sha1').update(password).digest('hex');
 
   const queryToExtractProductID = `SELECT NVL(P_ID,0) FROM "INVENTORY"."PRODUCT" WHERE P_NAME = :pName`;
-  // const queryToExtractProductID = `BEGIN
-  //     GET_PRODUCT_ID(:pName);
-  // END;`;
 
  const bindParams = {
-    //picture: picture,
     pName: productName
-    // pSize:pSize,
-    // pWeight:pWeight,
-    // quantity:quantity,
-    // price:price,
-    // discount:discount,
-    // prefTemp:prefTemp,
-    // description:description,
-    // type:type,
-    // elevel:elevel,
-    // madeOf:madeOf,
-    // fcolor:fcolor,
-    // prodDate:prodDate,
-    // expDate:expDate,
-    // ram:ram,
-    // storage:storage,
-    // processor:processor,
-    // tcolor:tcolor,
-    // tlevel:tlevel,
-    // s_id:s_id
+
 };
-//console.log(bindParams['pName']);
+
 
 const queryToExtractInvoiceNo = `SELECT * FROM "INVENTORY"."SUPPLIES"`;
 const result4 =   await runQuery(queryToExtractInvoiceNo, []);

@@ -18,6 +18,7 @@ import Review, { total } from './Review';
 import addressForm from './AddressForm';
 import { ProductsInCart } from './Trial';
 import { productQuantity } from './Review';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright() {
   return (
@@ -54,7 +55,9 @@ export let addresses = [];
 export let productsDetails = [];//JSON.parse(localStorage.getItem('ProductsInCart'));
 
 export default function Checkout() {
+  const navigate = useNavigate();
   const [activeStep, setActiveStep] = React.useState(0);
+  let orderID ;
 
   const  handleNext = async (e) => {
     e.preventDefault();   /// it was not here 
@@ -87,27 +90,6 @@ export default function Checkout() {
         }
     }
     else if(activeStep === 1){
-
-        
-        //   if(localStorage.getItem('ProductsInCart') !== null){
-        //     // const products = JSON.parse(localStorage.getItem('ProductsInCart'));
-        //     // console.log('products : ' , products[0]);
-        //     // for(let i = 0; i < products.length; i++){
-        //     //     const P_ID = products[i];
-        //     //    if( P_ID!== null) {const resFromServer = await axios.post('http://localhost:8000/productDetails',{ P_ID}); /// write the code in server
-        //     // //    if(localStorage.getItem('ProductsInCart') !== null) {  ///check whether it is null
-        //     // //     console.log('inside if');
-        //     // //     productsDetails = JSON.parse(localStorage.getItem('ProductsInCart')); /// checking whether it is assigned before...... 
-        //     // //   }       
-        //     // console.log('resFromServer.data : ' , resFromServer.data);
-        //        productsDetails = JSON.parse(localStorage.getItem('ProductsInCart'));
-        //     }
-
-        //   }
-        // }
-
-
-
         setActiveStep( 2);
     }
     else if(activeStep === 2){
@@ -119,7 +101,8 @@ export default function Checkout() {
             const phoneNo = localStorage.getItem('phoneNo');
             const transactionNumber = localStorage.getItem('transactionNumber');
             const resFromServer = await axios.post('http://localhost:8000/insertOrder',{Address,phoneNo,transactionNumber,total,productQuantity, productsDetails});
-           console.log('resFromServer.data : ' , resFromServer.data);
+            orderID = resFromServer.data[0].newOrderID;
+            console.log('resFromServer.data : ' , resFromServer.data);
 
         }catch(error)
         {
@@ -127,19 +110,6 @@ export default function Checkout() {
         }
         console.log('from local storage : ' , localStorage.getItem('phoneNo'));
         console.log('from local storage : ' , localStorage.getItem('transactionNumber'));
-
-
-        //  payments = [
-        //     { name: 'Card type', detail: 'Visa' },
-        //     { name: 'Card holder', detail: `${localStorage.getItem('cardName')}` },
-        //     { name: 'Card number', detail: localStorage.getItem('cardNumber') },
-        //     { name: 'Expiry date', detail: localStorage.getItem('expDate') },
-        //   ];
-
-        
-
-
-
 
             
             localStorage.removeItem('firstName');
@@ -188,14 +158,7 @@ export default function Checkout() {
     }
    // setActiveStep(activeStep + 1);
   };
-//   const handleNextOfFormAddress = () => {
-//    // getAddressForm();
-    
-//   };
-//   const handleNextOfFormPayment = () => {
-//     //AddressForm();
-//     setActiveStep( 2);
-//   };
+
 
   const handleBack = () => {
     //// Here you need to remove the storage data from the local storage
@@ -228,6 +191,12 @@ export default function Checkout() {
 
    
     setActiveStep(activeStep - 1);
+  };
+
+
+  const handleBackToHome = () => {
+    //// Here you need to remove the storage data from the local storage
+    navigate('/');
   };
 
   return (
@@ -269,17 +238,17 @@ export default function Checkout() {
                 Your Total Cost is : $ {total.toFixed(2)}
               </Typography>
               <Typography variant="subtitle1">
-                Your order number is #2001539. We have emailed your order
+                Your order number is # 20450{orderID} . We have emailed your order
                 confirmation, and will send you an update when your order has
                 shipped.
               </Typography>
-              {/* <Button
+              <Button
                   variant="contained"
-                  onClick= {handleNext}
+                  onClick= {handleBackToHome}
                   sx={{ mt: 3, ml: 1 }}
                 >
-                  {activeStep === steps.length - 1 ? 'Go for payment' : 'Next'}
-                </Button> */}
+                  Back to Home
+                </Button>
             </React.Fragment>
           ) : (
             <React.Fragment>

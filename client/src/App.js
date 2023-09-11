@@ -45,6 +45,10 @@ import ProductDetails from './ComponentOfClientPages/productDetails';
 import EducationalProducts from './ComponentOfClientPages/Educational';
 import AddressForm from './ComponentOfClientPages/AddressForm';
 import Checkout from './ComponentOfClientPages/Checkout';
+import EnhancedTable from './ComponentOfClientPages/TableForEmployeeOfOrder';
+import ITProducts from './ComponentOfClientPages/IT_Products';
+import ShowReviews from './ComponentOfClientPages/showReviews';
+import WishedProducts from './ComponentOfClientPages/myWishList';
 
 
 function App() {
@@ -65,12 +69,16 @@ function App() {
           <Route path="/loginAsEmployee" element={<LoginAsEmployeeComponents />} />
           <Route path="/ProfileOfEmployee" element={<ProfileOfEmployeeComponents />} />
           <Route path="/AddProduct" element={<AddProduct />} />
-          <Route path="/Trial" element={<Album />} />
+          <Route path="/" element={<Album />} />
           <Route path="/searchedProduct" element={<SearchedProductData />} />
           <Route path="/productDetails" element={<ProductDetails />} />
           <Route path="/Educational" element={<EducationalProducts/>} />
+          <Route path="/IT_Products" element={<ITProducts/>} />
           <Route path="/AddressForm" element={<AddressForm/>} />
           <Route path="/Checkout" element={<Checkout/>} />
+          <Route path="/Table" element={<EnhancedTable />} />
+          <Route path = "/showReviews" element = {<ShowReviews/>} />
+          <Route path = "/myWishList" element = {<WishedProducts/>} />
         </Routes>
       </supplierIdContext.Provider>
     </Router>

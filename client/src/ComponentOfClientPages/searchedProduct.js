@@ -26,7 +26,12 @@ export default function SearchedProductData() {
    // Check for undefined
     productCards = location.state && location.state.productData;
   console.log(productCards);
-
+  const handleWishListButtonClick = async(P_ID) => {
+    console.log(P_ID);
+    const resFromServer = await axios.post('http://localhost:8000/wishList',{P_ID}); /// write the code in server
+    console.log(resFromServer);
+    alert('The product has been added to your WishList.');
+  };
   
   const handleDetailsButtonClick = async (P_ID) => {
     console.log(P_ID);
@@ -39,17 +44,30 @@ export default function SearchedProductData() {
 
 
   const handleAddToCartButtonClick = async (P_ID) => {
+    //localStorage.removeItem('ProductsInCart');
     if(localStorage.getItem('ProductsInCart') !== null) {  ///check whether it is null
-  
-      ProductsInCart = localStorage.getItem('ProductsInCart'); /// checking whether it is assigned before...... 
+      console.log('inside if');
+      ProductsInCart = JSON.parse(localStorage.getItem('ProductsInCart')); /// checking whether it is assigned before...... 
     }
+    console.log(P_ID);
+    console.log(ProductsInCart);
+    const resFromServer = await axios.post('http://localhost:8000/productDetails',{ P_ID});
+    if(ProductsInCart === null) {
+      ProductsInCart = [];
+      console.log('inside if1');
+    }
+    ProductsInCart.push(resFromServer.data[0]);
+    //ProductsInCart[ProductsInCart.length] = P_ID;
+    console.log(ProductsInCart);
+    //localStorage.removeItem('ProductsInCart');
   
-    ProductsInCart.push(P_ID);
-    localStorage.setItem('ProductsInCart',ProductsInCart); /// basicallllly we are overriding the array again and again .................
+  
+   
+    localStorage.setItem('ProductsInCart',JSON.stringify(ProductsInCart)); /// basicallllly we are overriding the array again and again .................
    // console.log('inside get',localStorage.getItem('ProductsInCart')[0]);
     //localStorage.removeItem('ProductsInCart');
     //console.log(localStorage.getItem('ProductsInCart')[0]);
-    //alert('You clicked the Order Now Button.');
+    alert('The product has been added to your cart.');
   };
   const donothing = async () => {
     alert('You clicked the Order Now Button.');
@@ -127,8 +145,9 @@ export default function SearchedProductData() {
 
                       </CardContent>
                       <CardActions>
+                      <Button size="small" onClick={()=>handleWishListButtonClick(card.P_ID)}>WishList</Button>
                       <Button size="small" onClick={()=>handleDetailsButtonClick(card.P_ID)}>Details</Button>
-                    <Button size="small" onClick={()=>handleAddToCartButtonClick(card.P_ID)}>Order Now</Button>
+                      <Button size="small" onClick={()=>handleAddToCartButtonClick(card.P_ID)}>In Cart</Button>
                       </CardActions>
                     </Card>
                   </Grid>
