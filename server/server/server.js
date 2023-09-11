@@ -576,6 +576,162 @@ app.post('/getEmployeeData', async (req, res) => {
     }
 });
 
+app.post('/login/inventory/admin', async (req, res) => {
+    console.log("Inside post");
+    const { email, password } = req.body;
+    const query = `SELECT ID,NAME,EMAIL,PASSWORD,PHONE_NO,ADDRESS, PHOTO FROM "INVENTORY"."ADMIN" WHERE "EMAIL" = :email`;
+    const bindParams = {
+        email: email
+    };
+
+
+    try {
+        console.log('Inside try and before query');
+        const result = await runQuery(query, bindParams);
+        //console.log(result);
+        const columnsToExtract = ['ID','NAME', 'EMAIL','PASSWORD','PHONE_NO','ADDRESS','PHOTO'];
+        const output = extractData(result, columnsToExtract);
+        // console.log(output);
+        const match = await bcrypt.compare(password, output[0].PASSWORD);
+        //console.log(extractData(result,columnsToExtract));
+        console.log(match);
+        if (match) {
+            // Login successful
+            const userInfo = {
+                userId: output[0].ID,
+                userRole: 'admin',
+                f2auth: 'pending'
+            }
+            console.log(userInfo);
+            const accessToken = jwt.sign(userInfo, ACCESS_TOKEN_SECRET, {expiresIn: '36000s'});
+            res.send({output: output, accessToken: accessToken});
+            // console.log(output);
+        } else {
+            // Invalid credentials
+            res.status(401).send("Invalid username or password.");
+        }
+
+    } catch (error) {
+        console.error("Error during login:", error);
+        res.status(500).json({ message: "Internal server error." });
+    }
+});
+
+app.post('/sendOTPadmin', async (req, res) => {
+    console.log("Inside sendOTP admin post");
+    let emailId;
+    const otp = otpGenerator.generate(8, { upperCase: true, specialChars: false, alphabets: true });
+    const query = `SELECT EMAIL FROM "INVENTORY"."ADMIN" WHERE "ID" = :id`;
+    const bindParams = {
+        id: req.body.id
+    };
+    console.log(req.body.id);
+    try{
+        const result = await runQuery(query, bindParams);
+        console.log(result);
+        const columnsToExtract = ['ID'];
+        const output = extractData(result, columnsToExtract);
+        console.log(output);
+        emailId = result.rows[0][0];
+        console.log(emailId);
+        const emailBody = `<p>Dear admin,</p><p>As per your request to login into INVENTORY MANAGEMENT SYSTEM, we're sending you an OTP.</p><br/> <p>Your OTP is <b>${otp}</b>.</p><p>This OTP is valid for 5 minutes. Please don't share this OTP with anyone.</p><p>Regards,<br/>Inventory Management System</p>`;
+        const mail = mailOptions(emailId, 'OTP for Login as Admin', emailBody);
+        console.log('email created', mail);
+        await transporter.sendMail(mail, (error, info) => {
+            if (error) {
+                console.error('Error sending email: ', error);
+            } else {
+                console.log('Email sent: to ',emailId, info.response);
+            }
+        });
+        const insertQuery = `INSERT INTO "INVENTORY"."OTP_VERIFY"("USER_ID","OTP","GENERATED_ON","USER_ROLE") VALUES(:id,:otp,SYSDATE, 'admin')`;
+        const bindParams2 = {
+            id: req.body.id,
+            otp: otp
+        }
+        const result2 = await runQuery(insertQuery, bindParams2);
+        res.send('OTP sent successfully.');
+    } catch (error) {
+        console.error("Error during login:", error);
+        res.status(500).json({ message: "Internal server error." });
+    }
+});
+
+app.post('/verifyOTPadmin', async (req, res) => {
+    console.log("Inside verifyOTP admin post");
+    const { otp, role, id } = req.body;
+    async function runPLSQL(query, otp, role, id) {
+        let connection;
+        let result;
+        const bindParams = {
+            output: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
+            id: id,
+            otp: otp,
+            role: role
+        };
+        console.log(bindParams.id);
+        try {
+
+            connection = await oracledb.getConnection(whereToConnect);
+            console.log(bindParams);
+            result = await connection.execute(query, bindParams, { autoCommit: true });
+            console.log(result);
+            return result.outBinds.output;
+        } catch (err) {
+            console.error('Error executing query:', err);
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close();
+                } catch (err) {
+                    console.error('Error closing connection:', err);
+                }
+            }
+        }
+        console.log('outside of finally block', result);
+        return result;
+    }
+    const plsql = `BEGIN :output := VALIDATE_OTP(:otp, :role, :id); END;`;
+    const resQ = await runPLSQL(plsql, otp, role, id);
+    console.log(resQ);
+    if(resQ == 1)
+    {
+        const userInfo = {
+            userId: id,
+            userRole: 'admin',
+            f2auth: 'verified'
+        }
+        console.log(userInfo);
+        const accessToken = jwt.sign(userInfo, ACCESS_TOKEN_SECRET, {expiresIn: '36000s'});
+        res.send( accessToken);
+    }
+    else{
+        res.send('OTP not verified.');
+    }
+});
+
+app.post('/getAdminData', async (req, res) => {
+    console.log("Inside getAdminData post");
+    const { id } = req.body;
+
+    const query = `SELECT ID,NAME,EMAIL,PASSWORD,PHONE_NO,ADDRESS, PHOTO FROM "INVENTORY"."ADMIN" WHERE "ID" = :id`;
+    const bindParams = {
+        id: id
+    };
+    try {
+        console.log('Inside try and before query');
+        const result = await runQuery(query, bindParams);
+        //console.log(result);
+        const columnsToExtract = ['ID','NAME', 'EMAIL','PHONE_NO','ADDRESS','PHOTO'];
+        const output = extractData(result, columnsToExtract);
+        res.send(output);
+        // console.log(output);
+    } catch (error) {
+        console.error("Error during login:", error);
+        res.status(500).json({ message: "Internal server error." });
+    }
+});
+
 
 app.get('/categories', (req, res) => {
     // console.log(req);

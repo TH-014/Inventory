@@ -1,17 +1,9 @@
-/* body {
-  margin: 0;
-  font-family: 'Poppins', Arial, sans-serif;
-  background-size: cover;
-  background-image: "C:/Users/ROG STRIX/Downloads/back1.png";
-  backdrop-filter: blur(20px);
-} */
-
 body {
     margin: 0;
     font-family: 'Poppins', Arial, sans-serif;
     height: 100vh;
     overflow: hidden; 
-  }
+}
    
   body::before {
     content: "";
@@ -20,7 +12,6 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    /* background-image: url("C:/Users/ROG STRIX/Downloads/back1.png"); */
     background-size: cover;
     filter: grayscale(50%) blur(14px); /* Convert image to black and white */
     z-index: -1; /* Ensure it stays behind the content */
@@ -44,7 +35,7 @@ body {
     height: 100vh;
   }
   
-  .login-form {
+  .otp-form {
     width: 14vw;
     height: 18vw;
     background-color: rgba(255, 255, 255, 0.8);
@@ -54,18 +45,9 @@ body {
     /* backdrop-filter: blur(20px); */
     text-align: center;
   }
-  /* .login-form {
-    width: 14vw;
-    height: 14vw;
-    background-color: white; 
-    padding: 60px;
-    border-radius: 25px;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 1);
-    text-align: center;
-  } */
   
   
-  .login-form h2 {
+  .otp-form h2 {
     margin-top: -5px; /* Adjust this value as per your requirement */
     font-family: Arial;
     margin-bottom: 20px;
@@ -73,7 +55,7 @@ body {
     text-align: center;
   }
   
-  .login-form input {
+  .otp-form input {
     box-sizing: border-box; /* This includes padding and border in the element's total width and height */
     width: 100%;
     padding: 10px;
@@ -84,12 +66,12 @@ body {
     border: 1px solid #ccc;
   }
   
-  .login-form input:focus {
+  .otp-form input:focus {
     border-color: #000000;
     outline: none;
   }
   
-  .login-form button {
+  .otp-form button {
     box-sizing: border-box; /* This includes padding and border in the element's total width and height */
     width: 100%;
     padding: 10px;
@@ -103,7 +85,7 @@ body {
     cursor: pointer;
   }
   
-  .login-form button:hover {
+  .otp-form button:hover {
     background-color: #333;
   }
   

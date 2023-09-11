@@ -107,22 +107,22 @@ body {
     background-color: #333;
   }
   
-  /*.signup-link {*/
-  /*  font-size: 12px; !* You can adjust this value to the size you prefer *!*/
-  /*  text-decoration: none;*/
-  /*  transition: 0.3s;*/
-  /*  text-align: center;*/
-  /*}*/
+  .signup-link {
+    font-size: 12px; /* You can adjust this value to the size you prefer */
+    text-decoration: none;
+    transition: 0.3s;
+    text-align: center;
+  }
   
-  /*.signup-link {*/
-  /*  color: #d46767;*/
-  /*  font-size: 12px; !* You can adjust this value to the size you prefer *!*/
-  /*  text-decoration: none;*/
-  /*  transition: 0.3s;*/
-  /*  text-align: center;*/
-  /*}*/
+  .signup-link {
+    color: #d46767;
+    font-size: 12px; /* You can adjust this value to the size you prefer */
+    text-decoration: none;
+    transition: 0.3s;
+    text-align: center;
+  }
   
-  /*.signup-link:hover {*/
-  /*  text-decoration: underline;*/
-  /*}*/
+  .signup-link:hover {
+    text-decoration: underline;
+  }
   

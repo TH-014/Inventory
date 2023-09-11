@@ -18,7 +18,9 @@ import ProductDetails from './ComponentOfClientPages/productDetails';
 import EducationalProducts from './ComponentOfClientPages/Educational';
 import EmployeeRegistrationComponents from "./ComponentOfClientPages/RegistrationPageOfEmployee";
 import OTP_Validate from "./ComponentOfClientPages/OTP_Validate";
-
+import LoginAsAdminComponents from "./ComponentOfClientPages/loginAsAdmin";
+import OTP_Validate_Admin from "./ComponentOfClientPages/OTP_Validate_Admin";
+import ProfileOfAdminComponents from "./ComponentOfClientPages/ProfileOfAdmin";
 
 function App() {
   const currentSupplierId = 0;
@@ -44,6 +46,9 @@ function App() {
           <Route path="/Educational" element={<EducationalProducts/>} />
           <Route path="/RegisterAsEmployee" element={<EmployeeRegistrationComponents/>} />
           <Route path="/otp_validate" element={<OTP_Validate/>} />
+          <Route path="/loginAsAdmin" element={<LoginAsAdminComponents />} />
+          <Route path="/otp_validate_admin" element={<OTP_Validate_Admin/>} />
+          <Route path="/ProfileOfAdmin" element={<ProfileOfAdminComponents />} />
         </Routes>
       </supplierIdContext.Provider>
     </Router>
