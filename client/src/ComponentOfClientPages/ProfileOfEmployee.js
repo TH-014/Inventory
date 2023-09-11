@@ -123,7 +123,7 @@ export default function ProfileOfEmployeeComponents() {
               <LogoutButton onClick={handleLogOut}>Log Out</LogoutButton>
             </ButtonWrapper>
             <div align="center" className="user-data">
-                <img src={userData.PHOTO} alt="Avatar" className="avatar" width="300" height="400"/>
+                <img src={userData.PHOTO} alt="Avatar" className="avatar" width="300" height="300"/>
                 <p>Employee ID : {userData.E_ID}</p>
                 <p>Employee Name : {userData.E_NAME}</p>
                 <p>Email: {userData.EMAIL}</p>

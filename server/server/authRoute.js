@@ -92,17 +92,35 @@ router.get('/employee', async (req, res) => {
     });
 });
 
-router.get('/login/admin', async (req, res) => {
-    console.log('Inside admin login function');
-//     const mail = mailOptions(req.body.email, 'Login', 'You have logged in to the system');
-//     console.log('email created', mail);
-//     await transporter.sendMail(mail, (error, info) => {
-//         if (error) {
-//             console.error('Error sending email: ', error);
-//         } else {
-//             console.log('Email sent: ', info.response);
-//         }
-//     });
+router.get('/admin', async (req, res) => {
+    console.log('Inside admin auth function');
+    const token = req.headers.authorization;
+    console.log(token);
+    if (token==null || !token) {
+        console.log('No token provided.');
+        return res.json({ auth: false, id: 0, message: 'No token provided.' });
+    }
+    jwt.verify(token, ACCESS_TOKEN_SECRET, (err, decoded) => {
+        if (err) {
+            console.log('Failed to authenticate token.');
+            return res.json({ auth: false, id: 0, message: 'Failed to authenticate token.' });
+        }
+        console.log(decoded);
+        if (decoded.userRole === 'admin' && decoded.f2auth==='verified') {
+            const resobj = {auth: true, id: decoded.userId, message: 'Authorized.'};
+            console.log(resobj);
+            return res.json(resobj);
+        }
+        else if(decoded.userRole === 'admin')
+        {
+            const resobj = {auth: false, id: decoded.userId, message: 'F2Authorization required.'};
+            console.log(resobj);
+            return res.json(resobj);
+        }
+        else {
+            return res.send({ auth: false, id:0, message: 'Unauthorized user.' });
+        }
+    });
 });
 
 export default router;

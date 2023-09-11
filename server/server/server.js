@@ -1,6 +1,6 @@
 import bodyParser from "body-parser";
 import runQuery ,{extractData} from './Queries.js';
-import connectToDatabase from './connectToDataBase.js';
+import connectToDatabase, {whereToConnect} from './connectToDataBase.js';
 import cors from "cors";
 import express from "express";
 import bcrypt from "bcrypt";
@@ -10,6 +10,7 @@ import { ACCESS_TOKEN_SECRET } from "./config.js";
 import authRoute from "./authRoute.js";
 import otpGenerator from "otp-generator";
 import {mailOptions, transporter} from "./mail.js";
+import oracledb from "oracledb";
 const app = express();
 
 (async ()=> {
@@ -477,7 +478,7 @@ app.post('/sendOTP', async (req, res) => {
         console.log(output);
         emailId = result.rows[0][0];
         console.log(emailId);
-        const emailBosy = `Dear User,\nAs per your request to log in to INVENTORY MANAGEMENT SYSTEM, we're sending you an OTP.\n Your OTP is ${otp}.\n`+`This OTP is valid for 5 minutes. Please don't share this OTP with anyone.\n\nRegards,\nInventory Management System`;
+        const emailBosy = `<p>Dear User,</p><p>As per your request to login into INVENTORY MANAGEMENT SYSTEM, we're sending you an OTP.</p><br/> <p>Your OTP is <b>${otp}</b>.</p><p>This OTP is valid for 5 minutes. Please don't share this OTP with anyone.</p><p>Regards,<br/>Inventory Management System</p>`;
         const mail = mailOptions(emailId, 'OTP for Login as Employee', emailBosy);
         console.log('email created', mail);
         await transporter.sendMail(mail, (error, info) => {
@@ -487,9 +488,69 @@ app.post('/sendOTP', async (req, res) => {
                 console.log('Email sent: to ',emailId, info.response);
             }
         });
+        const insertQuery = `INSERT INTO "INVENTORY"."OTP_VERIFY"("USER_ID","OTP","GENERATED_ON","USER_ROLE") VALUES(:id,:otp,SYSDATE, 'employee')`;
+        const bindParams2 = {
+            id: req.body.id,
+            otp: otp
+        }
+        const result2 = await runQuery(insertQuery, bindParams2);
+        res.send('OTP sent successfully.');
     } catch (error) {
         console.error("Error during login:", error);
         res.status(500).json({ message: "Internal server error." });
+    }
+});
+
+app.post('/verifyOTP', async (req, res) => {
+    console.log("Inside verifyOTP post");
+    const { otp, role, id } = req.body;
+    async function runPLSQL(query, otp, role, id) {
+        let connection;
+        let result;
+        const bindParams = {
+            output: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
+            id: id,
+            otp: otp,
+            role: role
+        };
+        console.log(bindParams.id);
+        try {
+
+            connection = await oracledb.getConnection(whereToConnect);
+            console.log(bindParams);
+            result = await connection.execute(query, bindParams, { autoCommit: true });
+            console.log(result);
+            return result.outBinds.output;
+        } catch (err) {
+            console.error('Error executing query:', err);
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close();
+                } catch (err) {
+                    console.error('Error closing connection:', err);
+                }
+            }
+        }
+        console.log('outside of finally block', result);
+        return result;
+    }
+    const plsql = `BEGIN :output := VALIDATE_OTP(:otp, :role, :id); END;`;
+    const resQ = await runPLSQL(plsql, otp, role, id);
+    console.log(resQ);
+    if(resQ == 1)
+    {
+        const userInfo = {
+            userId: id,
+            userRole: 'employee',
+            f2auth: 'verified'
+        }
+        console.log(userInfo);
+        const accessToken = jwt.sign(userInfo, ACCESS_TOKEN_SECRET, {expiresIn: '36000s'});
+        res.send( accessToken);
+    }
+    else{
+        res.send('OTP not verified.');
     }
 });
 
@@ -733,11 +794,6 @@ const port = 8000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
-
-
-
-
 
 // app.post('/login',async (req, res)=>{
 

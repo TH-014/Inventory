@@ -73,53 +73,43 @@ function  OTP_Validate(){
 
 	const handleLogin = async (e) =>{
 		e.preventDefault();
-
-
-		// setUser('JBL Flip 5');
-		// console.log(user);
-		// try{
-		// 	const resFromServer = await axios.post('http://localhost:8000/login', {
-		// 		email,
-		// 		password
-		// 	});
-		// 	console.log('here am i \n');
-		// 	console.log(resFromServer.data[0]);
-		//
-		// 	if(resFromServer.status === 200){
-		// 		if(localStorage.getItem("token"))
-		// 			localStorage.removeItem("token");
-		// 		localStorage.setItem("token", resFromServer.data.accessToken);
-		// 		const userData = resFromServer.data.output[0];           /// upto here it is working fine .......
-		// 		console.log(userData.C_ID);
-		// 		navigate('/Dashboard',{ state : {userData}});
-		// 	}
-		// 	else {
-		// 		setErrorMessage(resFromServer.data.message || "Login failed!");
-		// 	}
-		// }catch(error)
-		// {
-		// 	setErrorMessage(error.message || "Something went wrong ! ");
-		// }
-		// setData(resFromServer);
-		// console.log(resFromServer);
+		try{
+			const resFromServer = await axios.post('http://localhost:8000/verifyOTP', {
+				otp: otp,
+				role: 'employee',
+				id: userdetails.id
+			});
+			console.log(resFromServer.data);
+			if(resFromServer.status === 200 && resFromServer.data !== 'OTP not verified.'){
+				if(localStorage.getItem("etoken"))
+					localStorage.removeItem("etoken");
+				localStorage.setItem("etoken", resFromServer.data);
+				// const userData = resFromServer.data.output[0];    /// upto here it is working fine .......
+				// console.log(userData.C_ID);
+				navigate('/ProfileOfEmployee');
+			}
+			else {
+				setErrorMessage(resFromServer.data || "Login failed! Try resending another OTP.");
+			}
+		}catch(error)
+		{
+			setErrorMessage(error.message || "Something went wrong ! ");
+		}
 	};
 
-	function handleResend() {
+	async function handleResend() {
 		resendCount++;
-		if(resendCount>=4)
-		{
+		if (resendCount >= 4) {
 			localStorage.removeItem('etoken');
 			navigate('/loginAsEmployee');
-		}
-		else if(resendCount>=3)
-		{
+		} else if (resendCount >= 3) {
 			setErrorMessage('Maximum resend limit reached!');
 			alert('Maximum resend limit reached!');
 		}
 		try {
-			const resFromServer = axios.post('http://localhost:8000/sendOTP', {
+			const resFromServer = await axios.post('http://localhost:8000/sendOTP', {
 				id: userdetails.id
-			});//////// need to edit
+			});
 			if (resFromServer.status === 200) {
 				setErrorMessage('OTP sent successfully!');
 			} else {

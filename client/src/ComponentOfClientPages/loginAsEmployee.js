@@ -49,9 +49,19 @@ import "./loginAsEmployee.css";
            if(localStorage.getItem("etoken"))
                localStorage.removeItem("etoken");
            localStorage.setItem("etoken", resFromServer.data.accessToken);
+           // console.log(resFromServer.data);
           if(resFromServer.status === 200){
-            const userData = resFromServer.data.output[0];
-            navigate('/otp_validate',{ state : {userData}});
+              const userData = resFromServer.data.output[0];
+              try {
+                  // console.log('printing from login_as_empoloyee',userData);
+                  const resFromServer = await axios.post('http://localhost:8000/sendOTP', {
+                      id: userData.E_ID
+                  });
+                  console.log('navicating now to otp_validate');
+                  navigate('/otp_validate');
+              } catch (error) {
+                  console.log(error.message || "Something went wrong ! ");
+              }
           }
           else {
             setErrorMessage(resFromServer.data.message || "Login failed!");

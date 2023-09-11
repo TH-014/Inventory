@@ -15,5 +15,5 @@ export function mailOptions(email, subject, text){
     return {from: 'inventory.1114@gmail.com',
         to: email,
         subject: subject,
-        text: text}
+        html: text}
 };
