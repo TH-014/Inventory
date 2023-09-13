@@ -238,8 +238,8 @@ export default function Checkout() {
 								Your Total Cost is : $ {total.toFixed(2)}
 							</Typography>
 							<Typography variant="subtitle1">
-								Your order number is # 20450{orderID} . We have emailed your order
-								confirmation, and will send you an update when your order has
+								We'll email your order details &
+								confirmation soon, and will send you an update when your order has
 								shipped.
 							</Typography>
 							<Button
