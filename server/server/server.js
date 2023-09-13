@@ -11,6 +11,7 @@ import authRoute from "./authRoute.js";
 import otpGenerator from "otp-generator";
 import {mailOptions, transporter} from "./mail.js";
 import oracledb from "oracledb";
+import axios from "axios";
 const app = express();
 
 (async ()=> {
@@ -27,11 +28,247 @@ app.use(express.json()); // ??????
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post("/productDetails", async (req, res) => {
-        const {P_ID} = req.body; // May be P_ID as in Frontend
+app.post("/PlacedOrder", async (req, res) => {
+        const {E_ID} = req.body;
+        console.log(E_ID);
+        try{
+            const queryToExtractDataFromTempOrderTable = `SELECT * FROM "INVENTORY"."TEMP_ORDER" WHERE E_ID = :E_ID`;
+            const bindParamsToExtractDataFromTempOrderTable = {
+                E_ID : E_ID
+            };
+            const resultOfDataFromTempOrderTable = await runQuery(queryToExtractDataFromTempOrderTable,bindParamsToExtractDataFromTempOrderTable);
+            console.log(resultOfDataFromTempOrderTable.rows[0]);
+            res.send(resultOfDataFromTempOrderTable);
+        }
+        catch(error)
+        {
+            console.error("Error while taking the data from temp order : ", error);
+            res.status(500).json({message: "Error while taking the data from temp order"});
+        }
+    }
+);
+
+
+
+app.post("/deleteOrder", async (req, res) => {
+        let selectedArray = req.body.selectedArray;
+        console.log(selectedArray);
+        try{
+            for(let i=0;i<selectedArray.length;i++)
+            {
+                const queryToDeleteDataFromTempOrderTable = `DELETE FROM "INVENTORY"."TEMP_ORDER" WHERE TEMP_O_ID = :TEMP_O_ID`;
+                const bindParamsToDeleteDataFromTempOrderTable = {
+                    TEMP_O_ID : selectedArray[i]
+                };
+                const resultOfDeleteDataFromTempOrderTable = await runQuery(queryToDeleteDataFromTempOrderTable,bindParamsToDeleteDataFromTempOrderTable);
+                console.log(resultOfDeleteDataFromTempOrderTable);
+
+                res.send('data deleted');
+            }
+        }
+        catch(error)
+        {
+            console.error("Error while taking the data from temp order : ", error);
+            res.status(500).json({message: "Error while taking the data from temp order"});
+        }
+    }
+);
+
+
+
+
+app.post("/acceptOrder", async (req, res) => {
+        let selectedArray = req.body.selectedArray;
+        console.log(selectedArray);
+        try{
+            for(let i=0;i<selectedArray.length;i++)
+            {
+                const queryToExtractDataFromTempOrderTable = `SELECT * FROM "INVENTORY"."TEMP_ORDER" WHERE TEMP_O_ID = :TEMP_O_ID`;
+                const bindParamsToExtractDataFromTempOrderTable = {
+                    TEMP_O_ID : selectedArray[i]
+                };
+                const resultOfDataFromTempOrderTable = await runQuery(queryToExtractDataFromTempOrderTable,bindParamsToExtractDataFromTempOrderTable);
+                console.log(resultOfDataFromTempOrderTable.rows[0]);
+
+                const queryToInsertDataIntoOrderTable = `INSERT INTO "INVENTORY"."ORDER"("C_ID","O_ID","ORDER_DATE","E_ID","SHIPPING_ADDRESS","BKASH_MOB_NO","BKASH_TRANS_ID")
+         VALUES(:customerID,:newOrderID,:orderDate,:employeeID,:shippingAddress,:bkash_mob_no,:bkash_trans_id)`;
+                const bindParamsToInsertDataIntoOrderTable = {
+                    customerID : resultOfDataFromTempOrderTable.rows[0][1],
+                    newOrderID : selectedArray[i],
+                    orderDate : resultOfDataFromTempOrderTable.rows[0][2],
+                    employeeID : resultOfDataFromTempOrderTable.rows[0][7],
+                    shippingAddress : resultOfDataFromTempOrderTable.rows[0][3],
+                    bkash_mob_no : resultOfDataFromTempOrderTable.rows[0][4],
+                    bkash_trans_id : resultOfDataFromTempOrderTable.rows[0][5]
+                };
+                const resultOfInsertDataIntoOrderTable = await runQuery(queryToInsertDataIntoOrderTable,bindParamsToInsertDataIntoOrderTable);
+                console.log(resultOfInsertDataIntoOrderTable);
+                const queryToDeleteDataFromTempOrderTable = `DELETE FROM "INVENTORY"."TEMP_ORDER" WHERE TEMP_O_ID = :TEMP_O_ID`;
+                const bindParamsToDeleteDataFromTempOrderTable = {
+                    TEMP_O_ID : selectedArray[i]
+                };
+                const resultOfDeleteDataFromTempOrderTable = await runQuery(queryToDeleteDataFromTempOrderTable,bindParamsToDeleteDataFromTempOrderTable);
+                console.log(resultOfDeleteDataFromTempOrderTable);
+
+                res.send(resultOfInsertDataIntoOrderTable);
+            }
+        }
+        catch(error)
+        {
+            console.error("Error while taking the data from temp order : ", error);
+            res.status(500).json({message: "Error while taking the data from temp order"});
+        }
+    }
+);
+
+
+
+app.post("/insertOrder", async (req, res) => {
+    const {Address,phoneNo,transactionNumber,total,productQuantity, productsDetails} = req.body;
+    console.log(req.body);
+    const token = req.headers.authorization;
+    const resAuth = await axios.get('http://localhost:8000/auth/customer',{headers: {Authorization: token}});
+    if(resAuth.data.id<0)
+        res.send({message: 'Unauthorized user.'});
+    try{
+        const queryToExtractE_ID = `SELECT EID FROM (SELECT EMPLOYEE.E_ID EID FROM EMPLOYEE LEFT JOIN TEMP_ORDER ON( EMPLOYEE.E_ID = TEMP_ORDER.E_ID) GROUP BY EMPLOYEE.E_ID ORDER BY COUNT(TEMP_ORDER.TEMP_O_ID) ASC, EMPLOYEE.E_ID ASC) WHERE ROWNUM = 1`;
+        const resultOfE_ID = await runQuery(queryToExtractE_ID, []);
+        const newE_ID = resultOfE_ID.rows[0][0];
+        const  C_ID = resAuth.data.id; // We need to change this to the customer id of the logged in user by using the token
+        const queryToInsertOrder = `INSERT INTO "INVENTORY"."TEMP_ORDER"("TEMP_O_ID","PLACE_DATE","SHIPPING_ADDRESS","BKASH_MOB_NO","BKASH_TRANS_ID","TOTAL_EXPENSE","C_ID","E_ID") VALUES(SEQ_O_ID.NEXTVAL,SYSDATE,:Address,:phoneNo,:transactionNumber,:total,:C_ID,:newE_ID)`;
+        const bindParamsToInsertOrder = {
+            Address : Address,
+            phoneNo : phoneNo,
+            transactionNumber : transactionNumber,
+            total : total,
+            C_ID : C_ID,
+            newE_ID : newE_ID
+        };
+        const resultOfInsertOrder = await runQuery(queryToInsertOrder,bindParamsToInsertOrder);
+        console.log(resultOfInsertOrder);
+        const queryToExtractOrderID = `SELECT TEMP_O_ID FROM "INVENTORY"."TEMP_ORDER" WHERE BKASH_TRANS_ID = :transactionNumber AND C_ID = :C_ID AND E_ID = :newE_ID AND TOTAL_EXPENSE = :total`;
+        const bindParamsToExtractOrderID = {
+            transactionNumber : transactionNumber,
+            C_ID : C_ID,
+            newE_ID : newE_ID,
+            total : total
+        };
+
+
+        const resultOfOrderID = await runQuery(queryToExtractOrderID, bindParamsToExtractOrderID);
+        const newOrderID = resultOfOrderID.rows[0][0];
+        console.log(newOrderID);
+        for(let i=0;i<productsDetails.length;i++)
+        {
+            const queryToInsertOrderDetails = `INSERT INTO "INVENTORY"."ORDERED_PRODUCTS"("TEMP_O_ID","P_ID","QUANTITY") VALUES(:newOrderID,:newP_ID,:Quantity)`;
+            const bindParamsToInsertOrderDetails = {
+                newOrderID : newOrderID,
+                newP_ID : productsDetails[i].P_ID,
+                Quantity : productQuantity[i]
+            };
+            const resultOfInsertOrderDetails = await runQuery(queryToInsertOrderDetails,bindParamsToInsertOrderDetails);
+            console.log(resultOfInsertOrderDetails);
+        }
+        res.send({newOrderID,newE_ID});
+    }
+    catch(error)
+    {
+        console.error("Error while INSERTING DATA : ", error);
+        res.status(500).json({message: "Error while INSERTING DATA"});
+    }
+});
+
+app.post("/showReviews", async (req, res) => {
+        const {P_ID} = req.body;
         console.log(P_ID);
         try{
+            const queryToExtractDataFromReviewTable = `SELECT * FROM "INVENTORY"."REVIEWS" LEFT JOIN "INVENTORY"."CUSTOMER" ON(REVIEWS.C_ID = CUSTOMER.C_ID) JOIN "INVENTORY"."PRODUCT" ON(REVIEWS.P_ID= PRODUCT.P_ID) WHERE REVIEWS.P_ID = :P_ID`;
+            const bindParamsToExtractDataFromReviewTable = {
+                P_ID : P_ID
+            };
+            const resultOfDataFromReviewTable = await runQuery(queryToExtractDataFromReviewTable,bindParamsToExtractDataFromReviewTable);
+            console.log(resultOfDataFromReviewTable);
+            res.send(resultOfDataFromReviewTable);
+        }
+        catch(error)
+        {
+            console.error("Error while taking the data from review : ", error);
+            res.status(500).json({message: "Error while taking the data from review"});
+        }
+    }
+);
 
+// app.post("/productDetails", async (req, res) => {
+//         const {P_ID} = req.body; // May be P_ID as in Frontend
+//         console.log(P_ID);
+//         try{
+//
+//             const queryToCheckTypeOfProduct = `SELECT TYPE FROM "INVENTORY"."PRODUCT" WHERE P_ID = :P_ID`;
+//
+//             const bindParamsToCheckProductType = {
+//                 ":P_ID" :P_ID
+//             };
+//             const resultOfTypeCheck = await runQuery(queryToCheckTypeOfProduct,bindParamsToCheckProductType);
+//             const typeOfProduct = resultOfTypeCheck.rows[0][0];
+//             // console.log(typeOfProduct);
+//
+//             let queryToProductDetails = `SELECT * FROM "INVENTORY"."PRODUCT" `;
+//             let columnsToExtract = [];
+//
+//             if(typeOfProduct === 'EDUCATIONAL')
+//             {
+//                 queryToProductDetails += 'NATURAL JOIN "INVENTORY"."EDUCATIONAL" WHERE P_ID = :P_ID';
+//                 columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','LEVEL','PICTURE','RATING'];
+//             }
+//             else if(typeOfProduct === 'FASHION')
+//             {
+//                 queryToProductDetails += 'NATURAL JOIN "INVENTORY"."FASHION" WHERE P_ID = :P_ID';
+//                 columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','MADE_OF','SIZE','COLOR','PICTURE','RATING'];
+//             }
+//             else if(typeOfProduct === 'GROCERY')
+//             {
+//                 queryToProductDetails += 'NATURAL JOIN "INVENTORY"."GROCERY" WHERE P_ID = :P_ID';
+//                 columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','PRODUCTION_DATE','EXPIARY_DATE','PICTURE','RATING'];
+//             }
+//             else if(typeOfProduct === 'IT_PRODUCTS')
+//             {
+//                 queryToProductDetails += 'NATURAL JOIN "INVENTORY"."IT_PRODUCTS" WHERE P_ID = :P_ID';
+//                 columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','RAM(GB)','STORAGE(GB)','PROCESSOR(GHZ)','PICTURE','RATING'];
+//             }
+//             else if(typeOfProduct === 'TOY')
+//             {
+//                 queryToProductDetails += 'NATURAL JOIN "INVENTORY"."TOY" WHERE P_ID = :P_ID';
+//                 columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','COLOR','LEVEL','PICTURE','RATING'];
+//             }
+//             else
+//             {
+//                 console.log("No matching product found.");
+//             }
+//             const bindParamsToProductDetails = {
+//                 ":P_ID" :P_ID
+//             };
+//             const resultOfProductDetails = await runQuery(queryToProductDetails,bindParamsToProductDetails);
+//
+//             const output = extractData(resultOfProductDetails, columnsToExtract);
+//             // console.log(output);
+//
+//             res.send(output);
+//
+//
+//
+//         }catch(error)
+//         {
+//             console.error("Error while taking the data from employees : ", error);
+//             res.status(500).json({message: "Error while taking the data from products"});
+//         }
+//
+//     }
+// );
+
+app.post("/productDetails", async (req, res) => {
+        const {P_ID} = req.body;
+        console.log(P_ID);
+        try{
             const queryToCheckTypeOfProduct = `SELECT TYPE FROM "INVENTORY"."PRODUCT" WHERE P_ID = :P_ID`;
 
             const bindParamsToCheckProductType = {
@@ -39,7 +276,9 @@ app.post("/productDetails", async (req, res) => {
             };
             const resultOfTypeCheck = await runQuery(queryToCheckTypeOfProduct,bindParamsToCheckProductType);
             const typeOfProduct = resultOfTypeCheck.rows[0][0];
-            // console.log(typeOfProduct);
+            //console.log(typeOfProduct);
+
+
 
             let queryToProductDetails = `SELECT * FROM "INVENTORY"."PRODUCT" `;
             let columnsToExtract = [];
@@ -47,6 +286,7 @@ app.post("/productDetails", async (req, res) => {
             if(typeOfProduct === 'EDUCATIONAL')
             {
                 queryToProductDetails += 'NATURAL JOIN "INVENTORY"."EDUCATIONAL" WHERE P_ID = :P_ID';
+                //  columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','LEVEL','PICTURE','RATING'];
                 columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','LEVEL','PICTURE','RATING'];
             }
             else if(typeOfProduct === 'FASHION')
@@ -79,11 +319,9 @@ app.post("/productDetails", async (req, res) => {
             const resultOfProductDetails = await runQuery(queryToProductDetails,bindParamsToProductDetails);
 
             const output = extractData(resultOfProductDetails, columnsToExtract);
-            // console.log(output);
+            console.log(output);
 
             res.send(output);
-
-
 
         }catch(error)
         {
@@ -108,7 +346,19 @@ app.get("/Educational", async (req, res) => {
     }
 });
 
-
+app.get("/itproducts", async (req, res) => {
+    try {
+        const queryToExtractEduProduct = 'SELECT * FROM "INVENTORY"."PRODUCT" NATURAL JOIN "INVENTORY"."IT_PRODUCTS"';
+        const resultOfEduProd = await runQuery(queryToExtractEduProduct, []);
+        const columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','RAM(GB)','PICTURE','RATING'];
+        const output = extractData(resultOfEduProd, columnsToExtract);
+        //console.log(output);
+        res.send(output);
+    } catch (error) {
+        console.error('Error fetching Edu products:', error);
+        res.status(500).json({ error: 'Error fetching Edu products' });
+    }
+});
 
 app.get("/TopSoldProducts", async (req, res) => {
     try {
@@ -178,6 +428,53 @@ app.get("/TopRatedProducts", async (req, res) => {
 //             res.status(500).json({message: "Error while taking the data from employees"});
 //         }
 // });
+
+app.post("/myWishList", async (req, res) => {
+        const {C_ID1} = req.body;
+        console.log(C_ID1);
+        try{
+            const queryToExtractDataFromWishList = `SELECT * FROM "INVENTORY"."WISHLIST" NATURAL JOIN "INVENTORY"."PRODUCT" WHERE "WISHLIST".C_ID = :C_ID1`;
+            const bindParamsToExtractDataFromWishList = {
+                C_ID1 : C_ID1
+            };
+            const resultOfDataFromWishList = await runQuery(queryToExtractDataFromWishList,bindParamsToExtractDataFromWishList);
+            //console.log(resultOfDataFromWishList);
+            res.send(resultOfDataFromWishList);
+        }
+        catch(error)
+        {
+            console.error("Error while taking the data from WISHLIST JOIN PRODUCT  : ", error);
+            res.status(500).json({message: "Error while taking the data from products"});
+        }
+    }
+);
+
+
+
+app.post("/wishList", async (req, res) => {
+        const {P_ID} = req.body;
+        console.log(P_ID);
+        const token = req.headers.authorization;
+        const resAuth = await axios.get('http://localhost:8000/auth/customer',{headers: {Authorization: token}});
+        if(resAuth.data.id<0)
+            res.send({message: 'Unauthorized user.'});
+        try{
+            let C_ID = resAuth.data.id; // We need to change this to the customer id of the logged in user by using the token
+            const queryToInsertIntoWishList = `INSERT INTO "INVENTORY"."WISHLIST"("C_ID","P_ID") VALUES(:C_ID,:P_ID)`;
+            const bindParamsToInsertIntoWishList = {
+                C_ID : C_ID,
+                P_ID : P_ID
+            };
+            const resultOfInsertIntoWishList = await runQuery(queryToInsertIntoWishList,bindParamsToInsertIntoWishList);
+            console.log(resultOfInsertIntoWishList);
+            res.send(resultOfInsertIntoWishList);
+        }catch(error)
+        {
+            console.error("Error while taking the data from employees : ", error);
+            res.status(500).json({message: "Error while taking the data from products"});
+        }
+    }
+);
 
 
 app.post('/RegisterAsSupplier', async (req,res) => {
@@ -347,8 +644,6 @@ app.post('/getCustomerData', async (req, res) => {
     }
 });
 
-
-
 app.post('/loginAsSupplier', async (req, res) => {
   console.log("Inside post");
   const { email, password } = req.body;
@@ -478,8 +773,8 @@ app.post('/sendOTP', async (req, res) => {
         console.log(output);
         emailId = result.rows[0][0];
         console.log(emailId);
-        const emailBosy = `<p>Dear User,</p><p>As per your request to login into INVENTORY MANAGEMENT SYSTEM, we're sending you an OTP.</p><br/> <p>Your OTP is <b>${otp}</b>.</p><p>This OTP is valid for 5 minutes. Please don't share this OTP with anyone.</p><p>Regards,<br/>Inventory Management System</p>`;
-        const mail = mailOptions(emailId, 'OTP for Login as Employee', emailBosy);
+        const emailBody = `<p>Dear User,</p><p>As per your request to login into INVENTORY MANAGEMENT SYSTEM, we're sending you an OTP.</p><br/> <p>Your OTP is <b>${otp}</b>.</p><p>This OTP is valid for 5 minutes. Please don't share this OTP with anyone.</p><p>Regards,<br/>Inventory Management System</p>`;
+        const mail = mailOptions(emailId, 'OTP for Login as Employee', emailBody);
         console.log('email created', mail);
         await transporter.sendMail(mail, (error, info) => {
             if (error) {
@@ -893,40 +1188,44 @@ const result6 = await runQuery(insertIntoProduct,bindParams3);
 
 if(selectedRootCategory === 'IT_PRODUCTS'){
   const insertIntoElectronics = `INSERT INTO "INVENTORY"."IT_PRODUCTS"("P_ID","RAM(GB)","STORAGE(GB)","PROCESSOR(GHZ)") VALUES(:pID,:ram,:storage,:processor)`;
-  const bindParams4 = {
-    pID: pID,
-    ram: IT_ram,
-    storage: IT_storage,
-    processor: IT_processor
-}
-const result7 = await runQuery(insertIntoElectronics,bindParams4);
+      const bindParams4 = {
+        pID: pID,
+        ram: IT_ram,
+        storage: IT_storage,
+        processor: IT_processor
+    }
+    const result7 = await runQuery(insertIntoElectronics,bindParams4);
+    res.send('Product Added');
 }
 else if(selectedRootCategory === 'EDUCATIONAL'){
-  const insertIntoEducational = `INSERT INTO "INVENTORY"."EDUCATIONAL"("P_ID","LEVEL") VALUES(:pID,:elevel)`;
-  const bindParams5 = {
-    pID: pID,
-    elevel: educationalLevel
-}
-const result8 = await runQuery(insertIntoEducational,bindParams5);
+      const insertIntoEducational = `INSERT INTO "INVENTORY"."EDUCATIONAL"("P_ID","LEVEL") VALUES(:pID,:elevel)`;
+      const bindParams5 = {
+        pID: pID,
+        elevel: educationalLevel
+    }
+    const result8 = await runQuery(insertIntoEducational,bindParams5);
+    res.send('Product Added');
 }
 else if(selectedRootCategory === 'FASHION'){
-  const insertIntoFashion = `INSERT INTO "INVENTORY"."FASHION"("P_ID","MADE_OF","SIZE","COLOR") VALUES(:pID,:fmadeOf,:fsize,:fcolor)`;
-  const bindParams6 = {
-    pID: pID,
-    fmadeOf: fashionMadeOf,
-    fsize: fashionSize,
-    fcolor: fashionColor
+      const insertIntoFashion = `INSERT INTO "INVENTORY"."FASHION"("P_ID","MADE_OF","SIZE","COLOR") VALUES(:pID,:fmadeOf,:fsize,:fcolor)`;
+      const bindParams6 = {
+        pID: pID,
+        fmadeOf: fashionMadeOf,
+        fsize: fashionSize,
+        fcolor: fashionColor
+    }
+    const result9 = await runQuery(insertIntoFashion,bindParams6);
+    res.send('Product Added');
 }
-const result9 = await runQuery(insertIntoFashion,bindParams6);
-}
-else if(selectedRootCategory === 'TOYS'){
-  const insertIntoToys = `INSERT INTO "INVENTORY"."TOYS"("P_ID","COLOR","LEVEL") VALUES(:pID,:tcolor,:tlevel)`;
+else if(selectedRootCategory === 'TOY'){
+  const insertIntoToys = `INSERT INTO "INVENTORY"."TOY"("P_ID","COLOR","LEVEL") VALUES(:pID,:tcolor,:tlevel)`;
   const bindParams7 = {
     pID: pID,
     tcolor: Toy_color,
     tlevel: Toy_level
 }
 const result10 = await runQuery(insertIntoToys,bindParams7);
+    res.send('Product Added');
 }
 else if(selectedRootCategory === 'GROCERIES'){
   const insertIntoGroceries = `INSERT INTO "INVENTORY"."GROCERIES"("P_ID","PRODUCTION_DATE","EXPIARY_DATE") VALUES(:pID,:prodDate,:expDate)`;
@@ -936,6 +1235,7 @@ else if(selectedRootCategory === 'GROCERIES'){
     expDate: ExpiaryDate
 }
 const result11 = await runQuery(insertIntoGroceries,bindParams8);
+    res.send('Product Added');
 }
 else{
   console.log("No matching product found.");

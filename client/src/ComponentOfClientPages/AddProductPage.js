@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate} from "react-router-dom";
 import {
   ref,
   uploadBytes,
@@ -11,6 +12,8 @@ import { v4 } from "uuid";
 let imageurl = "default";
 
 function AddProduct() {
+  let callAuth = false;
+  const navigate = useNavigate();
   const [imageUpload, setImageUpload] = useState(null);
 
 
@@ -51,8 +54,29 @@ function AddProduct() {
         console.error("Error fetching root categories:", err);
       }
     }
-
     fetchRootCategories();
+    if(callAuth)
+      return;
+    console.log('Inside useEffect of profile of supplier.');
+    async function checkLoginStatus() {
+      try {
+        const authRes = await axios.get('http://localhost:8000/auth/supplier', {headers: {Authorization: `${localStorage.getItem('token')}`}});
+        callAuth = true;
+        return authRes;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    checkLoginStatus().then(res => {
+      console.log('Checked login status.');
+      if(res.status === 200 && res.data.auth === true && res.data.id>0)
+      {
+        callAuth = false;
+        console.log('Authorized.', res.data.id);
+        setS_id(res.data.id);
+        // navigate('/ProfileOfSupplier');
+      }
+    });
   }, []);
 
   ref(storage, "product/");
@@ -106,9 +130,10 @@ function AddProduct() {
         Toy_level,
         s_id
       });
-
+      console.log(response);
       if (response.status === 200) {
         console.log("Product Added Successfully!");
+        navigate('/ProfileOfSupplier');
       }
       else
         {
@@ -287,13 +312,13 @@ function AddProduct() {
           }}
       />
       <textarea placeholder="Enter product description..." onChange={(e) => setProductDescription(e.target.value)}></textarea>
-      <input
-      className="form-control"
-      type="text"
-      placeholder="Your Supplier ID"
-      value={s_id}
-      onChange={(e) => setS_id(e.target.value)}
-      />
+      {/*<input*/}
+      {/*className="form-control"*/}
+      {/*type="text"*/}
+      {/*placeholder="Your Supplier ID"*/}
+      {/*value={s_id}*/}
+      {/*onChange={(e) => setS_id(e.target.value)}*/}
+      {/*/>*/}
       <button onClick={handleSubmit}>Add Product</button>
     </div>
   );

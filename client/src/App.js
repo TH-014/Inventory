@@ -21,6 +21,12 @@ import OTP_Validate from "./ComponentOfClientPages/OTP_Validate";
 import LoginAsAdminComponents from "./ComponentOfClientPages/loginAsAdmin";
 import OTP_Validate_Admin from "./ComponentOfClientPages/OTP_Validate_Admin";
 import ProfileOfAdminComponents from "./ComponentOfClientPages/ProfileOfAdmin";
+import AddressForm from './ComponentOfClientPages/AddressForm';
+import Checkout from './ComponentOfClientPages/Checkout';
+import EnhancedTable from './ComponentOfClientPages/TableForEmployeeOfOrder';
+import ITProducts from './ComponentOfClientPages/IT_Products';
+import ShowReviews from './ComponentOfClientPages/showReviews';
+import WishedProducts from './ComponentOfClientPages/myWishList';
 
 function App() {
   const currentSupplierId = 0;
@@ -49,6 +55,12 @@ function App() {
           <Route path="/loginAsAdmin" element={<LoginAsAdminComponents />} />
           <Route path="/otp_validate_admin" element={<OTP_Validate_Admin/>} />
           <Route path="/ProfileOfAdmin" element={<ProfileOfAdminComponents />} />
+          <Route path="/IT_Products" element={<ITProducts/>} />
+          <Route path="/AddressForm" element={<AddressForm/>} />
+          <Route path="/Checkout" element={<Checkout/>} />
+          <Route path="/Table" element={<EnhancedTable />} />
+          <Route path = "/showReviews" element = {<ShowReviews/>} />
+          <Route path = "/myWishList" element = {<WishedProducts/>} />
         </Routes>
       </supplierIdContext.Provider>
     </Router>

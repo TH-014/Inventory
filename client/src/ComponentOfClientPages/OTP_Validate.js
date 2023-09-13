@@ -5,6 +5,8 @@ import "./otp_validate.css";
 import styled from "styled-components";
 
 function  OTP_Validate(){
+	const [disabled, setDisabled] = useState(false);
+	const [seconds, setSeconds] = useState(60);
 	console.log('Inside the otp_validate function');
 	let callAuth = false;
 	let resendCount = 0;
@@ -98,6 +100,11 @@ function  OTP_Validate(){
 	};
 
 	async function handleResend() {
+		if (!disabled)
+			setDisabled(true);
+		setTimeout(() => {
+			setDisabled(false);
+		}, 60000);
 		resendCount++;
 		if (resendCount >= 4) {
 			localStorage.removeItem('etoken');
@@ -139,7 +146,7 @@ function  OTP_Validate(){
 						{/*<ButtonWrapper>*/}
 						{/*	<ResendButton onClick={handleResend}>Resend OTP</ResendButton>*/}
 						{/*</ButtonWrapper>*/}
-						<button onClick={handleResend}>Resend OTP</button>
+						<button onClick={handleResend} disabled={disabled}>Resend OTP</button>
 					</form>
 				</div>
 			</div>

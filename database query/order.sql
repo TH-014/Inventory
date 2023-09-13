@@ -1,200 +1,302 @@
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (1, 74, 65, '02-Feb-2023', 8, 6);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (2, 25, 42, '19-Jan-2023', 5, 12);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (3, 10, 14, '01-Jun-2023', 6, 2);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (4, 71, 28, '12-Jun-2023', 10, 20);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (5, 99, 55, '01-Jan-2023', 8, 10);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (6, 100, 34, '29-Nov-2022', 1, 17);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (7, 37, 39, '25-Sep-2022', 2, 15);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (8, 63, 83, '11-Oct-2022', 6, 3);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (9, 11, 90, '11-Feb-2023', 6, 20);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (10, 58, 26, '02-Feb-2023', 1, 17);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (11, 54, 28, '03-Sep-2022', 10, 8);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (12, 79, 48, '07-Dec-2022', 7, 20);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (13, 85, 96, '17-Aug-2023', 5, 9);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (14, 29, 52, '26-May-2023', 9, 20);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (15, 78, 10, '06-Apr-2023', 1, 9);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (16, 20, 3, '10-Mar-2023', 10, 2);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (17, 76, 84, '06-Oct-2022', 9, 24);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (18, 20, 18, '03-Jul-2023', 5, 4);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (19, 62, 41, '15-Mar-2023', 2, 9);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (20, 63, 75, '14-Jun-2023', 1, 12);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (21, 43, 20, '26-Oct-2022', 2, 10);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (22, 84, 82, '06-Dec-2022', 4, 7);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (23, 82, 84, '12-Jan-2023', 8, 14);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (24, 96, 98, '11-Aug-2023', 2, 21);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (25, 7, 27, '31-Jan-2023', 1, 12);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (26, 51, 82, '28-Jul-2023', 10, 19);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (27, 20, 88, '12-Oct-2022', 5, 12);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (28, 7, 40, '05-Aug-2023', 10, 10);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (29, 54, 50, '04-Jul-2023', 10, 9);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (30, 54, 53, '06-Aug-2023', 4, 2);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (31, 91, 24, '19-Apr-2023', 8, 2);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (32, 86, 96, '04-Jun-2023', 4, 16);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (33, 85, 27, '17-Jul-2023', 1, 12);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (34, 73, 52, '08-Mar-2023', 5, 14);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (35, 100, 91, '13-Jul-2023', 1, 25);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (36, 16, 51, '16-Oct-2022', 5, 13);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (37, 4, 17, '12-Jul-2023', 2, 9);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (38, 24, 99, '20-Sep-2022', 1, 22);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (39, 35, 65, '15-Feb-2023', 1, 24);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (40, 94, 26, '06-Oct-2022', 4, 25);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (41, 41, 99, '28-Jun-2023', 9, 14);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (42, 97, 2, '06-Sep-2022', 3, 18);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (43, 49, 64, '30-Jul-2023', 1, 20);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (44, 70, 60, '17-Sep-2022', 8, 21);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (45, 83, 72, '24-Apr-2023', 2, 14);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (46, 5, 42, '28-Feb-2023', 6, 24);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (47, 11, 56, '08-Dec-2022', 10, 6);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (48, 46, 94, '30-Jan-2023', 1, 9);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (49, 51, 95, '17-Jul-2023', 7, 12);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (50, 21, 64, '15-Jun-2023', 10, 6);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (51, 98, 87, '25-Apr-2023', 2, 17);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (52, 94, 56, '14-Jan-2023', 3, 21);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (53, 23, 17, '30-Dec-2022', 2, 10);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (54, 99, 4, '15-Mar-2023', 1, 23);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (55, 61, 14, '03-Apr-2023', 8, 6);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (56, 23, 86, '16-Jun-2023', 10, 18);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (57, 76, 100, '11-Feb-2023', 3, 4);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (58, 11, 24, '02-Sep-2022', 7, 5);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (59, 39, 42, '12-May-2023', 9, 14);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (60, 88, 44, '10-Jul-2023', 10, 17);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (61, 76, 87, '16-Dec-2022', 3, 9);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (62, 82, 14, '19-Oct-2022', 2, 6);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (63, 40, 72, '01-Dec-2022', 5, 8);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (64, 55, 100, '12-Dec-2022', 6, 7);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (65, 41, 82, '27-Jul-2023', 8, 7);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (66, 99, 93, '22-Nov-2022', 4, 2);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (67, 75, 79, '26-Mar-2023', 6, 14);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (68, 13, 60, '15-Dec-2022', 3, 25);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (69, 62, 76, '21-Oct-2022', 8, 1);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (70, 11, 66, '11-Jan-2023', 9, 15);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (71, 97, 83, '10-Oct-2022', 4, 23);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (72, 43, 100, '17-Nov-2022', 9, 22);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (73, 80, 55, '25-Aug-2022', 1, 18);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (74, 16, 96, '03-Apr-2023', 10, 13);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (75, 9, 33, '13-Feb-2023', 6, 15);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (76, 6, 44, '20-Dec-2022', 3, 17);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (77, 40, 63, '28-May-2023', 10, 3);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (78, 2, 88, '18-Oct-2022', 2, 5);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (79, 35, 37, '09-Nov-2022', 10, 6);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (80, 100, 35, '07-Jul-2023', 1, 8);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (81, 15, 97, '25-Aug-2022', 2, 4);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (82, 3, 90, '26-Feb-2023', 7, 7);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (83, 46, 88, '25-Jul-2023', 6, 18);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (84, 85, 52, '07-Nov-2022', 2, 24);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (85, 29, 60, '22-Jun-2023', 8, 1);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (86, 47, 33, '19-Jan-2023', 4, 4);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (87, 10, 73, '18-Jun-2023', 8, 8);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (88, 79, 80, '06-Mar-2023', 5, 18);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (89, 72, 24, '05-Apr-2023', 10, 12);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (90, 27, 53, '14-Jun-2023', 3, 8);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (91, 86, 60, '02-Sep-2022', 3, 6);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (92, 16, 66, '12-Apr-2023', 3, 20);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (93, 26, 35, '22-Mar-2023', 2, 5);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (94, 88, 20, '29-Apr-2023', 9, 17);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (95, 71, 35, '02-Jan-2023', 5, 2);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (96, 58, 92, '02-Aug-2023', 8, 7);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (97, 39, 100, '09-Jun-2023', 3, 17);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (98, 55, 52, '20-Jul-2023', 7, 25);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (99, 41, 49, '25-Dec-2022', 7, 22);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (100, 20, 31, '14-Jan-2023', 4, 11);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (101, 25, 75, '01-Jan-2023', 9, 9);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (102, 28, 66, '23-Jan-2023', 10, 2);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (103, 70, 63, '25-Sep-2022', 7, 18);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (104, 85, 6, '25-Aug-2022', 1, 3);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (105, 47, 33, '12-Dec-2022', 10, 18);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (106, 56, 43, '06-Mar-2023', 3, 16);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (107, 69, 43, '03-Jun-2023', 10, 16);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (108, 43, 76, '03-May-2023', 8, 7);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (109, 69, 57, '29-Dec-2022', 9, 13);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (110, 42, 73, '10-Nov-2022', 5, 24);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (111, 35, 83, '03-May-2023', 10, 6);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (112, 65, 50, '09-Jul-2023', 1, 15);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (113, 88, 48, '21-Jun-2023', 1, 2);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (114, 89, 6, '14-Mar-2023', 1, 14);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (115, 63, 7, '30-Jan-2023', 3, 9);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (116, 50, 45, '02-Oct-2022', 6, 25);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (117, 51, 11, '15-Mar-2023', 9, 9);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (118, 48, 8, '14-Mar-2023', 6, 12);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (119, 63, 84, '03-May-2023', 3, 10);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (120, 76, 71, '28-Nov-2022', 6, 15);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (121, 68, 32, '29-Oct-2022', 4, 3);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (122, 5, 1, '22-Dec-2022', 3, 10);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (123, 57, 19, '21-Jun-2023', 10, 19);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (124, 47, 35, '20-Jul-2023', 9, 25);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (125, 7, 19, '19-Jan-2023', 4, 25);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (126, 46, 58, '14-Jan-2023', 1, 9);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (127, 19, 36, '04-Oct-2022', 8, 20);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (128, 34, 38, '04-Mar-2023', 7, 23);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (129, 7, 96, '08-Dec-2022', 3, 18);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (130, 4, 17, '22-Feb-2023', 1, 17);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (131, 23, 44, '18-May-2023', 9, 10);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (132, 14, 32, '04-Apr-2023', 7, 5);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (133, 14, 42, '28-Jan-2023', 2, 13);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (134, 80, 83, '27-Aug-2022', 6, 20);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (135, 43, 24, '19-Jul-2023', 3, 8);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (136, 11, 23, '07-Jan-2023', 1, 4);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (137, 58, 22, '02-Jun-2023', 2, 2);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (138, 38, 13, '22-Jul-2023', 8, 19);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (139, 2, 30, '24-May-2023', 6, 18);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (140, 17, 15, '03-May-2023', 1, 7);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (141, 48, 69, '08-Apr-2023', 1, 24);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (142, 93, 98, '19-Mar-2023', 8, 16);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (143, 27, 23, '08-Dec-2022', 7, 1);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (144, 49, 74, '03-Aug-2023', 10, 17);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (145, 29, 60, '29-May-2023', 4, 3);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (146, 89, 31, '07-Dec-2022', 7, 9);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (147, 63, 41, '22-Mar-2023', 8, 15);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (148, 15, 16, '26-Jun-2023', 8, 18);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (149, 12, 30, '08-May-2023', 5, 22);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (150, 57, 51, '25-Dec-2022', 7, 13);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (151, 35, 23, '17-Aug-2023', 2, 18);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (152, 30, 58, '28-Jul-2023', 6, 12);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (153, 42, 41, '02-Aug-2023', 10, 7);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (154, 9, 87, '23-Sep-2022', 4, 23);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (155, 14, 83, '24-May-2023', 4, 13);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (156, 100, 1, '30-Sep-2022', 6, 21);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (157, 28, 96, '08-Aug-2023', 1, 6);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (158, 27, 6, '08-Jun-2023', 10, 16);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (159, 67, 71, '22-Jun-2023', 6, 2);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (160, 95, 52, '04-Jun-2023', 5, 21);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (161, 42, 13, '17-Mar-2023', 3, 4);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (162, 35, 37, '01-Oct-2022', 2, 21);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (163, 63, 3, '28-Feb-2023', 10, 14);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (164, 91, 15, '26-Mar-2023', 1, 4);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (165, 85, 69, '06-Feb-2023', 8, 23);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (166, 68, 46, '13-Oct-2022', 10, 17);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (167, 7, 8, '09-Aug-2023', 2, 12);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (168, 28, 81, '05-May-2023', 6, 6);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (169, 12, 99, '13-Jan-2023', 1, 24);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (170, 59, 30, '01-Feb-2023', 7, 8);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (171, 76, 14, '15-Jun-2023', 9, 15);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (172, 18, 9, '16-Oct-2022', 7, 22);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (173, 95, 25, '09-Jul-2023', 6, 16);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (174, 21, 10, '07-Nov-2022', 1, 25);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (175, 77, 85, '09-Nov-2022', 3, 21);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (176, 92, 83, '26-Jul-2023', 8, 20);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (177, 37, 13, '07-Mar-2023', 9, 23);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (178, 13, 92, '05-May-2023', 3, 13);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (179, 18, 61, '18-Aug-2023', 1, 2);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (180, 34, 23, '11-Jan-2023', 8, 15);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (181, 80, 100, '18-Sep-2022', 10, 22);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (182, 34, 87, '03-Nov-2022', 8, 21);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (183, 46, 5, '16-Jan-2023', 8, 12);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (184, 70, 29, '23-Feb-2023', 10, 21);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (185, 63, 84, '28-Nov-2022', 6, 20);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (186, 27, 4, '10-Jul-2023', 6, 10);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (187, 87, 33, '28-Sep-2022', 9, 18);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (188, 1, 43, '08-Oct-2022', 8, 6);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (189, 42, 55, '31-May-2023', 3, 22);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (190, 83, 82, '18-Jan-2023', 7, 22);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (191, 56, 15, '27-Mar-2023', 7, 23);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (192, 67, 88, '13-Aug-2023', 3, 9);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (193, 77, 81, '03-Jul-2023', 3, 15);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (194, 61, 95, '13-Aug-2023', 5, 14);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (195, 30, 46, '24-Nov-2022', 3, 5);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (196, 69, 90, '25-Aug-2022', 10, 19);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (197, 18, 21, '21-Sep-2022', 9, 13);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (198, 86, 90, '27-Mar-2023', 5, 6);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (199, 61, 42, '29-Jul-2023', 2, 1);
-insert into "INVENTORY"."REVIEWS" ("O_ID", "C_ID", "P_ID", "ORDER_DATE", "QUANTITY", "E_ID") values (200, 21, 92, '14-Mar-2023', 8, 2);
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : Project_Inventory
+ Source Server Type    : Oracle
+ Source Server Version : 190000 (Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production)
+ Source Schema         : INVENTORY
+
+ Target Server Type    : Oracle
+ Target Server Version : 190000 (Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production)
+ File Encoding         : 65001
+
+ Date: 12/09/2023 19:42:17
+*/
+
+
+-- ----------------------------
+-- Table structure for ORDER
+-- ----------------------------
+-- DROP TABLE "INVENTORY"."ORDER";
+CREATE TABLE "INVENTORY"."ORDER" (
+  "C_ID" NUMBER VISIBLE NOT NULL,
+  "O_ID" NUMBER VISIBLE NOT NULL,
+  "ORDER_DATE" DATE VISIBLE NOT NULL,
+  "E_ID" NUMBER VISIBLE NOT NULL,
+  "SHIPPING_ADDRESS" VARCHAR2(255 BYTE) VISIBLE,
+  "BKASH_MOB_NO" NUMBER VISIBLE,
+  "BKASH_TRANS_ID" VARCHAR2(255 BYTE) VISIBLE
+)
+LOGGING
+NOCOMPRESS
+PCTFREE 10
+INITRANS 1
+STORAGE (
+  INITIAL 65536 
+  NEXT 1048576 
+  MINEXTENTS 1
+  MAXEXTENTS 2147483645
+  BUFFER_POOL DEFAULT
+)
+PARALLEL 1
+NOCACHE
+DISABLE ROW MOVEMENT
+;
+
+-- ----------------------------
+-- Records of ORDER
+-- ----------------------------
+INSERT INTO "INVENTORY"."ORDER" VALUES ('74', '1', TO_DATE('2023-02-02 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '6', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('25', '2', TO_DATE('2023-01-19 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '12', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('10', '3', TO_DATE('2023-06-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '2', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('71', '4', TO_DATE('2023-06-12 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '20', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('99', '5', TO_DATE('2023-01-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '10', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('100', '6', TO_DATE('2022-11-29 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '17', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('37', '7', TO_DATE('2022-09-25 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '15', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('63', '8', TO_DATE('2022-10-11 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '3', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('11', '9', TO_DATE('2023-02-11 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '20', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('58', '10', TO_DATE('2023-02-02 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '17', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('54', '11', TO_DATE('2022-09-03 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '8', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('79', '12', TO_DATE('2022-12-07 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '20', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('85', '13', TO_DATE('2023-08-17 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '9', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('29', '14', TO_DATE('2023-05-26 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '20', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('78', '15', TO_DATE('2023-04-06 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '9', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('20', '16', TO_DATE('2023-03-10 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '2', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('76', '17', TO_DATE('2022-10-06 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '24', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('20', '18', TO_DATE('2023-07-03 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '4', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('62', '19', TO_DATE('2023-03-15 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '9', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('63', '20', TO_DATE('2023-06-14 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '12', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('43', '21', TO_DATE('2022-10-26 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '10', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('84', '22', TO_DATE('2022-12-06 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '7', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('82', '23', TO_DATE('2023-01-12 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '14', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('96', '24', TO_DATE('2023-08-11 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '21', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('7', '25', TO_DATE('2023-01-31 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '12', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('51', '26', TO_DATE('2023-07-28 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '19', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('20', '27', TO_DATE('2022-10-12 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '12', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('7', '28', TO_DATE('2023-08-05 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '10', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('54', '29', TO_DATE('2023-07-04 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '9', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('54', '30', TO_DATE('2023-08-06 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '2', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('91', '31', TO_DATE('2023-04-19 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '2', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('86', '32', TO_DATE('2023-06-04 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '16', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('85', '33', TO_DATE('2023-07-17 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '12', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('73', '34', TO_DATE('2023-03-08 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '14', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('100', '35', TO_DATE('2023-07-13 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '25', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('16', '36', TO_DATE('2022-10-16 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '13', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('4', '37', TO_DATE('2023-07-12 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '9', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('24', '38', TO_DATE('2022-09-20 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '22', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('35', '39', TO_DATE('2023-02-15 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '24', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('94', '40', TO_DATE('2022-10-06 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '25', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('41', '41', TO_DATE('2023-06-28 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '14', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('97', '42', TO_DATE('2022-09-06 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '18', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('49', '43', TO_DATE('2023-07-30 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '20', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('70', '44', TO_DATE('2022-09-17 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '21', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('83', '45', TO_DATE('2023-04-24 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '14', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('5', '46', TO_DATE('2023-02-28 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '24', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('11', '47', TO_DATE('2022-12-08 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '6', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('46', '48', TO_DATE('2023-01-30 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '9', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('51', '49', TO_DATE('2023-07-17 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '12', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('21', '50', TO_DATE('2023-06-15 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '6', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('98', '51', TO_DATE('2023-04-25 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '17', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('94', '52', TO_DATE('2023-01-14 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '21', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('23', '53', TO_DATE('2022-12-30 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '10', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('99', '54', TO_DATE('2023-03-15 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '23', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('61', '55', TO_DATE('2023-04-03 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '6', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('23', '56', TO_DATE('2023-06-16 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '18', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('76', '57', TO_DATE('2023-02-11 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '4', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('11', '58', TO_DATE('2022-09-02 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '5', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('39', '59', TO_DATE('2023-05-12 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '14', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('88', '60', TO_DATE('2023-07-10 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '17', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('76', '61', TO_DATE('2022-12-16 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '9', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('82', '62', TO_DATE('2022-10-19 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '6', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('40', '63', TO_DATE('2022-12-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '8', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('55', '64', TO_DATE('2022-12-12 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '7', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('41', '65', TO_DATE('2023-07-27 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '7', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('99', '66', TO_DATE('2022-11-22 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '2', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('75', '67', TO_DATE('2023-03-26 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '14', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('13', '68', TO_DATE('2022-12-15 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '25', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('62', '69', TO_DATE('2022-10-21 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '1', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('11', '70', TO_DATE('2023-01-11 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '15', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('97', '71', TO_DATE('2022-10-10 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '23', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('43', '72', TO_DATE('2022-11-17 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '22', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('80', '73', TO_DATE('2022-08-25 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '18', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('16', '74', TO_DATE('2023-04-03 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '13', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('9', '75', TO_DATE('2023-02-13 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '15', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('6', '76', TO_DATE('2022-12-20 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '17', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('40', '77', TO_DATE('2023-05-28 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '3', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('2', '78', TO_DATE('2022-10-18 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '5', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('35', '79', TO_DATE('2022-11-09 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '6', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('100', '80', TO_DATE('2023-07-07 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '8', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('15', '81', TO_DATE('2022-08-25 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '4', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('3', '82', TO_DATE('2023-02-26 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '7', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('46', '83', TO_DATE('2023-07-25 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '18', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('85', '84', TO_DATE('2022-11-07 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '24', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('29', '85', TO_DATE('2023-06-22 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '1', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('47', '86', TO_DATE('2023-01-19 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '4', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('10', '87', TO_DATE('2023-06-18 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '8', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('79', '88', TO_DATE('2023-03-06 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '18', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('72', '89', TO_DATE('2023-04-05 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '12', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('27', '90', TO_DATE('2023-06-14 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '8', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('86', '91', TO_DATE('2022-09-02 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '6', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('16', '92', TO_DATE('2023-04-12 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '20', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('26', '93', TO_DATE('2023-03-22 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '5', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('88', '94', TO_DATE('2023-04-29 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '17', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('71', '95', TO_DATE('2023-01-02 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '2', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('58', '96', TO_DATE('2023-08-02 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '7', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('39', '97', TO_DATE('2023-06-09 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '17', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('55', '98', TO_DATE('2023-07-20 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '25', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('41', '99', TO_DATE('2022-12-25 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '22', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('20', '100', TO_DATE('2023-01-14 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '11', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('25', '101', TO_DATE('2023-01-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '9', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('28', '102', TO_DATE('2023-01-23 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '2', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('70', '103', TO_DATE('2022-09-25 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '18', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('85', '104', TO_DATE('2022-08-25 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '3', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('47', '105', TO_DATE('2022-12-12 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '18', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('56', '106', TO_DATE('2023-03-06 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '16', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('69', '107', TO_DATE('2023-06-03 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '16', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('43', '108', TO_DATE('2023-05-03 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '7', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('69', '109', TO_DATE('2022-12-29 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '13', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('42', '110', TO_DATE('2022-11-10 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '24', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('35', '111', TO_DATE('2023-05-03 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '6', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('65', '112', TO_DATE('2023-07-09 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '15', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('88', '113', TO_DATE('2023-06-21 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '2', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('89', '114', TO_DATE('2023-03-14 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '14', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('63', '115', TO_DATE('2023-01-30 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '9', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('50', '116', TO_DATE('2022-10-02 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '25', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('51', '117', TO_DATE('2023-03-15 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '9', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('48', '118', TO_DATE('2023-03-14 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '12', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('63', '119', TO_DATE('2023-05-03 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '10', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('76', '120', TO_DATE('2022-11-28 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '15', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('68', '121', TO_DATE('2022-10-29 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '3', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('5', '122', TO_DATE('2022-12-22 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '10', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('57', '123', TO_DATE('2023-06-21 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '19', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('47', '124', TO_DATE('2023-07-20 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '25', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('7', '125', TO_DATE('2023-01-19 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '25', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('46', '126', TO_DATE('2023-01-14 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '9', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('19', '127', TO_DATE('2022-10-04 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '20', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('34', '128', TO_DATE('2023-03-04 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '23', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('7', '129', TO_DATE('2022-12-08 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '18', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('4', '130', TO_DATE('2023-02-22 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '17', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('23', '131', TO_DATE('2023-05-18 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '10', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('14', '132', TO_DATE('2023-04-04 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '5', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('14', '133', TO_DATE('2023-01-28 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '13', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('80', '134', TO_DATE('2022-08-27 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '20', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('43', '135', TO_DATE('2023-07-19 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '8', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('11', '136', TO_DATE('2023-01-07 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '4', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('58', '137', TO_DATE('2023-06-02 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '2', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('38', '138', TO_DATE('2023-07-22 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '19', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('2', '139', TO_DATE('2023-05-24 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '18', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('17', '140', TO_DATE('2023-05-03 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '7', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('48', '141', TO_DATE('2023-04-08 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '24', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('93', '142', TO_DATE('2023-03-19 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '16', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('27', '143', TO_DATE('2022-12-08 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '1', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('49', '144', TO_DATE('2023-08-03 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '17', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('29', '145', TO_DATE('2023-05-29 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '3', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('89', '146', TO_DATE('2022-12-07 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '9', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('63', '147', TO_DATE('2023-03-22 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '15', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('15', '148', TO_DATE('2023-06-26 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '18', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('12', '149', TO_DATE('2023-05-08 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '22', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('57', '150', TO_DATE('2022-12-25 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '13', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('35', '151', TO_DATE('2023-08-17 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '18', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('30', '152', TO_DATE('2023-07-28 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '12', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('42', '153', TO_DATE('2023-08-02 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '7', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('9', '154', TO_DATE('2022-09-23 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '23', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('14', '155', TO_DATE('2023-05-24 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '13', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('100', '156', TO_DATE('2022-09-30 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '21', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('28', '157', TO_DATE('2023-08-08 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '6', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('27', '158', TO_DATE('2023-06-08 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '16', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('67', '159', TO_DATE('2023-06-22 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '2', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('95', '160', TO_DATE('2023-06-04 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '21', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('42', '161', TO_DATE('2023-03-17 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '4', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('35', '162', TO_DATE('2022-10-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '21', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('63', '163', TO_DATE('2023-02-28 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '14', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('91', '164', TO_DATE('2023-03-26 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '4', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('85', '165', TO_DATE('2023-02-06 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '23', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('68', '166', TO_DATE('2022-10-13 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '17', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('7', '167', TO_DATE('2023-08-09 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '12', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('28', '168', TO_DATE('2023-05-05 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '6', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('12', '169', TO_DATE('2023-01-13 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '24', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('59', '170', TO_DATE('2023-02-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '8', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('76', '171', TO_DATE('2023-06-15 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '15', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('18', '172', TO_DATE('2022-10-16 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '22', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('95', '173', TO_DATE('2023-07-09 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '16', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('21', '174', TO_DATE('2022-11-07 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '25', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('77', '175', TO_DATE('2022-11-09 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '21', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('92', '176', TO_DATE('2023-07-26 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '20', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('37', '177', TO_DATE('2023-03-07 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '23', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('13', '178', TO_DATE('2023-05-05 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '13', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('18', '179', TO_DATE('2023-08-18 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '2', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('34', '180', TO_DATE('2023-01-11 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '15', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('80', '181', TO_DATE('2022-09-18 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '22', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('34', '182', TO_DATE('2022-11-03 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '21', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('46', '183', TO_DATE('2023-01-16 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '12', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('70', '184', TO_DATE('2023-02-23 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '21', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('63', '185', TO_DATE('2022-11-28 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '20', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('27', '186', TO_DATE('2023-07-10 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '10', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('87', '187', TO_DATE('2022-09-28 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '18', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('1', '188', TO_DATE('2022-10-08 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '6', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('42', '189', TO_DATE('2023-05-31 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '22', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('83', '190', TO_DATE('2023-01-18 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '22', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('56', '191', TO_DATE('2023-03-27 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '23', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('67', '192', TO_DATE('2023-08-13 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '9', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('77', '193', TO_DATE('2023-07-03 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '15', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('61', '194', TO_DATE('2023-08-13 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '14', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('30', '195', TO_DATE('2022-11-24 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '5', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('69', '196', TO_DATE('2022-08-25 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '19', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('18', '197', TO_DATE('2022-09-21 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '13', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('86', '198', TO_DATE('2023-03-27 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '6', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('61', '199', TO_DATE('2023-07-29 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '1', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('21', '200', TO_DATE('2023-03-14 00:00:00', 'SYYYY-MM-DD HH24:MI:SS'), '2', NULL, NULL, NULL);
+INSERT INTO "INVENTORY"."ORDER" VALUES ('1', '208', TO_DATE('2023-09-10 22:36:58', 'SYYYY-MM-DD HH24:MI:SS'), '1', 'Tanvirul Islam Turad, Dhaka, , Dhaka, , 1000, BD', '1303516434', 'THX234ASD');
+INSERT INTO "INVENTORY"."ORDER" VALUES ('1', '201', TO_DATE('2023-09-07 16:56:06', 'SYYYY-MM-DD HH24:MI:SS'), '2', 'Jayed Haider, Titumir hall, , Dhaka, , 1000, BD', '1234566789', 'CfgbRyfEDRTGH');
+INSERT INTO "INVENTORY"."ORDER" VALUES ('1', '203', TO_DATE('2023-09-10 22:02:51', 'SYYYY-MM-DD HH24:MI:SS'), '1', 'Tanvirul Islam Turad, Dhaka, , Dhaka, , 1000, BD', '1303516480', 'THX234ASD');
+INSERT INTO "INVENTORY"."ORDER" VALUES ('1', '204', TO_DATE('2023-09-10 22:17:33', 'SYYYY-MM-DD HH24:MI:SS'), '1', 'Tanvirul Islam Turad, Dhaka, , Dhaka, , 1000, BD', '1303516480', 'THX234ASD');
+INSERT INTO "INVENTORY"."ORDER" VALUES ('1', '218', TO_DATE('2023-09-11 01:16:48', 'SYYYY-MM-DD HH24:MI:SS'), '2', 'Tanvirul Islam Turad, Dhaka, , Dhaka, , 1000, BD', '1303516434', 'TRX2465GDS');
+INSERT INTO "INVENTORY"."ORDER" VALUES ('1', '228', TO_DATE('2023-09-11 16:30:40', 'SYYYY-MM-DD HH24:MI:SS'), '1', 'Tanvirul Islam Turad, Dhaka, , Dhaka, , 1000, BD', '1234566789', 'THX234ASD');
+INSERT INTO "INVENTORY"."ORDER" VALUES ('1', '209', TO_DATE('2023-09-10 23:40:35', 'SYYYY-MM-DD HH24:MI:SS'), '1', 'Tanvirul Islam Turad, Dhaka, , Dhaka, , 1000, BD', '1303516480', 'THX234ASD');
+INSERT INTO "INVENTORY"."ORDER" VALUES ('1', '202', TO_DATE('2023-09-10 21:52:28', 'SYYYY-MM-DD HH24:MI:SS'), '1', 'Tanvirul Islam Turad, Dhaka, , Dhaka, , 1000, BD', '1303516434', 'THX234ASD');
+INSERT INTO "INVENTORY"."ORDER" VALUES ('1', '216', TO_DATE('2023-09-11 00:50:59', 'SYYYY-MM-DD HH24:MI:SS'), '1', 'Tanvirul Islam Turad, Dhaka, , Dhaka, , 1000, BD', '1303516434', 'eyfud34');
+
+-- ----------------------------
+-- Primary Key structure for table ORDER
+-- ----------------------------
+ALTER TABLE "INVENTORY"."ORDER" ADD CONSTRAINT "SYS_C007568" PRIMARY KEY ("O_ID");
+
+-- ----------------------------
+-- Checks structure for table ORDER
+-- ----------------------------
+ALTER TABLE "INVENTORY"."ORDER" ADD CONSTRAINT "SYS_C007562" CHECK ("C_ID" IS NOT NULL) NOT DEFERRABLE INITIALLY IMMEDIATE NORELY VALIDATE;
+ALTER TABLE "INVENTORY"."ORDER" ADD CONSTRAINT "SYS_C007564" CHECK ("O_ID" IS NOT NULL) NOT DEFERRABLE INITIALLY IMMEDIATE NORELY VALIDATE;
+ALTER TABLE "INVENTORY"."ORDER" ADD CONSTRAINT "SYS_C007565" CHECK ("ORDER_DATE" IS NOT NULL) NOT DEFERRABLE INITIALLY IMMEDIATE NORELY VALIDATE;
+ALTER TABLE "INVENTORY"."ORDER" ADD CONSTRAINT "SYS_C007567" CHECK ("E_ID" IS NOT NULL) NOT DEFERRABLE INITIALLY IMMEDIATE NORELY VALIDATE;
+ALTER TABLE "INVENTORY"."ORDER" ADD CONSTRAINT "SYS_C007870" CHECK ("C_ID" IS NOT NULL) NOT DEFERRABLE INITIALLY IMMEDIATE NORELY VALIDATE;
+ALTER TABLE "INVENTORY"."ORDER" ADD CONSTRAINT "SYS_C007872" CHECK ("O_ID" IS NOT NULL) NOT DEFERRABLE INITIALLY IMMEDIATE NORELY VALIDATE;
+ALTER TABLE "INVENTORY"."ORDER" ADD CONSTRAINT "SYS_C007873" CHECK ("ORDER_DATE" IS NOT NULL) NOT DEFERRABLE INITIALLY IMMEDIATE NORELY VALIDATE;
+ALTER TABLE "INVENTORY"."ORDER" ADD CONSTRAINT "SYS_C007875" CHECK ("E_ID" IS NOT NULL) NOT DEFERRABLE INITIALLY IMMEDIATE NORELY VALIDATE;
+
+-- ----------------------------
+-- Triggers structure for table ORDER
+-- ----------------------------
+CREATE TRIGGER "INVENTORY"."INS_ORDER_UPDATE_ON_PRODUCT" AFTER INSERT ON "INVENTORY"."ORDER" REFERENCING OLD AS "OLD" NEW AS "NEW" FOR EACH ROW 
+DECLARE
+  TEMP NUMBER;
+  SIZE_CC NUMBER;
+  PTYPE VARCHAR2(255);
+  QTY NUMBER;
+BEGIN
+   
+	 
+	FOR R IN(SELECT P_ID FROM ORDERED_PRODUCTS WHERE TEMP_O_ID = :NEW.O_ID)
+	LOOP
+	  UPDATE PRODUCT 
+		SET REMAINING_ITEM = REMAINING_ITEM - (SELECT QUANTITY FROM ORDERED_PRODUCTS WHERE TEMP_O_ID = :NEW.O_ID AND R.P_ID = P_ID),
+		SOLD_QUANTITY = SOLD_QUANTITY + (SELECT QUANTITY FROM ORDERED_PRODUCTS WHERE TEMP_O_ID = :NEW.O_ID AND R.P_ID = P_ID)
+		WHERE PRODUCT.P_ID = R.P_ID; 
+  END LOOP;
+END;
+/
+
+-- ----------------------------
+-- Foreign Keys structure for table ORDER
+-- ----------------------------
+ALTER TABLE "INVENTORY"."ORDER" ADD CONSTRAINT "SYS_C007571" FOREIGN KEY ("C_ID") REFERENCES "INVENTORY"."CUSTOMER" ("C_ID") NOT DEFERRABLE INITIALLY IMMEDIATE NORELY VALIDATE;
+ALTER TABLE "INVENTORY"."ORDER" ADD CONSTRAINT "SYS_C007573" FOREIGN KEY ("E_ID") REFERENCES "INVENTORY"."EMPLOYEE" ("E_ID") NOT DEFERRABLE INITIALLY IMMEDIATE NORELY VALIDATE;

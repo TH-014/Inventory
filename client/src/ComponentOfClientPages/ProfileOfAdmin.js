@@ -135,6 +135,7 @@ export default function ProfileOfAdminComponents() {
       ) : (
         <p>Loading user data...</p>
       )}
+        {userData === null && window.location.reload()}
     </div>
   );
 };

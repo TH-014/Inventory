@@ -112,6 +112,28 @@ export default function ProfileOfEmployeeComponents() {
     accessGranted = false;
     navigate('/');
   }
+  let E_ID = userData && userData.E_ID;
+  const handlePlacedOrderButtonClick = async (e) => {
+    e.preventDefault();
+
+
+
+    //console.log('Location ID:', locationID);
+    try {
+      const response = await axios.post("http://localhost:8000/PlacedOrder", {
+        E_ID: userData.E_ID});
+
+
+      if (response.status === 200) {
+        const orderData = response.data.rows;
+        console.log(response.data.rows);
+        navigate("/Table",{ state : {orderData}});
+      }
+      console.log("hello2");
+    } catch (error) {
+      console.error("Error during signup:", error);
+    }
+  };
 
   return (
       <div className="dashboard" style={{height: 'calc(100vh - 64px)', overflowY: 'auto'}}>
@@ -130,11 +152,13 @@ export default function ProfileOfEmployeeComponents() {
                 <p>Phone no : {userData.PHONE_NO}</p>
                 <p>Joining Date : {userData.JOINDATE}</p>
                 <p>Address: {userData.ADDRESS}</p>
+              <button onClick={handlePlacedOrderButtonClick}>Placed Orders...</button>
             </div>
           </div>
       ) : (
         <p>Loading user data...</p>
       )}
+        {userData === null && window.location.reload()}
     </div>
   );
 };
