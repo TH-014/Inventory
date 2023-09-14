@@ -29,6 +29,7 @@ import ShowReviews from './ComponentOfClientPages/showReviews';
 import WishedProducts from './ComponentOfClientPages/myWishList';
 import Grocery from "./ComponentOfClientPages/Grocery";
 import Toy from "./ComponentOfClientPages/Toy";
+import Fashion from "./ComponentOfClientPages/Fashion";
 
 function App() {
   const currentSupplierId = 0;
@@ -60,6 +61,7 @@ function App() {
           <Route path="/IT_Products" element={<ITProducts/>} />
           <Route path="/Grocery" element={<Grocery/>} />
           <Route path="/Toy" element={<Toy/>} />
+          <Route path="/Fashion" element={<Fashion/>} />
           <Route path="/AddressForm" element={<AddressForm/>} />
           <Route path="/Checkout" element={<Checkout/>} />
           <Route path="/Table" element={<EnhancedTable />} />

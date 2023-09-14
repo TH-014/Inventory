@@ -183,7 +183,7 @@ export default function ITProducts() {
 							color="text.primary"
 							gutterBottom
 						>
-							PRODUCTS OF ELECTRONICS.....
+							IT PRODUCTS <hr/>
 						</Typography>
 						{/* <Typography variant="h5" align="center" color="text.secondary" paragraph>
               Something short and leading about the collection below—its contents,

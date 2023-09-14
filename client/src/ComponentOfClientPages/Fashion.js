@@ -26,7 +26,7 @@ let ProductsInCart = [];
 
 let callAuth = false;
 let accessGranted = false;
-export default function Grocery() {
+export default function Fashion() {
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -58,9 +58,9 @@ export default function Grocery() {
 
 
 	useEffect(() => {
-		async function fetchGroceryData() {
+		async function fetchFashionData() {
 			try {
-				const res = await axios.get("http://localhost:8000/grocery");
+				const res = await axios.get("http://localhost:8000/fashion");
 				setProducts(res.data);
 				productCards = res.data;
 				console.log(productCards);
@@ -71,7 +71,7 @@ export default function Grocery() {
 				console.error("Error fetching root categories:", err);
 			}
 		}
-		fetchGroceryData();
+		fetchFashionData();
 		if(callAuth)
 			return;
 		console.log('Inside useEffect of Home.');
@@ -186,7 +186,7 @@ export default function Grocery() {
 							color="text.primary"
 							gutterBottom
 						>
-							PRODUCTS OF GROCERIES...<hr/>
+							Fashion PRODUCTS<hr/>
 						</Typography>
 						{/* <Typography variant="h5" align="center" color="text.secondary" paragraph>
               Something short and leading about the collection below—its contents,

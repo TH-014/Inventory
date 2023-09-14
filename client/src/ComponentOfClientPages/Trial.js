@@ -537,6 +537,7 @@ import { useRoutes, useNavigate } from 'react-router-dom';
 import { Avatar, Icon } from '@mui/material';
 import { Image } from '@mui/icons-material';
 import Trial from './Trial.css'
+import {productsDetails} from "./Checkout";
 
 const drawerWidth = 240;
 
@@ -733,8 +734,8 @@ export default function Album() {
         }
         console.log(P_ID);
         const resFromServer = await axios.post('http://localhost:8000/wishList',{P_ID},{headers: {Authorization: `${localStorage.getItem('token')}`}}); /// write the code in server
-        console.log(resFromServer);
-        alert('The product has been added to your WishList.');
+        console.log(resFromServer.data.message);
+        alert(resFromServer.data.message);
     };
 
 
@@ -759,6 +760,14 @@ export default function Album() {
         if(localStorage.getItem('ProductsInCart') !== null) {  ///check whether it is null
             console.log('inside if');
             ProductsInCart = JSON.parse(localStorage.getItem('ProductsInCart')); /// checking whether it is assigned before......
+            for(let i=0;i<ProductsInCart.length;i++)
+            {
+                if(ProductsInCart[i].P_ID === P_ID)
+                {
+                    alert('This product is already in your cart.');
+                    return;
+                }
+            }
         }
         console.log(P_ID);
         console.log(ProductsInCart);
@@ -832,6 +841,7 @@ export default function Album() {
             alert('Your cart is empty!');
             return;
         }
+        // console.log('inside checkout()', accessGranted);
         navigate('/checkout');
         // alert('You clicked the third ListButton.');
     };
@@ -846,23 +856,13 @@ export default function Album() {
                 <AppBar1 position="fixed" open={open}>
                     <Toolbar>
                         <Toolbar>
-                            <div className='addProduct-link'>
-                                <a href="/Educational" className="addProduct-link" > <strong>    EDUCATIONAL</strong></a>
-                                <a href="/IT_Products" className="addProduct-link">
-                                    <strong>IT_PRODUCTS</strong>
-                                </a>
-                                <a href="/Grocery" className="addProduct-link">
-                                    <strong>GROCERY</strong>
-                                </a>
-                                <a href="/Toy" className="addProduct-link">
-                                    <strong>TOY</strong>
-                                </a>
-                                {/* <a href="/Fashion" className="addProduct-link">
-                <strong>FASHION</strong>
-              </a> */}
+                            <div className='addProduct-link' style={{ display: 'flex' }} style={{ margin: '0', padding: '0' }}>
+                                <a href="/Educational" className="addProduct-link"><strong>EDUCATIONAL</strong></a>
+                                <a href="/IT_Products" className="addProduct-link"><strong>IT_PRODUCTS</strong></a>
+                                <a href="/Grocery" className="addProduct-link"><strong>GROCERY</strong></a>
+                                <a href="/Toy" className="addProduct-link"><strong>TOY</strong></a>
+                                <a href="/Fashion" className="addProduct-link"><strong>FASHION</strong></a>
                             </div>
-
-
                         </Toolbar>
 
                         <Toolbar>
@@ -967,6 +967,9 @@ export default function Album() {
                         pb: 6,
                     }}
                 >
+                    <div align="right" className="Checkout">
+                        <button className="button" onClick={handleCheckoutButtonClick}>Check Out</button>
+                    </div>
 
                     <Container maxWidth="sm">
 
@@ -981,10 +984,6 @@ export default function Album() {
                             <p> <br/></p>
                             Yours Favourites are here.....
                         </Typography>
-                        <div align="right" className="Checkout">
-                            <button className="button" onClick={handleCheckoutButtonClick}>Check Out</button>
-                        </div>
-
 
                         <link rel="stylesheet" href="search_home.css"/>
                         <div className="search-box">
@@ -1000,8 +999,8 @@ export default function Album() {
 
 
 
-                <p align='center' h2 = 'text' >
-                    <blink>Top Sold products....</blink>
+                <p align='center' h2 = 'text'>
+                    <blink>Top Sold products...</blink>
                 </p>
 
 

@@ -322,6 +322,20 @@ app.get("/Toy", async (req, res) => {
     }
 });
 
+app.get("/fashion", async (req, res) => {
+    try {
+        const queryToExtractEduProduct = 'SELECT * FROM "INVENTORY"."PRODUCT" NATURAL JOIN "INVENTORY"."FASHION"';
+        const result = await runQuery(queryToExtractEduProduct, []);
+        const columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','COLOR','PICTURE','RATING'];
+        const output = extractData(result, columnsToExtract);
+        //console.log(output);
+        res.send(output);
+    } catch (error) {
+        console.error('Error fetching Fashion products:', error);
+        res.status(500).json({ error: 'Error fetching Fashion products' });
+    }
+});
+
 app.get("/TopSoldProducts", async (req, res) => {
     try {
         const query = 'SELECT * FROM (SELECT * FROM PRODUCT ORDER BY SOLD_QUANTITY DESC) WHERE ROWNUM <= 5';
@@ -423,14 +437,22 @@ app.post("/wishList", async (req, res) => {
             res.send({message: 'Unauthorized user.'});
         try{
             let C_ID = resAuth.data.id; // We need to change this to the customer id of the logged in user by using the token
+            const checkQuery = `SELECT * FROM "INVENTORY"."WISHLIST" WHERE "C_ID"=:C_ID AND "P_ID"=:P_ID`;
             const queryToInsertIntoWishList = `INSERT INTO "INVENTORY"."WISHLIST"("C_ID","P_ID") VALUES(:C_ID,:P_ID)`;
             const bindParamsToInsertIntoWishList = {
                 C_ID : C_ID,
                 P_ID : P_ID
             };
+            const checkResult = await runQuery(checkQuery,bindParamsToInsertIntoWishList);
+            console.log(checkResult.rows.length);
+            if(checkResult.rows.length>0)
+            {
+                res.send({message: 'Already in the wishlist.'});
+                return;
+            }
             const resultOfInsertIntoWishList = await runQuery(queryToInsertIntoWishList,bindParamsToInsertIntoWishList);
             console.log(resultOfInsertIntoWishList);
-            res.send(resultOfInsertIntoWishList);
+            res.send({message: 'The product has been added to your WishList.'});
         }catch(error)
         {
             console.error("Error while taking the data from employees : ", error);

@@ -183,7 +183,7 @@ export default function EducationalProducts() {
                             color="text.primary"
                             gutterBottom
                         >
-                            PRODUCTS RELATED TO YOUR EDUCATION.....
+                            PRODUCTS RELATED TO YOUR EDUCATION...<hr/>
                         </Typography>
                         {/* <Typography variant="h5" align="center" color="text.secondary" paragraph>
               Something short and leading about the collection below—its contents,
