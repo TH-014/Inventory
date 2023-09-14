@@ -714,6 +714,7 @@ export default function Album() {
 
     let searchBoxInput = '';
     async function handleSearchButtonClick() {
+        callAuth = accessGranted = false;
         searchBoxInput = document.getElementById('searchInput').value;
         // alert(`Searching for ${searchBoxInput}...`);
         console.log(`Searching for ${searchBoxInput}...`);
@@ -785,44 +786,55 @@ export default function Album() {
 
 
     const handleLoginAsCustomerClick = async () => {
-        callAuth = false;
+        callAuth = accessGranted = false;
         navigate('/login');
         // alert('You clicked the third ListButton.');
     };
 
 
     const handleLoginAsSupplierClick = async () => {
+        callAuth = accessGranted = false;
         navigate('/loginAsSupplier');
         // alert('You clicked the third ListButton.');
     };
 
     const handleRegisterAsCustomerClick = async () => {
-        callAuth = false;
+        callAuth = accessGranted = false;
         navigate('/Register');
         // alert('You clicked the third ListButton.');
     };
 
 
     const handleRegisterAsSupplierClick = async () => {
+        callAuth = accessGranted = false;
         navigate('/RegisterAsSupplier');
         // alert('You clicked the third ListButton.');
     };
     const handleLoginAsEmployeeClick = async () => {
+        callAuth = accessGranted = false;
         navigate('/loginAsEmployee');
         // alert('You clicked the third ListButton.');
     };
 
     const handleRegisterAsEmployeeClick = async () => {
+        callAuth = accessGranted = false;
         navigate('/RegisterAsEmployee');
         // alert('You clicked the third ListButton.');
     };
     const handleCheckoutButtonClick = async () => {
+        // console.log('inside checkout()', accessGranted);
+        if(!accessGranted)
+        {
+            alert('You must be logged in as a customer to buy products.');
+            return;
+        }
+        if(localStorage.getItem('ProductsInCart') === null) {  ///check whether it is null
+            alert('Your cart is empty!');
+            return;
+        }
         navigate('/checkout');
         // alert('You clicked the third ListButton.');
     };
-
-
-
 
 
     return(
@@ -989,7 +1001,7 @@ export default function Album() {
 
 
                 <p align='center' h2 = 'text' >
-                    Top Sold products....
+                    <blink>Top Sold products....</blink>
                 </p>
 
 
@@ -1037,7 +1049,7 @@ export default function Album() {
 
 
                 <p align='center' h2 = 'text'>
-                    Top rated products....
+                    <blink>Top rated products....</blink>
                 </p>
 
                 <Container sx={{ py: 8 }} maxWidth="md">

@@ -438,8 +438,9 @@ app.post("/myWishList", async (req, res) => {
                 C_ID1 : C_ID1
             };
             const resultOfDataFromWishList = await runQuery(queryToExtractDataFromWishList,bindParamsToExtractDataFromWishList);
+            console.log(resultOfDataFromWishList.rows);
             //console.log(resultOfDataFromWishList);
-            res.send(resultOfDataFromWishList);
+            res.send(resultOfDataFromWishList.rows);
         }
         catch(error)
         {
@@ -471,6 +472,33 @@ app.post("/wishList", async (req, res) => {
         }catch(error)
         {
             console.error("Error while taking the data from employees : ", error);
+            res.status(500).json({message: "Error while taking the data from products"});
+        }
+    }
+);
+
+app.post("/removeFromWishList", async (req, res) => {
+    console.log('inside remove from wishlist');
+    const {P_ID} = req.body;
+        console.log(P_ID);
+        const token = req.headers.authorization;
+        const resAuth = await axios.get('http://localhost:8000/auth/customer',{headers: {Authorization: token}});
+        if(resAuth.data.id<0)
+            res.send({message: 'Unauthorized user.'});
+        try{
+            let C_ID = resAuth.data.id; // We need to change this to the customer id of the logged in user by using the token
+            const queryToInsertIntoWishList = `DELETE FROM "INVENTORY"."WISHLIST" WHERE "C_ID"=:C_ID AND "P_ID"=:P_ID`;
+            const bindParamsToInsertIntoWishList = {
+                C_ID : C_ID,
+                P_ID : P_ID
+            };
+            console.log(`deleting ${P_ID} from ${C_ID}`);
+            const resultOfInsertIntoWishList = await runQuery(queryToInsertIntoWishList,bindParamsToInsertIntoWishList);
+            console.log(resultOfInsertIntoWishList);
+            res.send('data deleted');
+        }catch(error)
+        {
+            console.error("Error : ", error);
             res.status(500).json({message: "Error while taking the data from products"});
         }
     }

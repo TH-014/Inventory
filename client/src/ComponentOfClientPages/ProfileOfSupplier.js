@@ -8,11 +8,11 @@ let callAuth = false;
 let accessGranted = false;
 
 export default function ProfileOfSupplierComponents() {
-    // console.log(localStorage.getItem("token"));
+    // console.log(localStorage.getItem("stoken"));
     const [userData, setUserData] = React.useState(null); // [state, function to update state]
     const location = useLocation();
     const navigate = useNavigate();
-    const accessToken = localStorage.getItem("token");
+    const accessToken = localStorage.getItem("stoken");
 
     const ButtonWrapper = styled.div`
   display: flex;
@@ -57,7 +57,7 @@ export default function ProfileOfSupplierComponents() {
         console.log('Inside useEffect of profile of supplier.');
         async function checkLoginStatus() {
             try {
-                const authRes = await axios.get('http://localhost:8000/auth/supplier', {headers: {Authorization: `${localStorage.getItem('token')}`}});
+                const authRes = await axios.get('http://localhost:8000/auth/supplier', {headers: {Authorization: `${localStorage.getItem('stoken')}`}});
                 callAuth = true;
                 return authRes;
             } catch (e) {
@@ -106,7 +106,7 @@ export default function ProfileOfSupplierComponents() {
     function handleLogOut() {
         callAuth = false;
         accessGranted = false;
-        localStorage.removeItem("token");
+        localStorage.removeItem("stoken");
         navigate('/');
     }
 

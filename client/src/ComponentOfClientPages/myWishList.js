@@ -23,13 +23,14 @@ import styled from "styled-components";
 let productCards = [];
 const defaultTheme = createTheme();
 let ProductsInCart = [];
-
+let callAuth = false;
+let accessGranted = false;
 export default function WishedProducts() {
 	const location = useLocation();
 	const navigate = useNavigate();
-	const wishData = location.state && location.state.wishedProductData.rows; // Check for undefined
+	// let wishData = location.state && location.state.wishedProductData.rows; // Check for undefined
 
-	const [wishedProducts, setProducts] = useState([]);
+	const [wishData, setWishData] = useState([]);
 
 	const ButtonWrapper = styled.div`
   align-content: center;
@@ -67,25 +68,56 @@ export default function WishedProducts() {
   }
 `;
 
+	useEffect(() => {
+		if(callAuth)
+			return;
+		console.log('Inside useEffect of profile of customer.');
+		async function checkLoginStatus() {
+			try {
+				const authRes = await axios.get('http://localhost:8000/auth/customer', {headers: {Authorization: `${localStorage.getItem('token')}`}});
+				callAuth = true;
+				return authRes;
+			} catch (e) {
+				console.log(e);
+			}
+		}
+		async function getCustomerData(cid) {
+			try {
+				console.log('cid = ',cid);
+				const resFromServer = await axios.post('http://localhost:8000/myWishList',{C_ID1: cid});
+				console.log(resFromServer);
+				if (resFromServer.status === 200) {
+					return resFromServer.data;
+				}
+			} catch (e) {
+				console.log(e);
+			}
+		}
+		checkLoginStatus().then(res => {
+			console.log('Checked login status from mywishlist page.');
+			if(res.status === 200 && res.data.auth === true && res.data.id>0)
+			{
+				accessGranted = true;
+				console.log('Authorized.', res.data.id);
+				getCustomerData(res.data.id).then(r => {
+					// setUserData(r[0]);
+					setWishData(r);
+					console.log('Got customer data.');
+					console.log(r);
+				});
+			}
+		});
+	},[]);
 
-//   useEffect(() => {
-//     async function fetchWishedData() {
-//       try {
-//         const wishProdResponse = await axios.post("http://localhost:8000/myWishList1",{wishData});
-//         setProducts(wishProdResponse.data.rows);
-//         productCards = wishProdResponse.data.rows;
-//         console.log(productCards);
-//         // fetchTopSoldProducts();
-//         // fetchTopRatedProducts();
-
-//       } catch (err) {
-//         console.error("Error fetching root categories:", err);
-//       }
-//     }
-
-//     fetchWishedData();
-// }, [wishData]);
-
+	// if (!accessGranted) {
+	// 	return (
+	// 		<div align="center" className="error">
+	// 			<h2>Access Denied!</h2><hr/>
+	// 			<p>Go back to
+	// 				<a href="/login"> Login page.</a></p>
+	// 		</div>
+	// 	);
+	// }
 
 	const handleDetailsButtonClick = async (P_ID) => {
 		console.log(P_ID);
@@ -138,6 +170,14 @@ export default function WishedProducts() {
 		// callAuth = false;
 		// accessGranted = false;
 		navigate('/DashBoard');
+	}
+
+	async function handleRemoveButtonClick(P_ID) {
+		console.log(P_ID);
+		const resFromServer = await axios.post('http://localhost:8000/removeFromWishList', {P_ID}, {headers: {Authorization: `${localStorage.getItem('token')}`}}); /// write the code in server
+		callAuth= false;
+		console.log(resFromServer);
+		window.location.reload();
 	}
 
 	return (
@@ -209,8 +249,8 @@ export default function WishedProducts() {
 									<CardContent sx={{ flexGrow: 1 }}>
 										<Typography gutterBottom variant="h6" component="h2">
 											{card[2]}<br/>
-											Price: $ {card[5]} <br/>
-											{card[10]? <p>Discount: {card[10]}%</p>:null}
+											Price: $ {card[5]}
+											{card[7]? <p>In stock: {card[7]}</p>:null}
 											{ card[12] <= 2? null : <p>Rating: {card[12]}</p>}
 										</Typography>
 										<Typography>
@@ -220,6 +260,7 @@ export default function WishedProducts() {
 									<CardActions>
 										<Button size="small" onClick={()=>handleDetailsButtonClick(card[0])}>Details</Button>
 										<Button size="small" onClick={()=>handleAddToCartButtonClick(card[0])}>ADD TO CART</Button>
+										<Button size="small" onClick={()=>handleRemoveButtonClick(card[0])}>Remove</Button>
 									</CardActions>
 								</Card>
 							</Grid>

@@ -105,8 +105,18 @@ export default function ReturnDashBoardComponents() {
   function handleLogOut() {
     callAuth = false;
     accessGranted = false;
-    localStorage.removeItem("token");
-    navigate('/');
+    console.log('Inside handleLogOut.');
+    // console.log('ProductsInCart = ',localStorage.getItem('ProductsInCart'));
+    let Cart = localStorage.getItem('ProductsInCart');
+    // console.log('Cart length= ',Cart.length);
+    if(Cart?.length > 0)
+    { // If there are products in cart, then redirect to checkout page.
+      navigate('/checkout');
+    }
+    else{
+        localStorage.removeItem("token");
+        navigate('/');
+    }
   }
 
   function handleHome() {

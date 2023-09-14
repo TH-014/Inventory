@@ -6,3 +6,9 @@
 .addProduct-link:nth-child(1) {
     margin-left: 100px; /* Adjust the distance as per your requirement */
 }
+
+blink {
+    color: #2d38be;
+    font-size: 15px;
+    font-weight: bold;
+}

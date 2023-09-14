@@ -23,7 +23,7 @@ import supplierIdContext from "../Context/supplierContext";
          console.log('Inside useEffect of profile of supplier.');
          async function checkLoginStatus() {
              try {
-                 const authRes = await axios.get('http://localhost:8000/auth/supplier', {headers: {Authorization: `${localStorage.getItem('token')}`}});
+                 const authRes = await axios.get('http://localhost:8000/auth/supplier', {headers: {Authorization: `${localStorage.getItem('stoken')}`}});
                  callAuth = true;
                  return authRes;
              } catch (e) {
@@ -58,9 +58,9 @@ import supplierIdContext from "../Context/supplierContext";
           console.log('here am i \n');
           // console.log(resFromServer.data.accessToken);
           // console.log(resFromServer.data.output[0]);
-          if(localStorage.getItem("token"))
-              localStorage.removeItem("token");
-          localStorage.setItem("token", resFromServer.data.accessToken);
+          if(localStorage.getItem("stoken"))
+              localStorage.removeItem("stoken");
+          localStorage.setItem("stoken", resFromServer.data.accessToken);
           if(resFromServer.status === 200){
             const userData = resFromServer.data.output[0];           ///////////////////////// upto here it is working fine .......
             navigate('/ProfileOfSupplier',{ state : {userData}});
