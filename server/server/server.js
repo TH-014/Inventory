@@ -198,72 +198,6 @@ app.post("/showReviews", async (req, res) => {
     }
 );
 
-// app.post("/productDetails", async (req, res) => {
-//         const {P_ID} = req.body; // May be P_ID as in Frontend
-//         console.log(P_ID);
-//         try{
-//
-//             const queryToCheckTypeOfProduct = `SELECT TYPE FROM "INVENTORY"."PRODUCT" WHERE P_ID = :P_ID`;
-//
-//             const bindParamsToCheckProductType = {
-//                 ":P_ID" :P_ID
-//             };
-//             const resultOfTypeCheck = await runQuery(queryToCheckTypeOfProduct,bindParamsToCheckProductType);
-//             const typeOfProduct = resultOfTypeCheck.rows[0][0];
-//             // console.log(typeOfProduct);
-//
-//             let queryToProductDetails = `SELECT * FROM "INVENTORY"."PRODUCT" `;
-//             let columnsToExtract = [];
-//
-//             if(typeOfProduct === 'EDUCATIONAL')
-//             {
-//                 queryToProductDetails += 'NATURAL JOIN "INVENTORY"."EDUCATIONAL" WHERE P_ID = :P_ID';
-//                 columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','LEVEL','PICTURE','RATING'];
-//             }
-//             else if(typeOfProduct === 'FASHION')
-//             {
-//                 queryToProductDetails += 'NATURAL JOIN "INVENTORY"."FASHION" WHERE P_ID = :P_ID';
-//                 columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','MADE_OF','SIZE','COLOR','PICTURE','RATING'];
-//             }
-//             else if(typeOfProduct === 'GROCERY')
-//             {
-//                 queryToProductDetails += 'NATURAL JOIN "INVENTORY"."GROCERY" WHERE P_ID = :P_ID';
-//                 columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','PRODUCTION_DATE','EXPIARY_DATE','PICTURE','RATING'];
-//             }
-//             else if(typeOfProduct === 'IT_PRODUCTS')
-//             {
-//                 queryToProductDetails += 'NATURAL JOIN "INVENTORY"."IT_PRODUCTS" WHERE P_ID = :P_ID';
-//                 columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','RAM(GB)','STORAGE(GB)','PROCESSOR(GHZ)','PICTURE','RATING'];
-//             }
-//             else if(typeOfProduct === 'TOY')
-//             {
-//                 queryToProductDetails += 'NATURAL JOIN "INVENTORY"."TOY" WHERE P_ID = :P_ID';
-//                 columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','COLOR','LEVEL','PICTURE','RATING'];
-//             }
-//             else
-//             {
-//                 console.log("No matching product found.");
-//             }
-//             const bindParamsToProductDetails = {
-//                 ":P_ID" :P_ID
-//             };
-//             const resultOfProductDetails = await runQuery(queryToProductDetails,bindParamsToProductDetails);
-//
-//             const output = extractData(resultOfProductDetails, columnsToExtract);
-//             // console.log(output);
-//
-//             res.send(output);
-//
-//
-//
-//         }catch(error)
-//         {
-//             console.error("Error while taking the data from employees : ", error);
-//             res.status(500).json({message: "Error while taking the data from products"});
-//         }
-//
-//     }
-// );
 
 app.post("/productDetails", async (req, res) => {
         const {P_ID} = req.body;
@@ -357,6 +291,34 @@ app.get("/itproducts", async (req, res) => {
     } catch (error) {
         console.error('Error fetching Edu products:', error);
         res.status(500).json({ error: 'Error fetching Edu products' });
+    }
+});
+
+app.get("/grocery", async (req, res) => {
+    try {
+        const queryToExtractEduProduct = 'SELECT * FROM "INVENTORY"."PRODUCT" NATURAL JOIN "INVENTORY"."GROCERY"';
+        const result = await runQuery(queryToExtractEduProduct, []);
+        const columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','PICTURE','RATING'];
+        const output = extractData(result, columnsToExtract);
+        //console.log(output);
+        res.send(output);
+    } catch (error) {
+        console.error('Error fetching Edu products:', error);
+        res.status(500).json({ error: 'Error fetching Edu products' });
+    }
+});
+
+app.get("/Toy", async (req, res) => {
+    try {
+        const queryToExtractEduProduct = 'SELECT * FROM "INVENTORY"."PRODUCT" NATURAL JOIN "INVENTORY"."TOY"';
+        const result = await runQuery(queryToExtractEduProduct, []);
+        const columnsToExtract = ['P_ID','P_NAME','PRICE','DISCOUNT','DESCRIPTION','TYPE','REMAINING_ITEM','SOLD_QUANTITY','COLOR','PICTURE','RATING'];
+        const output = extractData(result, columnsToExtract);
+        //console.log(output);
+        res.send(output);
+    } catch (error) {
+        console.error('Error fetching Toy products:', error);
+        res.status(500).json({ error: 'Error fetching Toy products' });
     }
 });
 
@@ -1278,247 +1240,3 @@ const port = 8000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
-// app.post('/login',async (req, res)=>{
-
-//     console.log(req.body);
-
-//     const username = req.body.user;
-//     const data = await runQuery(
-//         `SELECT * FROM "INVENTORY"."Product" WHERE "P_NAME" ='${username}'`,[]
-//     );
-//     res.send(data.rows);
-
-
-// })
-
-
-/*
-/import bodyParser from "body-parser";
-import cors from "cors";
-import crypto from 'crypto';
-import express from "express";
-import connectToDatabase from "./connectToDatabase.js"; // Import connectToDatabase using ESM syntax
-import runQuery, { extractData } from "./runQuery.js"; // Import runQuery using ESM syntax
-import AddProduct from "../client/src/pages/AddProducts.js";
-
-const app = express();
-
-(async () => {
-  try {
-    await connectToDatabase();
-  } catch (error) {
-    console.error("Error connecting to the database:", error);
-  }
-})();
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
-
-
-
-app.get("/", async (req, res) => {
-  try {
-    let result = await runQuery("select * from employees", []);
-    const columnsToExtract = ['FIRST_NAME', 'SALARY'];
-    const output = extractData(result, columnsToExtract);
-    //console.log(extractData(result,columnsToExtract));
-
-    res.status(200).json({ data: result || [], message: "Welcome to the API!" });
-  } catch (error) {
-    console.error("Error fetching employees:", error);
-    res.status(500).json({ message: "Error fetching employees." });
-  }
-});
-
-
-
-app.get('/locations', async (req, res) => {
-  try {
-
-    
-        const query = `
-      SELECT
-        u.locationID AS ID, 
-        d.divisionName AS division,
-        di.districtName AS district,
-        u.thanaName AS upazilla
-      FROM
-        Division d
-      JOIN
-        District di ON d.divisionID = di.divisionID
-      JOIN
-        Upazilla u ON di.districtID = u.districtID
-    `;
-    const queryData=await runQuery(query,[]);
-    // console.log(queryData);
-
-    // result=extractData(query,['division','district','upazilla']);
-    //console.log(queryData);
-    //res.json(extractData(queryData),['DIVISION','DISTRICT','UPAZILLA']);
-    res.json(extractData(queryData,['ID','DIVISION','DISTRICT','UPAZILLA']));
-
-  } catch (error) {
-    console.error('Error fetching locations:', error);
-    res.status(500).json({ error: 'Error fetching locations' });
-  }
-});
-
-app.post('/signup', async (req,res) => {
-
-  //console.log(req);
-  const {firstname, lastname, email, password, locationID} = req.body;
-  const passwordHash = crypto.createHash('sha1').update(password).digest('hex');
-  const queryToExtractUserID = `SELECT userID FROM USERS ORDER BY userID DESC`;
-  const result2 =   await runQuery(queryToExtractUserID, []);
-
-  //console.log(result2);
-
-  const newuId = result2.rows.length+1;
-  const insertQuery = `INSERT INTO USERS(userID,email,passwords,firstname,lastname,locationID) VALUES(:newuId,:email,:passwordHash,:firstname,:lastname,:locationID)`;
-  console.log("this is a ID : " ,newuId);
-
-  const bindParams = {
-    newuId : newuId,
-    passwordHash: passwordHash,
-    email:email,
-    firstname:firstname,
-    lastname:lastname,
-    locationID: locationID,
-};
-
-  const result3 = await runQuery(insertQuery,bindParams);
-  res.send(result3);
-
-})
-
-
-app.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-
-  const passwordHash = crypto.createHash('sha1').update(password).digest('hex');
-  //console.log(passwordHash)
-
-  const query = 'SELECT * FROM users WHERE email = :email AND passwords = :password';
-
-const bindParams = {
-    email: email,
-    password: passwordHash
-};
-
-
-  try {
-    const result = await runQuery(query, bindParams);
-    //console.log(result);
-    const columnsToExtract = ['userID', 'email','firstName','lastName','locationID','reported'];
-    const output = extractData(result, columnsToExtract);
-    //console.log(extractData(result,columnsToExtract));
-
-      if (result &&result.rows.length > 0) {
-          // Login successful
-          res.send(output);
-      } else {
-          // Invalid credentials
-          res.status(401).send("Invalid username or password.");
-      }
-
-  } catch (error) {
-      console.error("Error during login:", error);
-      res.status(500).json({ message: "Internal server error." });
-  }
-});
-
-app.get('/categories', (req, res) => {
-  const categories = ['Electronics', 'Clothing', 'Groceries'];
-  res.json(categories);
-});
-
-
-
-// app.get('/products', async (req, res) => {
-//   try {
-//     const query = 'SELECT * FROM Product';
-//     const queryData = await runQuery(query, []);
-//     console.log(queryData)
-//     const output = extractData(queryData, ['productID', 'subCategoryID', 'productName', 'brand', 'picture', 'descriptions']);
-//     res.json(output);
-//   } catch (error) {
-//     console.error('Error fetching products:', error);
-//     res.status(500).json({ error: 'Error fetching products' });
-//   }
-// });
-
-app.get('/products', async (req, res) => {
-  const subCategoryID = req.query.subCategoryID;
-  console.log(subCategoryID)
-  try {
-      const query = 'SELECT * FROM Product WHERE subCategoryID = :subCategoryID';
-      const queryData = await runQuery(query, [subCategoryID]);
-      //console.log(queryData)
-
-
-
-      const output = extractData(queryData, ['productID', 'subCategoryID', 'productName', 'brand', 'picture', 'descriptions']);
-      res.json(output);
-  } catch (error) {
-      console.error('Error fetching products:', error);
-      res.status(500).json({ error: 'Error fetching products' });
-  }
-});
-
-
-app.get('/rootCategories', async (req, res) => {
-  try {
-      const query = 'SELECT * FROM RootCategory';  // Assuming RootCategories is the name of your table
-      const queryData = await runQuery(query, []);
-      const output = extractData(queryData, ['rootCategoryID', 'name']);
-      res.json(output);
-  } catch (error) {
-      console.error('Error fetching root categories:', error);
-      res.status(500).json({ error: 'Error fetching root categories' });
-  }
-});
-
-app.get('/subCategories', async (req, res) => {
-  const rootCategoryID = req.query.rootCategoryID;
-  try {
-      const query = 'SELECT * FROM SubCategory WHERE rootCategoryID = :rootCategoryID';
-      const queryData = await runQuery(query, [rootCategoryID]);
-      const output = extractData(queryData, ['subCategoryID', 'name']);
-      res.json(output);
-  } catch (error) {
-      console.error('Error fetching subcategories:', error);
-      res.status(500).json({ error: 'Error fetching subcategories' });
-  }
-});
-
-app.post('/AddProduct',(req,res)=>
-{
-  console.log(req);
-}
-);
-
-
-
-app.put("/add", async (req, res) => {
-  const query = "INSERT INTO EMPLOYEES (name, age, country) VALUES (?, ?, ?)";
-  const bindParams = [req.body.name, req.body.age, req.body.country];
-
-  try {
-    const result = await runQuery(query, bindParams);
-    //console.log("Row inserted:", result);
-    res.status(200).json({ message: "Row inserted successfully!" });
-  } catch (error) {
-    console.error("Error inserting row:", error);
-    res.status(500).json({ message: "Error inserting row." });
-  }
-});
-
-const port = 8000;
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
-
-*/

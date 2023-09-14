@@ -19,8 +19,12 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import {Copyright} from "@mui/icons-material";
+import styled from "styled-components";
 let productCards = [];
 const defaultTheme = createTheme();
+let ProductsInCart = [];
+let callAuth = false;
+let accessGranted = false;
 
 export default function EducationalProducts() {
     const location = useLocation();
@@ -28,7 +32,28 @@ export default function EducationalProducts() {
 
     const [educationalProducts, setProducts] = useState([]);
 
+    const ButtonWrapper = styled.div`
+      display: flex;
+      justify-content: space-between;
+	`;
 
+    const HomeButton = styled.button`
+      background-color: #3498db;
+      color: #fff;
+      padding: 10px 15px;
+	  width: 140px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000; /* Use a higher z-index to ensure the button is above other content */
+      &:hover {
+        background-color: #2980b9;
+      }
+	`;
 
     useEffect(() => {
         async function fetchEducationalData() {
@@ -44,10 +69,28 @@ export default function EducationalProducts() {
                 console.error("Error fetching root categories:", err);
             }
         }
-
         fetchEducationalData();
+        if(callAuth)
+            return;
+        console.log('Inside useEffect of Home.');
+        async function checkLoginStatus() {
+            try {
+                const authRes = await axios.get('http://localhost:8000/auth/customer', {headers: {Authorization: `${localStorage.getItem('token')}`}});
+                callAuth = true;
+                return authRes;
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        checkLoginStatus().then(res => {
+            console.log('Checked login status.');
+            if(res.status === 200 && res.data.auth === true && res.data.id>0)
+            {
+                accessGranted = true;
+                console.log('Authorized.', res.data.id);
+            }
+        });
     }, []);
-
 
     const handleDetailsButtonClick = async (P_ID) => {
         console.log(P_ID);
@@ -58,13 +101,55 @@ export default function EducationalProducts() {
         // alert('You clicked the Detais Button.');
     };
 
+    const handleAddToCartButtonClick = async (P_ID) => {
+        if(!accessGranted)
+        {
+            alert('You must be logged in as a customer to add to Cart.');
+            return;
+        }
+        //localStorage.removeItem('ProductsInCart');
+        if(localStorage.getItem('ProductsInCart') !== null) {  ///check whether it is null
+            console.log('inside if');
+            ProductsInCart = JSON.parse(localStorage.getItem('ProductsInCart')); /// checking whether it is assigned before......
+        }
+        console.log(P_ID);
+        console.log(ProductsInCart);
+        const resFromServer = await axios.post('http://localhost:8000/productDetails',{ P_ID});
+        if(ProductsInCart === null) {
+            ProductsInCart = [];
+            console.log('inside if1');
+        }
+        ProductsInCart.push(resFromServer.data[0]);
+        //ProductsInCart[ProductsInCart.length] = P_ID;
+        console.log(ProductsInCart);
+        //localStorage.removeItem('ProductsInCart');
 
-    const handleOrderButtonClick = async () => {
-        alert('You clicked the Order Now Button.');
+
+
+        localStorage.setItem('ProductsInCart',JSON.stringify(ProductsInCart)); /// basicallllly we are overriding the array again and again .................
+        // console.log('inside get',localStorage.getItem('ProductsInCart')[0]);
+        //localStorage.removeItem('ProductsInCart');
+        //console.log(localStorage.getItem('ProductsInCart')[0]);
+        alert('The product has been added to your cart.');
     };
 
+    const handleWishListButtonClick = async(P_ID) => {
+        if(!accessGranted)
+        {
+            alert('You must be logged in as a customer to add to WishList.');
+            return;
+        }
+        console.log(P_ID);
+        const resFromServer = await axios.post('http://localhost:8000/wishList',{P_ID},{headers: {Authorization: `${localStorage.getItem('token')}`}}); /// write the code in server
+        console.log(resFromServer);
+        alert('The product has been added to your WishList.');
+    };
 
-
+    function handleHome() {
+        callAuth = false;
+        accessGranted = false;
+        navigate('/');
+    }
 
     return (
 
@@ -87,6 +172,9 @@ export default function EducationalProducts() {
                         pb: 6,
                     }}
                 >
+                    <ButtonWrapper>
+                        <HomeButton onClick={handleHome}>Back to Home</HomeButton>
+                    </ButtonWrapper>
                     <Container maxWidth="sm">
                         <Typography
                             component="h1"
@@ -140,8 +228,9 @@ export default function EducationalProducts() {
 
                                     </CardContent>
                                     <CardActions>
+                                        <Button size="small" onClick={()=>handleWishListButtonClick(card.P_ID)}>WishList</Button>
                                         <Button size="small" onClick={()=>handleDetailsButtonClick(card.P_ID)}>Details</Button>
-                                        <Button size="small" onClick={handleOrderButtonClick}>Order Now</Button>
+                                        <Button size="small" onClick={()=>handleAddToCartButtonClick(card.P_ID)}>Add To Cart</Button>
                                     </CardActions>
                                 </Card>
                             </Grid>

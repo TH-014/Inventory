@@ -23,14 +23,14 @@ import styled from "styled-components";
 let productCards = [];
 const defaultTheme = createTheme();
 let ProductsInCart = [];
+
 let callAuth = false;
 let accessGranted = false;
-
-export default function ITProducts() {
+export default function Grocery() {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const [educationalProducts, setProducts] = useState([]);
+	const [grceryproducts, setProducts] = useState([]);
 
 	const ButtonWrapper = styled.div`
       display: flex;
@@ -55,12 +55,14 @@ export default function ITProducts() {
       }
 	`;
 
+
+
 	useEffect(() => {
-		async function fetchEducationalData() {
+		async function fetchGroceryData() {
 			try {
-				const eduProdResponse = await axios.get("http://localhost:8000/itproducts");
-				setProducts(eduProdResponse.data);
-				productCards = eduProdResponse.data;
+				const res = await axios.get("http://localhost:8000/grocery");
+				setProducts(res.data);
+				productCards = res.data;
 				console.log(productCards);
 				// fetchTopSoldProducts();
 				// fetchTopRatedProducts();
@@ -69,7 +71,7 @@ export default function ITProducts() {
 				console.error("Error fetching root categories:", err);
 			}
 		}
-		fetchEducationalData();
+		fetchGroceryData();
 		if(callAuth)
 			return;
 		console.log('Inside useEffect of Home.');
@@ -92,18 +94,13 @@ export default function ITProducts() {
 		});
 	}, []);
 
+	function handleHome() {
+		callAuth = false;
+		accessGranted = false;
+		navigate('/');
+	}
 
-	const handleWishListButtonClick = async(P_ID) => {
-		if(!accessGranted)
-		{
-			alert('You must be logged in as a customer to add to WishList.');
-			return;
-		}
-		console.log(P_ID);
-		const resFromServer = await axios.post('http://localhost:8000/wishList',{P_ID},{headers: {Authorization: `${localStorage.getItem('token')}`}}); /// write the code in server
-		console.log(resFromServer);
-		alert('The product has been added to your WishList.');
-	};
+
 	const handleDetailsButtonClick = async (P_ID) => {
 		console.log(P_ID);
 		const resFromServer = await axios.post('http://localhost:8000/productDetails',{P_ID}); /// write the code in server
@@ -145,11 +142,17 @@ export default function ITProducts() {
 		alert('The product has been added to your cart.');
 	};
 
-	function handleHome() {
-		callAuth = false;
-		accessGranted = false;
-		navigate('/');
-	}
+	const handleWishListButtonClick = async(P_ID) => {
+		if(!accessGranted)
+		{
+			alert('You must be logged in as a customer to add to WishList.');
+			return;
+		}
+		console.log(P_ID);
+		const resFromServer = await axios.post('http://localhost:8000/wishList',{P_ID},{headers: {Authorization: `${localStorage.getItem('token')}`}}); /// write the code in server
+		console.log(resFromServer);
+		alert('The product has been added to your WishList.');
+	};
 
 	return (
 
@@ -183,7 +186,7 @@ export default function ITProducts() {
 							color="text.primary"
 							gutterBottom
 						>
-							PRODUCTS OF ELECTRONICS.....
+							PRODUCTS OF GROCERIES.....
 						</Typography>
 						{/* <Typography variant="h5" align="center" color="text.secondary" paragraph>
               Something short and leading about the collection below—its contents,

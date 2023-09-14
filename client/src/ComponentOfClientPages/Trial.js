@@ -1036,7 +1036,7 @@ export default function Album() {
                                     <CardActions>
                                         <Button size="small" onClick={()=>handleWishListButtonClick(card.P_ID)}>WishList</Button>
                                         <Button size="small" onClick={()=>handleDetailsButtonClick(card.P_ID)}>Details</Button>
-                                        <Button size="small" onClick={()=>handleAddToCartButtonClick(card.P_ID)}>In Cart</Button>
+                                        <Button size="small" onClick={()=>handleAddToCartButtonClick(card.P_ID)}>Add to Cart</Button>
                                     </CardActions>
                                 </Card>
                             </Grid>

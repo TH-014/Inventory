@@ -27,6 +27,8 @@ import EnhancedTable from './ComponentOfClientPages/TableForEmployeeOfOrder';
 import ITProducts from './ComponentOfClientPages/IT_Products';
 import ShowReviews from './ComponentOfClientPages/showReviews';
 import WishedProducts from './ComponentOfClientPages/myWishList';
+import Grocery from "./ComponentOfClientPages/Grocery";
+import Toy from "./ComponentOfClientPages/Toy";
 
 function App() {
   const currentSupplierId = 0;
@@ -56,11 +58,13 @@ function App() {
           <Route path="/otp_validate_admin" element={<OTP_Validate_Admin/>} />
           <Route path="/ProfileOfAdmin" element={<ProfileOfAdminComponents />} />
           <Route path="/IT_Products" element={<ITProducts/>} />
+          <Route path="/Grocery" element={<Grocery/>} />
+          <Route path="/Toy" element={<Toy/>} />
           <Route path="/AddressForm" element={<AddressForm/>} />
           <Route path="/Checkout" element={<Checkout/>} />
           <Route path="/Table" element={<EnhancedTable />} />
-          <Route path = "/showReviews" element = {<ShowReviews/>} />
-          <Route path = "/myWishList" element = {<WishedProducts/>} />
+          <Route path="/showReviews" element = {<ShowReviews/>} />
+          <Route path="/myWishList" element = {<WishedProducts/>} />
         </Routes>
       </supplierIdContext.Provider>
     </Router>

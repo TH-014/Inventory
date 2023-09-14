@@ -33,16 +33,16 @@ export default function SearchedProductData() {
 `;
 
     const HomeButton = styled.button`
-  background-color: #3498db;
-  color: #fff;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-    width: 140px;
-  cursor: pointer;
-  font-size: 16px;
-  margin: 10px;
-    float: left;
+      background-color: #3498db;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+        width: 140px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px;
+        float: left;
   &:hover {
     background-color: #2980b9;
   }
@@ -177,6 +177,10 @@ export default function SearchedProductData() {
                         pb: 6,
                     }}
                 >
+                    <ButtonWrapper>
+                        <HomeButton onClick={handleHome}>Back to Home</HomeButton>
+                        <LoginButton onClick={handleLogin}>Log in</LoginButton>
+                    </ButtonWrapper>
                     <Container maxWidth="sm">
                         <Typography
                             component="h1"
@@ -187,10 +191,7 @@ export default function SearchedProductData() {
                         >
                             PRODUCTS RELATED TO YOUR SEARCH.....
                         </Typography>
-                        <ButtonWrapper>
-                            <HomeButton onClick={handleHome}>Back to Home</HomeButton>
-                            <LoginButton onClick={handleLogin}>Log in</LoginButton>
-                        </ButtonWrapper>
+
                         {/* <Typography variant="h5" align="center" color="text.secondary" paragraph>
               Something short and leading about the collection below—its contents,
               the creator, etc. Make it short and sweet, but not too short so folks
@@ -235,7 +236,7 @@ export default function SearchedProductData() {
                                     <CardActions>
                                         <Button size="small" onClick={()=>handleWishListButtonClick(card.P_ID)}>WishList</Button>
                                         <Button size="small" onClick={()=>handleDetailsButtonClick(card.P_ID)}>Details</Button>
-                                        <Button size="small" onClick={()=>handleAddToCartButtonClick(card.P_ID)}>In Cart</Button>
+                                        <Button size="small" onClick={()=>handleAddToCartButtonClick(card.P_ID)}>Add to Cart</Button>
                                     </CardActions>
                                 </Card>
                             </Grid>
