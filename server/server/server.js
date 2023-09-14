@@ -525,13 +525,13 @@ app.post('/RegisterAsEmployee', async (req,res) => {
     //console.log(req);
     const {employeeName, email, phoneNo,password, imageurl,employeeAddress} = req.body;
     const hashedpwd = await bcrypt.hash(password, 10);
-    const queryToExtractUserID = `SELECT S_ID FROM "INVENTORY"."EMPLOYEE" ORDER BY E_ID DESC`;
+    const queryToExtractUserID = `SELECT E_ID FROM "INVENTORY"."EMPLOYEE" ORDER BY E_ID DESC`;
     const result2 =   await runQuery(queryToExtractUserID, []);
 
     //console.log(result2);
 
     const newuId = result2.rows.length+1;
-    const username = result2.rows.length+1;
+    // const username = result2.rows.length+1;
     //const reg = '12-JAN-2023';
 
     const insertQuery = `INSERT INTO "INVENTORY"."EMPLOYEE"("E_ID","E_NAME","EMAIL","PHONE_NO","PASSWORD","PHOTO","ADDRESS") VALUES(:newuId,:employeeName, :email,:phoneNo,:password, :imageurl, :employeeAddress )`;
@@ -550,9 +550,6 @@ app.post('/RegisterAsEmployee', async (req,res) => {
     res.send(result3);
 
 });
-
-
-
 
 app.post('/Register', async (req,res) => {
 

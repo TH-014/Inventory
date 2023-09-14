@@ -220,7 +220,6 @@ function EnhancedTableToolbar(props) {
 		{
 			console.log(error);
 		}
-
 	}
 
 	const onDeleteButtonClick = async (e) =>{
@@ -380,13 +379,7 @@ export default function EnhancedTable() {
 		}
 		console.log('Inside Selected 1',selected);
 		setSelected(newSelected);
-
-
-
 		selectedArray = newSelected;
-
-
-
 		console.log('Inside Selected 2',selectedArray);
 		console.log('Inside Selected 2',selected);
 

@@ -101,7 +101,7 @@ export default function EmployeeRegistrationComponents() {
       if (response.status === 200) {
         const userData = response.data[0];
         console.log("hello");
-        navigate("//loginAsEmployee");
+        navigate("/loginAsEmployee");
       }
       console.log("hello2");
     } catch (error) {
@@ -114,7 +114,7 @@ export default function EmployeeRegistrationComponents() {
         <div className="container">
           <div className="signup-container">
             <h2>Register</h2>
-            <form onSubmit={EmployeeRegistrationComponents}>
+            <form onSubmit={handleRegistration}>
               <input
                   className="form-control"
                   type="text"

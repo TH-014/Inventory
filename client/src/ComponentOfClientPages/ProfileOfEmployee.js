@@ -115,15 +115,10 @@ export default function ProfileOfEmployeeComponents() {
   let E_ID = userData && userData.E_ID;
   const handlePlacedOrderButtonClick = async (e) => {
     e.preventDefault();
-
-
-
     //console.log('Location ID:', locationID);
     try {
       const response = await axios.post("http://localhost:8000/PlacedOrder", {
         E_ID: userData.E_ID});
-
-
       if (response.status === 200) {
         const orderData = response.data.rows;
         console.log(response.data.rows);

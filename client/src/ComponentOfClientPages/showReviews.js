@@ -118,7 +118,7 @@ export default function ShowReviews() {
 							color="text.primary"
 							gutterBottom
 						>
-							PRODUCTS IN YOUR WISHLIST.....
+							PRODUCTS REVIEWS<hr/>
 						</Typography>
 						<ButtonWrapper>
 							<HomeButton onClick={handleHome}>Back to Home</HomeButton>
