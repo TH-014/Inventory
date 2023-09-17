@@ -143,6 +143,8 @@ let accessGranted = false;
 export default function Album() {
 
     const navigate = useNavigate();
+    const [productCards, setProductCards] = useState([]);
+    const [changed, setChanged] = useState(false);
     const [TopSoldProducts, setTopSoldProducts] = useState([]);
     const [TopRatedProducts, setTopRatedProducts] = useState([]);
     const [selectedSubCategory, setSelectedSubCategory] = useState("");
@@ -215,21 +217,6 @@ export default function Album() {
         setTopRatedProducts(response.data);
         cardsForTopRatedProducts = response.data;
     }
-
-
-
-    let searchBoxInput = '';
-    async function handleSearchButtonClick() {
-        callAuth = accessGranted = false;
-        // searchBoxInput = document.getElementById('searchInput').value;
-        // // alert(`Searching for ${searchBoxInput}...`);
-        // console.log(`Searching for ${searchBoxInput}...`);
-        // const resFromServer = await axios.post('http://localhost:8000/search',{value: searchBoxInput});
-        // console.log(resFromServer);
-        // const productData = resFromServer.data;
-        // navigate('/searchedProduct',{ state : {productData}});
-        navigate('/searchedProduct');
-    };
 
 
     const handleWishListButtonClick = async(P_ID) => {
@@ -352,11 +339,189 @@ export default function Album() {
         // alert('You clicked the third ListButton.');
     };
 
+    async function searchIt(value) {
+        console.log(value);
+        if(value !== '') {
+            //send request to server
+            setChanged(true);
+            console.log('inside SEARCH IT');
+            const resFromServer = await axios.post('http://localhost:8000/search',{value});
+            console.log(resFromServer);
+            setProductCards(resFromServer.data);
+            // window.location.reload();
+            return(
+                <ThemeProvider theme={defaultTheme}>
+                    {/* <CssBaseline /> */}
+                    <Box sx={{ display: 'flex' }}>
+                        <CssBaseline />
+                        <AppBar1 position="fixed" open={open}>
+                            <Toolbar>
+                                <Toolbar>
+                                    <div className='addProduct-link' style={{ display: 'flex', margin: '0', padding: '0'}}>
+                                        <a href="/Educational" className="addProduct-link"><strong>EDUCATIONAL</strong></a>
+                                        <a href="/IT_Products" className="addProduct-link"><strong>IT_PRODUCTS</strong></a>
+                                        <a href="/Grocery" className="addProduct-link"><strong>GROCERY</strong></a>
+                                        <a href="/Toy" className="addProduct-link"><strong>TOY</strong></a>
+                                        <a href="/Fashion" className="addProduct-link"><strong>FASHION</strong></a>
+                                    </div>
+                                </Toolbar>
+        
+                                <Toolbar>
+                                    <IconButton
+                                        color="inherit"
+                                        aria-label="open drawer"
+                                        onClick={handleDrawerOpen}
+                                        edge="start"
+                                        sx={{
+                                            marginRight: '36px',
+                                            ...(open && { display: 'none' }),
+                                        }}
+                                    >
+                                        <MenuIcon />
+        
+                                    </IconButton>
+                                    <Typography variant="h6" noWrap component="div">
+                                        Inventory Management System
+                                    </Typography>
+                                </Toolbar>
+                            </Toolbar>
+                            <style>
+        
+                            </style>
+        
+        
+                        </AppBar1>
+                        <Drawer variant="permanent" open={open}>
+                            <DrawerHeader>
+                                <IconButton onClick={handleDrawerClose}>
+                                    {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                                </IconButton>
+                            </DrawerHeader>
+                            <Divider />
+                            <div className='profilePage'>
+                  <span className="text-primary" onClick={handleButtonClick} style={{ cursor: 'pointer' }}>
+                        </span>
+                            </div>
+                            <div className='profilePage'>
+                  <span className="text-primary" onClick={handleButtonClick} style={{ cursor: 'pointer' }}>
+                        </span>
+                            </div>
+                            <List>
+        
+                                {['LoginAsCustomer', 'LoginAsSupplier', 'LoginAsEmployee','RegisterAsCustomer', 'RegisterAsSupplier','RegisterAsEmployee'].map((text, index) => (
+                                    <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+                                        <ListItemButton
+                                            sx={{
+                                                minHeight: 48,
+                                                justifyContent: open ? 'initial' : 'center',
+                                                px: 2.5,
+                                            }} onClick={index === 0 ? handleLoginAsCustomerClick : index === 1 ? handleLoginAsSupplierClick : index === 2 ? handleLoginAsEmployeeClick : index === 3 ? handleRegisterAsCustomerClick : index === 4 ? handleRegisterAsSupplierClick : index === 5 ? handleRegisterAsEmployeeClick : null}
+                                        >
+                                            <ListItemIcon
+                                                sx={{
+                                                    minWidth: 0,
+                                                    mr: open ? 3 : 'auto',
+                                                    justifyContent: 'center',
+                                                }}
+                                            >
+                                                {index === 0 || index ===1 || index === 2 ? <Avatar /> : index === 3 || index === 4 || index === 5? <Avatar /> : null}
+                                            </ListItemIcon>
+                                            <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                                        </ListItemButton>
+                                    </ListItem>
+                                ))}
+                            </List>
+                            <Divider />
+                        </Drawer>
+                    </Box>
+        
+                    <main style={{ height: 'calc(100vh - 64px)', overflowY: 'auto' }}>
+                        <Container maxWidth="sm">
+                            <Typography
+                                component="h1"
+                                variant="h4"
+                                align="center"
+                                color="text.primary"
+                                gutterBottom
+                            >
+                                PRODUCTS RELATED TO YOUR SEARCH.....
+                            </Typography>
+                            <Stack
+                                sx={{ pt: 4 }}
+                                direction="row"
+                                spacing={2}
+                                justifyContent="center"
+                            >
+                            </Stack>
+                        </Container>
+                        <Container sx={{ py: 8 }} maxWidth="md">
+                            <Grid container spacing={4}>
+                                {productCards.map((card) => (
+                                    <Grid item key={card} xs={12} sm={6} md={4}>
+                                        <Card
+                                            sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                                        >
+                                            <CardMedia
+                                                component="div"
+                                                sx={{
+                                                    // 16:9
+                                                    pt: '56.25%',
+                                                }}
+                                                image = {card.PICTURE}
+                                            />
+                                            <CardContent sx={{ flexGrow: 1 }}>
+                                                <Typography gutterBottom variant="h5" component="h2">
+                                                    {card.P_NAME}<br/>
+                                                    {card.PRICE}<br/>
+                                                    {card.RATING}
+                                                </Typography>
+                                                <Typography>
+                                                </Typography>
+
+                                            </CardContent>
+                                            <CardActions>
+                                                <Button size="small" onClick={()=>handleWishListButtonClick(card.P_ID)}>WishList</Button>
+                                                <Button size="small" onClick={()=>handleDetailsButtonClick(card.P_ID)}>Details</Button>
+                                                <Button size="small" onClick={()=>handleAddToCartButtonClick(card.P_ID)}>Add to Cart</Button>
+                                            </CardActions>
+                                        </Card>
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </Container>
+                    </main>
+        
+        
+        
+                    {/* Footer */}
+                    <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
+                        <Typography variant="h6" align="center" gutterBottom>
+                            For any necessary information, please contact us : 01700000000
+                        </Typography>
+                        <Typography
+                            variant="subtitle1"
+                            align="center"
+                            color="text.secondary"
+                            component="p"
+                        >
+                            Lets start with our products.....
+                        </Typography>
+                        <Copyright />
+                    </Box>
+                    {/* End footer */}
+        
+        
+                </ThemeProvider>
+            );
+        }
+        else{
+            setChanged(false);
+        }
+    }
 
     return(
 
         <ThemeProvider theme={defaultTheme}>
-            {/* <CssBaseline /> */}
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
                 <AppBar1 position="fixed" open={open}>
@@ -441,14 +606,13 @@ export default function Album() {
             </Box>
 
             <main style={{ height: 'calc(100vh - 64px)', overflowY: 'auto' }}>
-                {/* Hero unit */}
+                {!changed ?(<div>
                 <Box
                     sx={{
                         bgcolor: 'background.paper',
                         pt: 8,
                         pb: 6,
-                    }}
-                >
+                    }}>
                     <div align="right" className="Checkout">
                         <button className="button" onClick={handleCheckoutButtonClick}>Check Out</button>
                     </div>
@@ -469,8 +633,8 @@ export default function Album() {
 
                         <link rel="stylesheet" href="search_home.css"/>
                         <div className="search-box">
-                            {/* <input type="text" id="searchInput" className="search-input" placeholder="Enter your search term..."/> */}
-                            <button className="search-button" onClick={handleSearchButtonClick}>Search for Products</button>
+                            <input type="text" id="searchInput" className="search-input1" placeholder="Enter your search term..." onChange={(e) => searchIt(e.target.value)}/>
+                            {/* <button className="search-button" onClick={handleSearchButtonClick}>Search for Products</button> */}
                         </div>
 
 
@@ -525,10 +689,6 @@ export default function Album() {
                     </Grid>
                 </Container>
 
-
-
-
-
                 <p align='center' h2 = 'text'>
                     <blink>Top rated products....</blink>
                 </p>
@@ -568,10 +728,78 @@ export default function Album() {
                             </Grid>
                         ))}
                     </Grid>
-                </Container>
+                </Container></div>
+                ):(<div>
+                    <Box
+                    sx={{
+                        bgcolor: 'background.paper',
+                        pt: 8,
+                        pb: 6,
+                    }}>
+                    <div align="right" className="Checkout">
+                        <button className="button" onClick={handleCheckoutButtonClick}>Check Out</button>
+                    </div>
+
+                    <Container maxWidth="sm">
+
+                        <Typography
+                            component="h4"
+                            variant="h3"
+                            align="center"
+                            color="text.primary"
+                            gutterBottom
+                        >
+
+                            <p> <br/></p>
+                            Yours searched products are here...
+                        </Typography>
+
+                        <link rel="stylesheet" href="search_home.css"/>
+                        <div className="search-box">
+                            <input type="text" id="searchInput" className="search-input1" placeholder="Enter your search term..." onChange={(e) => searchIt(e.target.value)}/>
+                        </div>
 
 
+                    </Container>
+                    </Box>
+                    <Container sx={{ py: 8 }} maxWidth="md">
+                    {/* End hero unit */}
+                    <Grid container spacing={4}>
+                        {productCards.map((card) => (
+                            <Grid item key={card} xs={12} sm={6} md={4}>
+                                <Card
+                                    sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                                >
+                                    <CardMedia
+                                        component="div"
+                                        sx={{
+                                            // 16:9
+                                            pt: '56.25%',
+                                        }}
+                                        // image="https://source.unsplash.com/photos?wallpapers"
+                                        image = {card.PICTURE}
+                                    />
+                                    <CardContent sx={{ flexGrow: 1 }}>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            {card.P_NAME}<br/>
+                                            {card.PRICE}<br/>
+                                            {card.RATING}
+                                        </Typography>
+                                        <Typography>
+                                        </Typography>
 
+                                    </CardContent>
+                                    <CardActions>
+                                        <Button size="small" onClick={()=>handleWishListButtonClick(card.P_ID)}>WishList</Button>
+                                        <Button size="small" onClick={()=>handleDetailsButtonClick(card.P_ID)}>Details</Button>
+                                        <Button size="small" onClick={()=>handleAddToCartButtonClick(card.P_ID)}>Add to Cart</Button>
+                                    </CardActions>
+                                </Card>
+                            </Grid>
+                        ))}
+                    </Grid>
+                    </Container>
+                </div>)}
             </main>
 
 
@@ -591,7 +819,6 @@ export default function Album() {
                 </Typography>
                 <Copyright />
             </Box>
-            {/* End footer */}
 
 
         </ThemeProvider>

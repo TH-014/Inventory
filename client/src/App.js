@@ -13,7 +13,6 @@ import Album from './ComponentOfClientPages/Trial';
 import AddProduct from './ComponentOfClientPages/AddProductPage';
 import { useScrollTrigger } from '@mui/material';
 import supplierIdContext from './Context/supplierContext';
-import SearchedProductData from "./ComponentOfClientPages/searchedProduct";
 import ProductDetails from './ComponentOfClientPages/productDetails';
 import EducationalProducts from './ComponentOfClientPages/Educational';
 import EmployeeRegistrationComponents from "./ComponentOfClientPages/RegistrationPageOfEmployee";
@@ -50,7 +49,6 @@ function App() {
           <Route path="/ProfileOfEmployee" element={<ProfileOfEmployeeComponents />} />
           <Route path="/AddProduct" element={<AddProduct />} />
           <Route path="/" element={<Album />} />
-          <Route path="/searchedProduct" element={<SearchedProductData />} />
           <Route path="/productDetails" element={<ProductDetails />} />
           <Route path="/Educational" element={<EducationalProducts/>} />
           <Route path="/RegisterAsEmployee" element={<EmployeeRegistrationComponents/>} />
