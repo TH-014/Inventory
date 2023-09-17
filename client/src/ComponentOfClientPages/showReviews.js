@@ -110,6 +110,9 @@ export default function ShowReviews() {
 						pb: 6,
 					}}
 				>
+					<ButtonWrapper>
+							<HomeButton onClick={handleHome}>Back to Home</HomeButton>
+						</ButtonWrapper>
 					<Container maxWidth="sm">
 						<Typography
 							component="h1"
@@ -120,9 +123,7 @@ export default function ShowReviews() {
 						>
 							PRODUCTS REVIEWS<hr/>
 						</Typography>
-						<ButtonWrapper>
-							<HomeButton onClick={handleHome}>Back to Home</HomeButton>
-						</ButtonWrapper>
+						
 						{/* <Typography variant="h5" align="center" color="text.secondary" paragraph>
               Something short and leading about the collection below—its contents,
               the creator, etc. Make it short and sweet, but not too short so folks

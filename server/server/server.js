@@ -1061,7 +1061,7 @@ app.get('/rootCategories', async (req, res) => {
 app.post('/search', async (req, res) => {
     try {
         // console.log(req.body);
-        let search = req.body.searchBoxInput;
+        let search = req.body.value;
         search = search.toUpperCase();
         console.log('In server searching for:', search);
         const query = `SELECT * FROM "INVENTORY"."PRODUCT" WHERE UPPER("P_NAME") LIKE '%${search}%'`;

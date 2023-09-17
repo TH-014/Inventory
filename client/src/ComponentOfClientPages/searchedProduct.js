@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import axios from "axios";
 import { useRoutes, useNavigate } from 'react-router-dom';
 import {useLocation} from "react-router-dom";
@@ -17,8 +17,9 @@ import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import {Copyright} from "@mui/icons-material";
 import styled from "styled-components";
+import './searchedProduct.css';
 
-let productCards = [];
+// let productCards = [];
 const defaultTheme = createTheme();
 let ProductsInCart = [];
 
@@ -27,6 +28,8 @@ let accessGranted = false;
 export default function SearchedProductData() {
     const location = useLocation();
     const navigate = useNavigate();
+    const [productCards, setProductCards] = useState([]);
+    // setProductCards(location.state.productData);
     const ButtonWrapper = styled.div`
   display: flex;
     justify-content: space-between;
@@ -87,8 +90,9 @@ export default function SearchedProductData() {
     }, []);
 
     // Check for undefined
-    productCards = location.state && location.state.productData;
-    console.log(productCards);
+    // productCards = location.state && location.state.productData;
+    
+    // console.log(productCards);
     const handleWishListButtonClick = async(P_ID) => {
         if(!accessGranted)
         {
@@ -157,17 +161,21 @@ export default function SearchedProductData() {
         accessGranted = false;
         navigate('/login');
     }
+
+    async function searchIt(value) {
+        console.log(value);
+        if(value !== '') {
+            //send request to server
+            const resFromServer = await axios.post('http://localhost:8000/search',{value});
+            console.log(resFromServer);
+            setProductCards(resFromServer.data);
+            // window.location.reload();
+        }
+    }
+
     return (
         <ThemeProvider theme={defaultTheme}>
             <CssBaseline />
-            {/* <AppBar position="relative">
-        <Toolbar>
-          <CameraIcon sx={{ mr: 2 }} />
-          <Typography variant="h6" color="inherit" noWrap>
-            Product Home
-          </Typography>
-        </Toolbar>
-      </AppBar> */}
             <main style={{ height: 'calc(100vh - 64px)', overflowY: 'auto' }}>
                 {/* Hero unit */}
                 <Box
@@ -181,6 +189,9 @@ export default function SearchedProductData() {
                         <HomeButton onClick={handleHome}>Back to Home</HomeButton>
                         <LoginButton onClick={handleLogin}>Log in</LoginButton>
                     </ButtonWrapper>
+                    <div className="search-box1">
+                            <input type="text" id="searchInput" className="search-input1" placeholder="Enter your search term..." onChange={(e) => searchIt(e.target.value)}/>
+                    </div>
                     <Container maxWidth="sm">
                         <Typography
                             component="h1"
