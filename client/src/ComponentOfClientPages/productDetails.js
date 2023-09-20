@@ -34,6 +34,7 @@ export default function ProductDetails() {
 
     const handleEdit = async () => {
         console.log('inside handleEdit');
+        navigate('/editProduct',{ state : {productData: productDetailsData, editToken: editToken}});
     };
 
     return (

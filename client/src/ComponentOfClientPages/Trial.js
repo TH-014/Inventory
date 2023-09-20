@@ -239,7 +239,7 @@ export default function Album() {
         //console.log(resFromServer);
         const productData = resFromServer.data.output[0];
         const editToken = resFromServer.data.editToken;
-        // console.log(productData, editToken);
+        console.log(productData, editToken);
         navigate('/productDetails',{ state : {productData: productData, editToken: editToken}});
         // alert('You clicked the Detais Button.');
     };

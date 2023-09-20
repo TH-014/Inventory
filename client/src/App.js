@@ -29,6 +29,7 @@ import WishedProducts from './ComponentOfClientPages/myWishList';
 import Grocery from "./ComponentOfClientPages/Grocery";
 import Toy from "./ComponentOfClientPages/Toy";
 import Fashion from "./ComponentOfClientPages/Fashion";
+import EditProduct from "./ComponentOfClientPages/EditProduct";
 
 function App() {
   const currentSupplierId = 0;
@@ -65,6 +66,7 @@ function App() {
           <Route path="/Table" element={<EnhancedTable />} />
           <Route path="/showReviews" element = {<ShowReviews/>} />
           <Route path="/myWishList" element = {<WishedProducts/>} />
+          <Route path="/editProduct" element={<EditProduct />} />
         </Routes>
       </supplierIdContext.Provider>
     </Router>
