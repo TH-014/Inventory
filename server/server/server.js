@@ -200,8 +200,32 @@ app.post("/showReviews", async (req, res) => {
 
 
 app.post("/productDetails", async (req, res) => {
+        const token = req.headers.authorization;
         const {P_ID} = req.body;
         console.log(P_ID);
+        const authRes = await axios.get('http://localhost:8000/auth/supplier', {headers: {Authorization: token}});
+        let editToken;
+        if(authRes.data.auth === true)
+        {
+            const queryToVerifySupplier = `SELECT COUNT(*) FROM "INVENTORY"."SUPPLIES" WHERE P_ID = :P_ID AND S_ID = :S_ID`;
+            const bindParamsToVerifySupplier = {
+                P_ID : P_ID,
+                S_ID : authRes.data.id
+            };
+            const resultOfVerifySupplier = await runQuery(queryToVerifySupplier,bindParamsToVerifySupplier);
+            console.log(resultOfVerifySupplier.rows[0][0]);
+            if(resultOfVerifySupplier.rows[0][0] >= 1)
+            {
+                editToken = {auth: true, id: authRes.data.id, message: 'Authorized.', edit: true};
+            }
+            else{
+                editToken = {auth: true, id: authRes.data.id, message: 'Authorized.', edit: false};
+            }
+        }
+        else{
+            console.log("Unauthorized user");
+            editToken = {auth: false, id: 0, message: 'Unauthorized.', edit: false};
+        }
         try{
             const queryToCheckTypeOfProduct = `SELECT TYPE FROM "INVENTORY"."PRODUCT" WHERE P_ID = :P_ID`;
 
@@ -255,7 +279,7 @@ app.post("/productDetails", async (req, res) => {
             const output = extractData(resultOfProductDetails, columnsToExtract);
             console.log(output);
 
-            res.send(output);
+            res.send({output: output, editToken: editToken});
 
         }catch(error)
         {
