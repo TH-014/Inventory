@@ -1279,7 +1279,7 @@ else{
 app.post('/editProduct',async (req, res) => {
 
     const {
-        // imageurl,
+        productImage,
         productId,
       productName,
     //   productSize,
@@ -1309,14 +1309,15 @@ app.post('/editProduct',async (req, res) => {
     //   console.log(productName, imageurl);
     
     let pID = productId;
-    const ifExistThenQuery = `UPDATE "INVENTORY"."PRODUCT" SET "P_NAME" = :pname, "DESCRIPTION" = :description, "PRICE" = :price, "DISCOUNT" = :discount WHERE "P_ID" = :pID`;
+    const ifExistThenQuery = `UPDATE "INVENTORY"."PRODUCT" SET "P_NAME" = :pname, "DESCRIPTION" = :description, "PRICE" = :price, "DISCOUNT" = :discount, "PICTURE" = :picture WHERE "P_ID" = :pID`;
     // HERE NEEDS TO RUN A TRIGGER ON UPDATE THE DAILY CHARGE AND DUE WILL BE UPDATED
     const bindParams4 = {
-    pID: pID,
-    pname: productName,
-    price: productPrice,
-    discount: productDiscount,
-    description: productDescription
+        picture: productImage,
+        pID: pID,
+        pname: productName,
+        price: productPrice,
+        discount: productDiscount,
+        description: productDescription
     }
     const result7 = await runQuery(ifExistThenQuery,bindParams4);
   
@@ -1332,7 +1333,7 @@ app.post('/editProduct',async (req, res) => {
       res.send('Details Updated!');
   }
   else if(selectedRootCategory === 'EDUCATIONAL'){
-        const insertIntoEducational = `UPDATE "INVENTORY"."EDUCATIONAL" SET "LEVEL" :elevel WHERE "P_ID" = :pID`;
+        const insertIntoEducational = `UPDATE "INVENTORY"."EDUCATIONAL" SET "LEVEL" = :elevel WHERE "P_ID" = :pID`;
         const bindParams5 = {
           pID: pID,
           elevel: educationalLevel

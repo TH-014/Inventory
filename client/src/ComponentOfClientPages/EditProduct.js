@@ -34,7 +34,7 @@ function EditProduct() {
   const [productPrice, setProductPrice] = useState(productDetailsData?.PRICE);
   const [productDiscount, setProductDiscount] = useState(productDetailsData?.DISCOUNT);
 
-  const [productImage, setProductImage] = useState("");
+  const [productImage, setProductImage] = useState(productDetailsData?.PICTURE);
 
   const [productDescription, setProductDescription] = useState(productDetailsData?.DESCRIPTION);
   // specialfeature
@@ -106,26 +106,38 @@ function EditProduct() {
     });
   }, []);
 
-  // ref(storage, "product/");
-  // const uploadFile = () => {
-  //   // if (imageUpload == null) return;
-  //   return new Promise((resolve, reject) => {
-  //     const imageRef = ref(storage, `product/${imageUpload.name + v4()}`);
-  //     uploadBytes(imageRef, imageUpload).then((snapshot) => {
-  //       getDownloadURL(snapshot.ref).then((url) => {
-  //         console.log(url); // this is the url of the uploaded image
-  //         // setProductImage(url);
-  //         imageurl = url;
-  //         console.log(typeof url);
-  //         console.log('this is the url string', imageurl);
-  //         resolve(url);
-  //       }).catch((err) => {
-  //         imageurl = "error";
-  //         reject("Error while getting download url:", err);
-  //       });
-  //     });
-  //   });
-  // };
+  ref(storage, "product/");
+  const uploadFile = () => {
+    // if (imageUpload == null) return;
+    return new Promise((resolve, reject) => {
+      const imageRef = ref(storage, `product/${imageUpload.name + v4()}`);
+      uploadBytes(imageRef, imageUpload).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          console.log(url); // this is the url of the uploaded image
+          // setProductImage(url);
+          imageurl = url;
+          console.log(typeof url);
+          console.log('this is the url string', imageurl);
+          resolve(url);
+        }).catch((err) => {
+          imageurl = "error";
+          reject("Error while getting download url:", err);
+        });
+      });
+    });
+  };
+
+  const imageUploadHandler = async (newImg) => {
+      
+      try {
+        setImageUpload(newImg);
+        const req_url = await uploadFile();
+        console.log(req_url);
+        setProductImage(req_url);
+      } catch (error) {
+        console.error("Error while uploading image:", error);
+      }
+  }
 
   if(editToken?.edit !== true)
   {
@@ -145,7 +157,7 @@ function EditProduct() {
       // console.log(req_url);
       console.log('Sending request to add product', imageurl);
       const response = await axios.post("http://localhost:8000/editProduct", { //server side code needs to be wriiten
-      // imageurl,
+      productImage,
       productId,
       productName,
       // productSize,
@@ -436,18 +448,35 @@ function EditProduct() {
      </> 
       )
       :null}
-      {/* <input
+      <input
           type="file"
           onChange={(event) => {
             setImageUpload(event.target.files[0]);
           }}
-      /> */}
+      />
       <div align="right">Description . . . . . . . . . . . . . . . . . . . . . . .:
       <textarea placeholder="Enter product description..." value={productDescription} onChange={(e) => setProductDescription(e.target.value)} style={{
         width: '80%',     // Set the width to 80% of the container
         marginLeft: 'auto',  // Auto margin on the left side to push it to the right
         marginRight: '0'    // No margin on the right side
       }}></textarea></div><br/>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ marginLeft: '200px', marginRight: '200px', marginTop: '20px'}}>
+          <img
+            src={productImage}
+            alt="Uploaded"
+            style={{ maxWidth: '100%', maxHeight: '500px' }}
+          />
+        </div>
+        <div>
+          <input
+            type="file"
+            onChange={(event) => {
+              imageUploadHandler(event.target.files[0]);
+            }}
+          />
+        </div>
+      </div>
       <div align="center">
       <button onClick={handleSubmit} style={{
         width: '10%',     // Set the width to 80% of the container
