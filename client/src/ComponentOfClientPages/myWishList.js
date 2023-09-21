@@ -120,13 +120,15 @@ export default function WishedProducts() {
 	// }
 
 	const handleDetailsButtonClick = async (P_ID) => {
-		console.log(P_ID);
-		const resFromServer = await axios.post('http://localhost:8000/productDetails',{P_ID}); /// write the code in server
-		console.log(resFromServer);
-		const productData = resFromServer.data[0];
-		navigate('/productDetails',{ state : {productData}});
-		// alert('You clicked the Detais Button.');
-	};
+        console.log(P_ID);
+        const resFromServer = await axios.post('http://localhost:8000/productDetails',{P_ID}, {headers: {Authorization: `${localStorage.getItem('stoken')}`}});
+        //console.log(resFromServer);
+        const productData = resFromServer.data.output[0];
+        const editToken = resFromServer.data.editToken;
+        console.log(productData, editToken);
+        navigate('/productDetails',{ state : {productData: productData, editToken: editToken}});
+        // alert('You clicked the Detais Button.');
+    };
 
 
 	const handleAddToCartButtonClick = async (P_ID) => {

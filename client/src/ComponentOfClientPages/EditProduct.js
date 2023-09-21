@@ -18,38 +18,37 @@ function EditProduct() {
   const location = useLocation();
   const productDetailsData = location.state && location.state.productData; // Check for undefined
   const editToken = location.state && location.state.editToken;
-
   const navigate = useNavigate();
   const [imageUpload, setImageUpload] = useState(null);
 
 
   // common for all types of products
   const [rootCategories, setRootCategories] = useState([]);
-  const [selectedRootCategory, setSelectedRootCategory] = useState(productDetailsData.TYPE);
-  const [productId, setProductId] = useState(productDetailsData.P_ID);
-  const [productName, setProductName] = useState(productDetailsData.P_NAME);
+  const [selectedRootCategory, setSelectedRootCategory] = useState(productDetailsData?.TYPE);
+  const [productId, setProductId] = useState(productDetailsData?.P_ID);
+  const [productName, setProductName] = useState(productDetailsData?.P_NAME);
   // const [productSize, setProductSize] = useState("");
   // const [productWeight, setProductWeight] = useState("");
   // const [productTemp, setProductTemp] = useState("");
   // const [productQuantity, setProductQuantity] = useState("");
-  const [productPrice, setProductPrice] = useState(productDetailsData.PRICE);
-  const [productDiscount, setProductDiscount] = useState(productDetailsData.DISCOUNT);
+  const [productPrice, setProductPrice] = useState(productDetailsData?.PRICE);
+  const [productDiscount, setProductDiscount] = useState(productDetailsData?.DISCOUNT);
 
   const [productImage, setProductImage] = useState("");
 
-  const [productDescription, setProductDescription] = useState(productDetailsData.DESCRIPTION);
+  const [productDescription, setProductDescription] = useState(productDetailsData?.DESCRIPTION);
   // specialfeature
-  const [educationalLevel, setEducationalLevel] = useState(productDetailsData.LEVEL);
-  const [fashionMadeOf, setFashionMadeOf] = useState(productDetailsData.MADE_OF);
-  const [fashionColor, setFashionColor] = useState(productDetailsData.COLOR);
-  const [fashionSize, setFashionSize] = useState(productDetailsData.SIZE);
-  const [productionDate, setProductionDate] = useState(productDetailsData.PRODUCTION_DATE);
-  const [ExpiaryDate, setExpiaryDate] = useState(productDetailsData.EXPIARY_DATE);
-  const [IT_ram, setIT_ram] = useState(productDetailsData["RAM(GB)"]);
-  const [IT_storage, setIT_storage] = useState(productDetailsData["STORAGE(GB)"]);
-  const [IT_processor, setIT_processor] = useState(productDetailsData["PROCESSOR(GHZ)"]);
-  const [Toy_color, setToy_color] = useState(productDetailsData.COLOR);
-  const [Toy_level, setToy_level] = useState(productDetailsData.LEVEL);
+  const [educationalLevel, setEducationalLevel] = useState(productDetailsData?.LEVEL);
+  const [fashionMadeOf, setFashionMadeOf] = useState(productDetailsData?.MADE_OF);
+  const [fashionColor, setFashionColor] = useState(productDetailsData?.COLOR);
+  const [fashionSize, setFashionSize] = useState(productDetailsData?.SIZE);
+  const [productionDate, setProductionDate] = useState(productDetailsData?.PRODUCTION_DATE);
+  const [ExpiaryDate, setExpiaryDate] = useState(productDetailsData?.EXPIARY_DATE);
+  const [IT_ram, setIT_ram] = useState(productDetailsData?.["RAM(GB)"]);
+  const [IT_storage, setIT_storage] = useState(productDetailsData?.["STORAGE(GB)"]);
+  const [IT_processor, setIT_processor] = useState(productDetailsData?.["PROCESSOR(GHZ)"]);
+  const [Toy_color, setToy_color] = useState(productDetailsData?.COLOR);
+  const [Toy_level, setToy_level] = useState(productDetailsData?.LEVEL);
   const [s_id, setS_id] = useState("");
 
   const ButtonWrapper = styled.div`
@@ -127,6 +126,17 @@ function EditProduct() {
   //     });
   //   });
   // };
+
+  if(editToken?.edit !== true)
+  {
+      return (
+        <div align="center" className="error">
+          <h2>Access Denied!</h2><hr/>
+          <p>Go back to
+            <a href="/"> Home page.</a></p>
+        </div>
+    );
+  }
 
   const handleSubmit = async () => {
     try {
