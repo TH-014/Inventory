@@ -2,12 +2,33 @@ import React from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 export default function ProductDetails() {
     const navigate = useNavigate();
     const location = useLocation();
     const productDetailsData = location.state && location.state.productData; // Check for undefined
     const editToken = location.state && location.state.editToken;
+    const ButtonWrapper = styled.div`
+  display: flex;
+    justify-content: space-between;
+`;
+
+  const HomeButton = styled.button`
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+    width: 140px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 10px;
+    float: left;
+  &:hover {
+    background-color: #2980b9;
+  }
+`;
     //console.log(productDetailsData);
     const handleShowReviews = async () => {
         console.log('inside handleShowReviews');
@@ -37,9 +58,18 @@ export default function ProductDetails() {
         navigate('/editProduct',{ state : {productData: productDetailsData, editToken: editToken}});
     };
 
+    function handleHome() {
+        // callAuth = false;
+        // accessGranted = false;
+        navigate('/');
+      }
+
     return (
         <div className="product-details" align = "center" style={{height: 'calc(100vh - 64px)', overflowY: 'auto'}}>
-            <h2>   Product Details   </h2>
+            <ButtonWrapper>
+              <HomeButton onClick={handleHome}>Back to Home</HomeButton>
+            </ButtonWrapper>
+            <h2>   Product Details   <hr/></h2>
             {productDetailsData ? (
                 <div className="product-data">
                     <img src={productDetailsData.PICTURE} alt="" width="300" height="400"></img>

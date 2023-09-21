@@ -1276,6 +1276,107 @@ else{
 }
 });
 
+app.post('/editProduct',async (req, res) => {
+
+    const {
+        // imageurl,
+        productId,
+      productName,
+    //   productSize,
+    //   productWeight,
+    //   productQuantity,
+      productPrice,
+      productDiscount,
+    //   productTemp,
+      productDescription,
+      selectedRootCategory,
+      educationalLevel,
+      fashionMadeOf,
+      fashionSize,
+      fashionColor,
+      productionDate,
+      ExpiaryDate,
+      IT_ram,
+      IT_storage,
+      IT_processor,
+      Toy_color,
+      Toy_level,
+    //   s_id
+    } = req.body;
+    //   console.log(req.body.status);
+      // console.log(req.body);
+      console.log(req.body.productName + " " + req.body.productSize + " " + req.body.productWeight + " " + req.body.productQuantity + " " + req.body.productPrice + " " + req.body.productDiscount + " " + req.body.productTemp + " " + req.body.productDescription + " " + req.body.selectedRootCategory + " " + req.body.educationalLevel + " " + req.body.fashionMadeOf + " " + req.body.fashionSize + " " + req.body.fashionColor + " " + req.body.productionDate + " " + req.body.ExpiaryDate + " " + req.body.IT_ram + " " + req.body.IT_storage + " " + req.body.IT_processor + " " + req.body.Toy_color + " " + req.body.Toy_level);
+    //   console.log(productName, imageurl);
+    
+    let pID = productId;
+    const ifExistThenQuery = `UPDATE "INVENTORY"."PRODUCT" SET "P_NAME" = :pname, "DESCRIPTION" = :description, "PRICE" = :price, "DISCOUNT" = :discount WHERE "P_ID" = :pID`;
+    // HERE NEEDS TO RUN A TRIGGER ON UPDATE THE DAILY CHARGE AND DUE WILL BE UPDATED
+    const bindParams4 = {
+    pID: pID,
+    pname: productName,
+    price: productPrice,
+    discount: productDiscount,
+    description: productDescription
+    }
+    const result7 = await runQuery(ifExistThenQuery,bindParams4);
+  
+  if(selectedRootCategory === 'IT_PRODUCTS'){
+    const insertIntoElectronics = `UPDATE "INVENTORY"."IT_PRODUCTS" SET "RAM(GB)" = :ram, "STORAGE(GB)" = :storage,"PROCESSOR(GHZ)" = :processor WHERE "P_ID" = :pID`;
+        const bindParams4 = {
+          pID: productId,
+          ram: IT_ram,
+          storage: IT_storage,
+          processor: IT_processor
+      }
+      const result7 = await runQuery(insertIntoElectronics,bindParams4);
+      res.send('Details Updated!');
+  }
+  else if(selectedRootCategory === 'EDUCATIONAL'){
+        const insertIntoEducational = `UPDATE "INVENTORY"."EDUCATIONAL" SET "LEVEL" :elevel WHERE "P_ID" = :pID`;
+        const bindParams5 = {
+          pID: pID,
+          elevel: educationalLevel
+      }
+      const result8 = await runQuery(insertIntoEducational,bindParams5);
+      res.send('Details Updated!');
+  }
+  else if(selectedRootCategory === 'FASHION'){
+        const insertIntoFashion = `UPDATE "INVENTORY"."FASHION" SET "MADE_OF" = :fmadeOf, "SIZE" = :fsize, "COLOR" = :fcolor WHERE "P_ID" = :pID`;
+        const bindParams6 = {
+          pID: pID,
+          fmadeOf: fashionMadeOf,
+          fsize: fashionSize,
+          fcolor: fashionColor
+      }
+      const result9 = await runQuery(insertIntoFashion,bindParams6);
+      res.send('Details Updated!');
+  }
+  else if(selectedRootCategory === 'TOY'){
+    const insertIntoToys = `UPDATE "INVENTORY"."TOY" SET "COLOR" = :tcolor, "LEVEL" = :tlevel WHERE "P_ID" = :pID`;
+    const bindParams7 = {
+      pID: pID,
+      tcolor: Toy_color,
+      tlevel: Toy_level
+  }
+  const result10 = await runQuery(insertIntoToys,bindParams7);
+  res.send('Details Updated!');
+  }
+  else if(selectedRootCategory === 'GROCERIES'){
+        const insertIntoGroceries = `UPDATE "INVENTORY"."GROCERIES" SET "PRODUCTION_DATE" = :prodDate, "EXPIARY_DATE" = :expDate WHERE "P_ID" = :pID`;
+        const bindParams8 = {
+        pID: pID,
+        prodDate: productionDate,
+        expDate: ExpiaryDate
+    }
+    const result11 = await runQuery(insertIntoGroceries,bindParams8);
+    res.send('Details Updated!');
+  }
+  else{
+    console.log("No matching product found.");
+    res.send('uPDATE FAILED!');
+  }
+  });
+
 app.use('/auth', authRoute);
 
 const port = 8000;

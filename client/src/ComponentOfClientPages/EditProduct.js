@@ -9,6 +9,7 @@ import {
 } from "firebase/storage";
 import { storage } from "../firebaseConfig";
 import { v4 } from "uuid";
+import styled from 'styled-components';
 
 let imageurl = "default";
 
@@ -25,6 +26,7 @@ function EditProduct() {
   // common for all types of products
   const [rootCategories, setRootCategories] = useState([]);
   const [selectedRootCategory, setSelectedRootCategory] = useState(productDetailsData.TYPE);
+  const [productId, setProductId] = useState(productDetailsData.P_ID);
   const [productName, setProductName] = useState(productDetailsData.P_NAME);
   // const [productSize, setProductSize] = useState("");
   // const [productWeight, setProductWeight] = useState("");
@@ -49,6 +51,27 @@ function EditProduct() {
   const [Toy_color, setToy_color] = useState(productDetailsData.COLOR);
   const [Toy_level, setToy_level] = useState(productDetailsData.LEVEL);
   const [s_id, setS_id] = useState("");
+
+  const ButtonWrapper = styled.div`
+  display: flex;
+    justify-content: space-between;
+`;
+
+  const HomeButton = styled.button`
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+    width: 140px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 10px;
+    float: left;
+  &:hover {
+    background-color: #2980b9;
+  }
+`;
 
   useEffect(() => {
     async function fetchRootCategories() {
@@ -108,33 +131,58 @@ function EditProduct() {
   const handleSubmit = async () => {
     try {
          console.log('Sending request to edit product');
-    //   const req_url = await uploadFile();
-    //   // console.log(req_url);
-    //   console.log('Sending request to add product', imageurl);
-    //   const response = await axios.post("http://localhost:8000/editProduct", { //server side code needs to be wriiten
-    //     imageurl,
-    //     productName,
-    //     productPrice,
-    //     productDiscount,
-    //     productDescription,
-    //     s_id /////// INCOMPLETE ///////
-    //   });
-    //   console.log(response);
-    //   if (response.status === 200) {
-    //     console.log("Product Added Successfully!");
-    //     navigate('/ProfileOfSupplier');
-    //   }
-    //   else
-    //     {
-    //         console.log("Response status: ",response.status);
-    //     }
+      // const req_url = await uploadFile();
+      // console.log(req_url);
+      console.log('Sending request to add product', imageurl);
+      const response = await axios.post("http://localhost:8000/editProduct", { //server side code needs to be wriiten
+      // imageurl,
+      productId,
+      productName,
+      // productSize,
+      // productWeight,
+      // productQuantity,
+      productPrice,
+      productDiscount,
+      // productTemp,
+      productDescription,
+      selectedRootCategory,
+      educationalLevel,
+      fashionMadeOf,
+      fashionSize,
+      fashionColor,
+      productionDate,
+      ExpiaryDate,
+      IT_ram,
+      IT_storage,
+      IT_processor,
+      Toy_color,
+      Toy_level
+      });
+      console.log(response);
+      if (response.status === 200) {
+        console.log("Details saved Successfully!");
+        navigate('/');
+      }
+      else
+        {
+            console.log("Response status: ",response.status);
+        }
     } catch (error) {
       console.error("Error while adding product:", error);
     }
   };
 
+  function handleHome() {
+    // callAuth = false;
+    // accessGranted = false;
+    navigate('/');
+  }
+
   return (
     <div className="add-product-container" style={{ height: 'calc(100vh - 64px)', overflowY: 'auto' }}>
+      <ButtonWrapper>
+        <HomeButton onClick={handleHome}>Back to Home</HomeButton>
+      </ButtonWrapper>
       <h2 align="center">Edit Product<hr/></h2><br/>
       <div align="right">Product Name . . . . . . . . . . . . . . . . . . . . .:
       <input
