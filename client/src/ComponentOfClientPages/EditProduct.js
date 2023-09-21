@@ -203,7 +203,7 @@ function EditProduct() {
       value={productTemp}
       onChange={(e) => setProductTemp(e.target.value)}
     /> */}
-      <select onChange={(e) => setSelectedRootCategory(e.target.value)} disabled={selectedRootCategory.length>0}>
+      <select onChange={(e) => setSelectedRootCategory(e.target.value)} disabled={selectedRootCategory.length>0}> 
         <option value={selectedRootCategory}>{selectedRootCategory}</option>
         {rootCategories.map((category) => (
           <option key={category.TYPE} value={category.TYPE}>
@@ -212,103 +212,169 @@ function EditProduct() {
         ))}
       </select>
       {selectedRootCategory==='EDUCATIONAL'?
+        <div align="right">Level . . . . . . . . . . . . . . . . . . . . . . . . . . . . :
         <input
         className="form-control"
         type="text"
         placeholder="Level"
         value={educationalLevel}
         onChange={(e) => setEducationalLevel(e.target.value)}
-      />
+        style={{
+          width: '80%',     // Set the width to 80% of the container
+          marginLeft: 'auto',  // Auto margin on the left side to push it to the right
+          marginRight: '0'    // No margin on the right side
+        }}
+      /></div>
       :null}
       {selectedRootCategory==='GROCERY'?(
       <>
+        <div align="right">Production Date . . . . . . . . . . . . . . . . . . . .:
         <input
         className="form-control"
          type="text"
          placeholder="Production Date"
          value={productionDate}
          onChange={(e) => setProductionDate(e.target.value)}
-      />
+         style={{
+          width: '80%',     // Set the width to 80% of the container
+          marginLeft: 'auto',  // Auto margin on the left side to push it to the right
+          marginRight: '0'    // No margin on the right side
+        }}
+      /></div>
+      <div align="right">Expiary Date . . . . . . . . . . . . . . . . . . . . . . :
       <input
       className="form-control"
       type="text"
       placeholder="Expiary Date"
       value={ExpiaryDate}
       onChange={(e) => setExpiaryDate(e.target.value)}
-     />
+      style={{
+        width: '80%',     // Set the width to 80% of the container
+        marginLeft: 'auto',  // Auto margin on the left side to push it to the right
+        marginRight: '0'    // No margin on the right side
+      }}
+     /></div>
      </> 
       )
       :null}
       {selectedRootCategory==='FASHION'?(
       <>
+       <div align="right">Made Of . . . . . . . . . . . . . . . . . . . . . . . . . .:
        <input
       className="form-control"
       type="text"
       placeholder="Made Of"
       value={fashionMadeOf}
       onChange={(e) => setFashionMadeOf(e.target.value)}
-    />
+      style={{
+        width: '80%',     // Set the width to 80% of the container
+        marginLeft: 'auto',  // Auto margin on the left side to push it to the right
+        marginRight: '0'    // No margin on the right side
+      }}
+    /></div>
+    <div align="right">Color . . . . . . . . . . . . . . . . . . . . . . . . . . . . :
     <input
       className="form-control"
       type="text"
       placeholder="Color"
       value={fashionColor}
       onChange={(e) => setFashionColor(e.target.value)}
-    />
+      style={{
+        width: '80%',     // Set the width to 80% of the container
+        marginLeft: 'auto',  // Auto margin on the left side to push it to the right
+        marginRight: '0'    // No margin on the right side
+      }}
+    /></div>
+    <div align="right">Size . . . . . . . . . . . . . . . . . . . . . . . . . . . . . :
     <input
       className="form-control"
       type="text"
       placeholder="Size"
       value={fashionSize}
       onChange={(e) => setFashionSize(e.target.value)}
-    /> 
+      style={{
+        width: '80%',     // Set the width to 80% of the container
+        marginLeft: 'auto',  // Auto margin on the left side to push it to the right
+        marginRight: '0'    // No margin on the right side
+      }}
+    /> </div>
      </> 
       )
       :null}
 
      {selectedRootCategory==='IT_PRODUCTS'?(
      <>
+     <div align="right">Ram (GB) . . . . . . . . . . . . . . . . . . . . . . . . :
      <input
         className="form-control"
          type="text"
          placeholder="RAM"
          value={IT_ram}
          onChange={(e) => setIT_ram(e.target.value)}
-      />
+         style={{
+          width: '80%',     // Set the width to 80% of the container
+          marginLeft: 'auto',  // Auto margin on the left side to push it to the right
+          marginRight: '0'    // No margin on the right side
+        }}
+      /></div>
+      <div align="right">Storage (GB) . . . . . . . . . . . . . . . . . . . . . .:
       <input
         className="form-control"
          type="text"
          placeholder="Storage"
          value={IT_storage}
          onChange={(e) => setIT_storage(e.target.value)}
-      />
+         style={{
+          width: '80%',     // Set the width to 80% of the container
+          marginLeft: 'auto',  // Auto margin on the left side to push it to the right
+          marginRight: '0'    // No margin on the right side
+        }}
+      /></div>
+      <div align="right">Processor . . . . . . . . . . . . . . . . . . . . . . . . :
       <input
         className="form-control"
          type="text"
          placeholder="Processor"
          value={IT_processor}
          onChange={(e) => setIT_processor(e.target.value)}
-      />
+         style={{
+          width: '80%',     // Set the width to 80% of the container
+          marginLeft: 'auto',  // Auto margin on the left side to push it to the right
+          marginRight: '0'    // No margin on the right side
+        }}
+      /></div>
      </>)
        
       :null}
 
      {selectedRootCategory==='TOY'?(
       <>
+        <div align="right">Color . . . . . . . . . . . . . . . . . . . . . . . . . . . . :
         <input
         className="form-control"
          type="text"
          placeholder="Color"
          value={Toy_color}
          onChange={(e) => setToy_color(e.target.value)}
-      />
+         style={{
+          width: '80%',     // Set the width to 80% of the container
+          marginLeft: 'auto',  // Auto margin on the left side to push it to the right
+          marginRight: '0'    // No margin on the right side
+        }}
+      /></div>
+      <div align="right">Level . . . . . . . . . . . . . . . . . . . . . . . . . . . . :
       <input
       className="form-control"
       type="text"
       placeholder="Level"
       value={Toy_level}
       onChange={(e) => setToy_level(e.target.value)}
-     />
+      style={{
+        width: '80%',     // Set the width to 80% of the container
+        marginLeft: 'auto',  // Auto margin on the left side to push it to the right
+        marginRight: '0'    // No margin on the right side
+      }}
+     /></div>
      </> 
       )
       :null}
