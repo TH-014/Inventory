@@ -107,16 +107,16 @@ function EditProduct() {
   }, []);
 
   ref(storage, "product/");
-  const uploadFile = () => {
+  const uploadFile = (newImg) => {
     // if (imageUpload == null) return;
     return new Promise((resolve, reject) => {
-      const imageRef = ref(storage, `product/${imageUpload.name + v4()}`);
-      uploadBytes(imageRef, imageUpload).then((snapshot) => {
+      const imageRef = ref(storage, `product/${newImg.name + v4()}`);
+      uploadBytes(imageRef, newImg).then((snapshot) => {
         getDownloadURL(snapshot.ref).then((url) => {
           console.log(url); // this is the url of the uploaded image
           // setProductImage(url);
           imageurl = url;
-          console.log(typeof url);
+          // console.log(typeof url);
           console.log('this is the url string', imageurl);
           resolve(url);
         }).catch((err) => {
@@ -131,10 +131,16 @@ function EditProduct() {
       
       try {
         setImageUpload(newImg);
-        const req_url = await uploadFile();
-        console.log(req_url);
-        setProductImage(req_url);
+        if (newImg) { // Check if newImg is truthy (i.e., not null or undefined)
+          const req_url = await uploadFile(newImg);
+          console.log(req_url);
+          setProductImage(req_url);
+        }
+        else{
+          alert("No image selected");
+        }
       } catch (error) {
+        alert("Error while uploading image. Please try again.");
         console.error("Error while uploading image:", error);
       }
   }
